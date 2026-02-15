@@ -1,18 +1,13 @@
-import TeamSection from "../components/TeamSection";
+import Link from 'next/link'
+import React from 'react'
 
-export default function Home() {
-  const teamMembers = [
-    { image: "/img4.avif", name: "Jack" },
-    { image: "/img2.avif", name: "Jane" },
-    { image: "/img3.avif", name: "Bob" },
-    { image: "/img1.avif", name: "John" },
-    { image: "/img5.avif", name: "Lisa" },
-    { image: "/img6.avif", name: "Harry" },
-  ];
-
+function page() {
   return (
-    <main>
-      <TeamSection defaultName="Our Squad" members={teamMembers} />
-    </main>
-  );
+    <div>
+      <Link href={"/team-section"}>Team Section</Link>
+      <Link href={"/gooey-bar"}>Gooey Bar</Link>
+    </div>
+  )
 }
+
+export default page

@@ -50,12 +50,6 @@ export default function TeamSection({
   defaultNameStyle = {},
   memberNameClassName = "",
   memberNameStyle = {},
-  animationConfig = {
-    duration: 0.75,
-    ease: "power4.out",
-    stagger: 0.025,
-    scaleFactor: 2,
-  },
 }: TeamSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const defaultNameRef = useRef<HTMLHeadingElement>(null);
@@ -86,7 +80,8 @@ export default function TeamSection({
       // Set up hover animations for profile images
       const profileImages = gsap.utils.toArray(".profile-image");
 
-      profileImages.forEach((image: any, index: number) => {
+      profileImages.forEach((image, index) => {
+        const typedImage = image as HTMLElement;
         const correspondingName = document.querySelector(
           `.profile-names .name:nth-child(${index + 2})`
         );
@@ -97,11 +92,11 @@ export default function TeamSection({
         }
 
         // Store original dimensions
-        const originalWidth = image.offsetWidth;
-        const originalHeight = image.offsetHeight;
+        const originalWidth = typedImage.offsetWidth;
+        const originalHeight = typedImage.offsetHeight;
 
-        image.addEventListener("mouseenter", () => {
-          gsap.to(image, {
+        typedImage.addEventListener("mouseenter", () => {
+          gsap.to(typedImage, {
             width: originalWidth * 2,
             height: originalHeight * 2,
             duration: 0.75,
@@ -128,8 +123,8 @@ export default function TeamSection({
           }
         });
 
-        image.addEventListener("mouseleave", () => {
-          gsap.to(image, {
+        typedImage.addEventListener("mouseleave", () => {
+          gsap.to(typedImage, {
             width: originalWidth,
             height: originalHeight,
             duration: 0.75,
