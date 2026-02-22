@@ -31,11 +31,12 @@ interface GooeyBarProps {
 
 const statusItems: StatusItem[] = [
   { id: 'music', icon: 'music', label: 'Now Playing' },
-  { id: 'cube', icon: 'cube' },
+  { id: 'cube', icon: 'cube', value: '3D View' },
   { id: 'cloud', icon: 'cloud', value: '72°F' },
-  { id: 'wifi', icon: 'wifi' },
+  { id: 'wifi', icon: 'wifi', value: 'ProtonVPN' },
   { id: 'battery', icon: 'battery', value: '87%' },
-  { id: 'clock', icon: 'clock', value: 'Wed Jan 8 | 2:45 PM' },
+  //date should be in this format : 'Wed Jan 8 | 2:45 PM'
+  { id: 'clock', icon: 'clock', value: `${new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} | ${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}` },
 ];
 
 /* ============================
@@ -182,7 +183,7 @@ function GooeyBar({
     <div className="flex justify-center w-full pt-4">
       <div ref={containerRef} className="relative w-full">
         {/* Main Bar */}
-        <div className="flex items-center justify-center gap-1 px-3 py-2 bg-black rounded-full">
+        <div className="flex items-center justify-center gap-1 px-3 py-2 bg-black">
           {statusItems.map((item, index) => (
             <div
               key={item.id}
