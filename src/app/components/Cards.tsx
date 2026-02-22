@@ -4,110 +4,113 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 
-// gsap.registerPlugin(SplitText);
+gsap.registerPlugin(SplitText);
 
 function Cards() {
-  // const containerRef = useRef<HTMLDivElement>(null);
-  // const titleRef = useRef<HTMLHeadingElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
 
-  // useEffect(() => {
-  //   if (!containerRef.current || !titleRef.current) return;
+  useEffect(() => {
+    if (!containerRef.current || !titleRef.current) return;
 
-  //   const cardContainer = containerRef.current;
-  //   const cardPaths = cardContainer.querySelectorAll(
-  //     ".svg-stroke-1 svg path, .svg-stroke-2 svg path"
-  //   );
+    const cardContainer = containerRef.current;
+    const cardPaths = cardContainer.querySelectorAll(
+      "svg path, svg path"
+    );
 
-  //   const split = SplitText.create(titleRef.current, {
-  //     type: "words",
-  //     mask: "words",
-  //   });
+    const split = SplitText.create(titleRef.current, {
+      type: "words",
+      mask: "words",
+    });
 
-  //   gsap.set(split.words, { yPercent: 100 });
+    gsap.set(split.words, { yPercent: 100 });
 
-  //   // Setup stroke dash
-  //   cardPaths.forEach((path) => {
-  //     const length = (path as SVGPathElement).getTotalLength();
-  //     path.style.strokeDasharray = `${length}`;
-  //     path.style.strokeDashoffset = `${length}`;
-  //   });
+    // Setup stroke dash
+    cardPaths.forEach((path) => {
+      const length = (path as SVGPathElement).getTotalLength();
+      gsap.set(path, {
+        strokeDasharray: length,
+        strokeDashoffset: length,
+      });
 
-  //   let tl: gsap.core.Timeline;
+    });
 
-  //   const handleEnter = () => {
-  //     if (tl) tl.kill();
-  //     tl = gsap.timeline();
+    let tl: gsap.core.Timeline;
 
-  //     cardPaths.forEach((path) => {
-  //       tl.to(
-  //         path,
-  //         {
-  //           strokeDashoffset: 0,
-  //           attr: { "stroke-width": 700 },
-  //           duration: 1.5,
-  //           ease: "power2.out",
-  //         },
-  //         0
-  //       );
-  //     });
+    const handleEnter = () => {
+      if (tl) tl.kill();
+      tl = gsap.timeline();
 
-  //     tl.to(
-  //       split.words,
-  //       {
-  //         yPercent: 0,
-  //         duration: 0.75,
-  //         ease: "power3.out",
-  //         stagger: 0.075,
-  //       },
-  //       0.35
-  //     );
-  //   };
+      cardPaths.forEach((path) => {
+        tl.to(
+          path,
+          {
+            strokeDashoffset: 0,
+            attr: { "stroke-width": 700 },
+            duration: 1.5,
+            ease: "power2.out",
+          },
+          0
+        );
+      });
 
-  //   const handleLeave = () => {
-  //     if (tl) tl.kill();
-  //     tl = gsap.timeline();
+      tl.to(
+        split.words,
+        {
+          yPercent: 0,
+          duration: 0.75,
+          ease: "power3.out",
+          stagger: 0.075,
+        },
+        0.35
+      );
+    };
 
-  //     cardPaths.forEach((path) => {
-  //       const length = (path as SVGPathElement).getTotalLength();
+    const handleLeave = () => {
+      if (tl) tl.kill();
+      tl = gsap.timeline();
 
-  //       tl.to(
-  //         path,
-  //         {
-  //           strokeDashoffset: length,
-  //           attr: { "stroke-width": 200 },
-  //           duration: 1,
-  //           ease: "power2.out",
-  //         },
-  //         0
-  //       );
-  //     });
+      cardPaths.forEach((path) => {
+        const length = (path as SVGPathElement).getTotalLength();
 
-  //     tl.to(
-  //       split.words,
-  //       {
-  //         yPercent: 100,
-  //         duration: 0.5,
-  //         ease: "power3.out",
-  //         stagger: { each: 0.05, from: "end" },
-  //       },
-  //       0
-  //     );
-  //   };
+        tl.to(
+          path,
+          {
+            strokeDashoffset: length,
+            attr: { "stroke-width": 200 },
+            duration: 1,
+            ease: "power2.out",
+          },
+          0
+        );
+      });
 
-  //   cardContainer.addEventListener("mouseenter", handleEnter);
-  //   cardContainer.addEventListener("mouseleave", handleLeave);
+      tl.to(
+        split.words,
+        {
+          yPercent: 100,
+          duration: 0.5,
+          ease: "power3.out",
+          stagger: { each: 0.05, from: "end" },
+        },
+        0
+      );
+    };
 
-  //   return () => {
-  //     cardContainer.removeEventListener("mouseenter", handleEnter);
-  //     cardContainer.removeEventListener("mouseleave", handleLeave);
-  //     split.revert();
-  //   };
-  // }, []);
+    cardContainer.addEventListener("mouseenter", handleEnter);
+    cardContainer.addEventListener("mouseleave", handleLeave);
+
+    return () => {
+      cardContainer.removeEventListener("mouseenter", handleEnter);
+      cardContainer.removeEventListener("mouseleave", handleLeave);
+      split.revert();
+    };
+  }, []);
 
   return (
     <div
-    // ref={containerRef}
-    className="relative flex-1 aspect-square rounded-4xl overflow-hidden" id='card-1'>
+      ref={containerRef}
+      className="relative flex-1 aspect-square rounded-4xl overflow-hidden" id='card-1'>
       <div className="card-img">
         <img src="/img2.avif" alt="" className='w-full h-full object-cover' />
       </div>
@@ -124,6 +127,7 @@ function Cards() {
             d="M227.549 1818.76C227.549 1818.76 406.016 2207.75 569.049 2130.26C843.431 1999.85 -264.104 1002.3 227.549 876.262C552.918 792.849 773.647 2456.11 1342.05 2130.26C1885.43 1818.76 14.9644 455.772 760.548 137.26C1342.05 -111.152 1663.5 2266.35 2209.55 1972.76C2755.6 1679.18 1536.63 384.467 1826.55 137.262C2013.5 -22.1463 2209.55 381.262 2209.55 381.262"
             stroke="#F5EE41"
             strokeWidth="200"
+            fill="none"
             strokeLinecap="round"
           />
         </svg>
@@ -142,13 +146,14 @@ function Cards() {
             stroke="#6E44FF"
             strokeWidth="200"
             strokeLinecap="round"
+            fill="none"
           />
         </svg>
       </div>
       <div className="absolute bottom-4 left-4 lg:bottom-8 lg:left-8 text-[var(--card-copy)]">
         <h3
-        // ref={titleRef}
-        className='text-[clamp(1.25rem,2.5vw,3rem)] font-[450] leading-[1.25] tracking-[-0.025rem]will-change-transform'>Hello World</h3>
+          ref={titleRef}
+          className='text-[clamp(1.25rem,2.5vw,3rem)] font-[450] leading-[1.25] tracking-[-0.025rem]will-change-transform'>Hello World</h3>
       </div>
     </div>
   );
