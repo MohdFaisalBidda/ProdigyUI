@@ -22,18 +22,18 @@ function StrokeCards() {
       >
 
         <div className="w-full flex flex-col md:flex-row justify-center items-center p-0.5 mb-[1rem] gap-4">
-          <Cards />
-          <Cards />
+          <Cards imgSrc='/img1.avif'/>
+          <Cards imgSrc='/img2.avif'/>
         </div>
 
         <div className="w-full flex flex-col md:flex-row justify-center items-center p-0.5 mb-[1rem] gap-4">
-          <Cards />
-          <Cards />
-        </div>
+          <Cards imgSrc='/img3.avif'/>
+          <Cards imgSrc='/img4.avif'/>
+        </div>  
 
         <div className="w-full flex flex-col md:flex-row justify-center items-center p-0.5 mb-[1rem] gap-4">
-          <Cards />
-          <Cards />
+          <Cards imgSrc='/img5.avif'/>
+          <Cards imgSrc='/img6.avif'/>
         </div>
       </div>
 

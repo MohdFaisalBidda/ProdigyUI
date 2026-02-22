@@ -6,7 +6,11 @@ import { SplitText } from "gsap/SplitText";
 
 gsap.registerPlugin(SplitText);
 
-function Cards() {
+function Cards({
+  imgSrc = "/img1.avif",
+}:{
+  imgSrc: string;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
@@ -112,7 +116,7 @@ function Cards() {
       ref={containerRef}
       className="relative flex-1 aspect-square rounded-4xl overflow-hidden" id='card-1'>
       <div className="card-img">
-        <img src="/img2.avif" alt="" className='w-full h-full object-cover' />
+        <img src={imgSrc} alt="" className='w-full h-full object-cover' />
       </div>
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 scale-150 w-full h-full text-[var(--svg-stroke-1)]">
         <svg
