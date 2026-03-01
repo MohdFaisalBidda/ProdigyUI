@@ -1,4 +1,4 @@
-import TeamSection from "@/components/TeamSection";
+import TeamSection from "@/components/UIElement/TeamSection/TeamSection";
 
 export default function Home() {
   const teamMembers = [
