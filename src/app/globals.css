@@ -3,6 +3,9 @@
 /* @import url("https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"); */
 
 :root {
+  /* ======================
+   Stroke Card
+====================== */
   --card-1-stroke: #e67339;
   --card-2-stroke: #e6b363;
   --card-3-stroke: #eb3828;
@@ -12,6 +15,13 @@
 
   --card-base-stroke: #e0e0e0;
   --card-copy: #000;
+
+  /* ======================
+   Infinity Contact
+====================== */
+  --base-100: #fff;
+  --base-200: #4f4f4f;
+  --base-300: #0f0f0f;
 }
 
 /* ======================
@@ -71,7 +81,7 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;   
+  box-sizing: border-box;
 }
 
 body {
@@ -83,7 +93,8 @@ body {
 }
 
 .profile-images {
-  gap: 1rem !important; /* 4px */
+  gap: 1rem !important;
+  /* 4px */
 }
 
 img {
@@ -94,20 +105,20 @@ img {
   section {
     flex-direction: column-reverse;
   }
-  
+
   .profile-images {
     max-width: 90%;
   }
-  
+
   .img {
     width: 60px;
     height: 60px;
   }
-  
+
   .name h1 {
     font-size: 4rem;
   }
-  
+
   .profile-names {
     height: 4rem;
   }
