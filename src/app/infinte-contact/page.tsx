@@ -8,14 +8,13 @@ import Lenis from "lenis"
 gsap.registerPlugin(ScrollTrigger);
 
 const data = [
-    { label: "Address", value: "123 Great Street" },
-    { label: "Current Time", value: "20:40:30 (GMT)" },
-    { label: "General Inqueries", value: "hello@infinte.com" },
-    { label: "New Business Inqueries", value: "business@infinte.com" },
-    { label: "Job Inqueries", value: "jobs@infinte.com" },
-    { label: "Telephone", value: "+44 123 456 7890" },
-    { label: "Social Media", value: "@infinte" }
-]
+    { label: "Alex Morgan", value: "Founder & CEO" },
+    { label: "Sophia Carter", value: "Creative Director" },
+    { label: "Ethan Williams", value: "Lead Developer" },
+    { label: "Noah Thompson", value: "Marketing Strategist" },
+    { label: "Isabella Reed", value: "UX Designer" },
+    { label: "James Turne", value: "Product Manager" },
+];
 
 function TextContainer({ label, value, contactRows }: { label: string; value: string; contactRows: (el: HTMLDivElement | null) => void; }) {
     return (
@@ -53,25 +52,28 @@ function page() {
 
             let closestRow: HTMLDivElement | null = null;
             let minDistance = Infinity;
+
+            let centeredRow: HTMLDivElement | null = null;
+
             const allRows = document.querySelectorAll<HTMLDivElement>(".contact-row");
 
             allRows.forEach(row => {
                 const rect = row.getBoundingClientRect();
-                const rowCenter = rect.top + rect.height / 2; // viewport-based
-                const distance = Math.abs(viewportCenter - rowCenter);
-                if (distance < minDistance && distance < 150) {
-                    minDistance = distance;
-                    closestRow = row;
+
+                const rowTop = rect.top;
+                const rowBottom = rect.bottom;
+
+                // Check if viewport center is inside this row
+                if (viewportCenter >= rowTop && viewportCenter <= rowBottom) {
+                    centeredRow = row;
                 }
             });
 
-            if (closestRow && closestRow !== lastCenteredRow.current) {
-                lastCenteredRow.current = closestRow;
+            if (centeredRow && centeredRow !== lastCenteredRow.current) {
+                lastCenteredRow.current = centeredRow;
 
-                const allRows = Array.from(document.querySelectorAll<HTMLDivElement>(".contact-row"));
-                const rowIndex = allRows.indexOf(closestRow);
-
-                // Map index to original data (since you cloned)
+                const allRowsArray = Array.from(allRows);
+                const rowIndex = allRowsArray.indexOf(centeredRow);
                 const originalIndex = rowIndex % data.length;
 
                 if (contactIcon.current) {
@@ -88,7 +90,7 @@ function page() {
 
 
     useEffect(() => {
-        const containerRowMaxGap = window.innerWidth < 1000 ? 7 : 10
+        const containerRowMaxGap = window.innerWidth < 1000 ? 6 : 10
 
         for (let i = 0; i < 10; i++) {
             const clone = containerInfo.current?.cloneNode(true) as HTMLDivElement;
@@ -130,11 +132,13 @@ function page() {
     return (
         <div className='font-sans bg-[var(--base-300)] text-[var(--base-100)]'>
             <section ref={contactVisual} className='fixed top-0 left-0 w-full h-svh flex justify-center items-center overflow-hidden'>
-                <div className="relative w-16 h-16 md:w-28 md:h-28 lg:w-24 lg:h-24">
-                    <img ref={contactIcon} src="/img4.avif" alt="" className='w-full h-full object-cover' />
+                <div className="relative w-16 h-16 md:w-20 md:h-20">
+                    <img ref={contactIcon} src="/img4.avif" alt="" className='w-full h-full object-cover' style={{
+                        borderRadius: "100px"
+                    }} />
                 </div>
             </section>
-            <section ref={containerInfo} className="relative w-full min-h-svh flex flex-col justify-start pt-32 md:pt-40 gap-4 md:gap-6 lg:gap-8 overflow-hidden">
+            <section ref={containerInfo} className="relative w-full min-h-svh flex flex-col justify-start pt-32 md:pt-40 gap-4 overflow-hidden">
                 {data.map((item, index) => (
                     <TextContainer
                         key={index}
