@@ -170,19 +170,9 @@ function page() {
                 ref={spotlightRef}
                 className="spotlight relative isolate w-full h-svh flex flex-col justify-center items-center gap-4 p-8 group">
 
-                {/* Mask */}
-                <div
-                    ref={spotlightMaskRef}
-                    className="spotlight-mask absolute inset-0 z-0 pointer-events-none
-    bg-[var(--dark)]
-    transition-opacity duration-300 ease-in-out
-    [mask:radial-gradient(circle_200px_at_var(--mouse-x)_var(--mouse-y),black_0%,black_40%,transparent_80%,transparent_100%)]
-[-webkit-mask:radial-gradient(circle_200px_at_var(--mouse-x)_var(--mouse-y),black_0%,black_40%,transparent_80%,transparent_100%)] opacity-0">
-                </div>
-
                 {/* Content */}
                 <div
-                    className="lottie-container relative z-10 flex flex-col items-center gap-4">
+                    className="lottie-container relative z-10 flex flex-col items-center gap-4 group-hover:opacity-100 opacity-40">
 
                     <div ref={lottieContainerRef} className="relative w-32 h-32 pointer-events-none">
                         <div className="fire-glow absolute inset-0
@@ -192,16 +182,27 @@ function page() {
 
                         <div ref={lottieRef} className="lottie relative w-full h-full scale-125 z-10"></div>
                     </div>
-
-                    <h1 className="text-[clamp(3rem,5vw,7rem)] tracking-tighter font-medium">
-                        Guided by Interaction
-                    </h1>
-
-                    <p className="text-[1.5rem] w-full lg:text-3xl lg:w-[60%] text-center">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore facere vitae minima. Quasi fugit totam officia consequuntur nisi dignissimos, perspiciatis praesentium tempore perferendis ad esse tempora cumque numquam architecto accusamus! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur nam nisi et vitae odio error deleniti consequuntur, voluptatibus ut eligendi. Atque, amet eligendi harum obcaecati libero rerum laudantium quae laborum.
-                    </p>
-
                 </div>
+
+
+                <h1 className="text-[clamp(3rem,5vw,7rem)] tracking-tighter font-medium">
+                    Guided by Interaction
+                </h1>
+
+                <p className="text-[1.5rem] w-full lg:text-3xl lg:w-[60%] text-center">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore facere vitae minima. Quasi fugit totam officia consequuntur nisi dignissimos, perspiciatis praesentium tempore perferendis ad esse tempora cumque numquam architecto accusamus! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur nam nisi et vitae odio error deleniti consequuntur, voluptatibus ut eligendi. Atque, amet eligendi harum obcaecati libero rerum laudantium quae laborum.
+                </p>
+
+                {/* Mask */}
+                <div
+                    ref={spotlightMaskRef}
+                    className="spotlight-mask absolute top-0 left-0 w-full h-full z-0 pointer-events-none
+    bg-[var(--dark)]
+    transition-opacity duration-300 ease-in-out
+    [mask:radial-gradient(circle_200px_at_var(--mouse-x)_var(--mouse-y),transparent_0%,transparent_40%,var(--dark)_80%,var(--dark)_100%)]
+[-webkit-mask:radial-gradient(circle_200px_at_var(--mouse-x)_var(--mouse-y),transparent_0%,transparent_40%,var(--dark)_80%,var(--dark)_100%)] opacity-0 group-:active:opacity-85">
+                </div>
+
             </section>
 
             <section className='outro relative w-full h-svh flex flex-col justify-center items-center gap-4'
