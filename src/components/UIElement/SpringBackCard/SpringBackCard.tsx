@@ -129,7 +129,7 @@ function SpringBackCard({
     if (speed < 0.5) return;
 
     // sqrt scaling: slow = small nudge, fast = noticeably bigger, never extreme
-    const imp = Math.sqrt(speed) * 1.8;
+    const imp = Math.sqrt(speed) * 0.55;
     const nx  = cvx / speed;
     const ny  = cvy / speed;
 
@@ -150,7 +150,7 @@ function SpringBackCard({
     if (speed < 1.5) return;
 
     // Small per-frame addition — accumulates with repeated sweeps
-    const SWEEP_SCALE = 0.055;
+    const SWEEP_SCALE = 0.018;
     const nx = cvx / speed;
     const ny = cvy / speed;
 

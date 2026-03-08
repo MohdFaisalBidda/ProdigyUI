@@ -24,7 +24,7 @@ function Cards() {
                     className='w-full h-full object-cover'
                 />
             </SpringBackCard>
-            
+
             <SpringBackCard
                 imgSrc="/img5.avif"
                 initialRotation={5}
@@ -42,7 +42,7 @@ function Cards() {
                     className='w-full h-full object-cover'
                 />
             </SpringBackCard>
-            
+
             <SpringBackCard
                 imgSrc="/img4.avif"
                 initialRotation={-5}
@@ -60,7 +60,7 @@ function Cards() {
                     className='w-full h-full object-cover'
                 />
             </SpringBackCard>
-            
+
             <SpringBackCard
                 imgSrc="/img3.avif"
                 initialRotation={6}
@@ -83,36 +83,39 @@ function Cards() {
                 initialRotation={0}
                 offsetX={0}
                 index={4}
-                className="rounded-full rounded-bl-none bg-pink-300 top-[35%] sm:top-[40%] left-[30%] sm:left-[35%] -translate-x-1/2 -translate-y-1/2"
+                className=" top-[35%] sm:top-[40%] left-[30%] sm:left-[35%] -translate-x-1/2 -translate-y-1/2"
                 widthClass="auto"
                 heightClass="auto"
-                style={{ padding: "0.5rem 1rem" }}
             >
-                <p className='pointer-events-none whitespace-nowrap text-xs sm:text-sm'>This card looks like a spring back</p>
+                <p className='rounded-full rounded-bl-none bg-pink-300 pointer-events-none whitespace-nowrap text-xs sm:text-sm'
+                    style={{ padding: "0.5rem 1rem" }}
+                >This card looks like a spring back</p>
             </SpringBackCard>
 
             <SpringBackCard
                 initialRotation={0}
                 offsetX={0}
                 index={5}
-                className="rounded-full rounded-bl-none bg-red-500 bottom-[30%] sm:bottom-[35%] left-[45%] sm:left-[45%] -translate-x-1/2 -translate-y-1/2"
+                className="bottom-[30%] sm:bottom-[35%] left-[45%] sm:left-[45%] -translate-x-1/2 -translate-y-1/2"
                 widthClass="auto"
                 heightClass="auto"
-                style={{ padding: "0.5rem 1rem" }}
             >
-                <p className='pointer-events-none whitespace-nowrap text-xs sm:text-sm'>Catch me if you can</p>
+                <p className='rounded-full rounded-bl-none bg-red-500 pointer-events-none whitespace-nowrap text-xs sm:text-sm'
+                style={{ padding: "0.5rem 1rem" }}
+                >Catch me if you can</p>
             </SpringBackCard>
 
             <SpringBackCard
                 initialRotation={0}
                 offsetX={0}
                 index={6}
-                className="rounded-full rounded-bl-none bg-amber-100 right-[20%] sm:right-[23%] top-[45%] sm:top-[50%] -translate-x-1/2 -translate-y-1/2"
+                className="right-[20%] sm:right-[23%] top-[45%] sm:top-[50%] -translate-x-1/2 -translate-y-1/2"
                 widthClass="auto"
                 heightClass="auto"
-                style={{ padding: "0.5rem 1rem" }}
             >
-                <p className='pointer-events-none whitespace-nowrap text-xs sm:text-sm'>I&apos;m a spring back card</p>
+                <p className='rounded-full rounded-bl-none bg-amber-100 pointer-events-none whitespace-nowrap text-xs sm:text-sm'
+                style={{ padding: "0.5rem 1rem" }}
+                >I&apos;m a spring back card</p>
             </SpringBackCard>
         </section>
     )
