@@ -13,8 +13,8 @@ function Cards() {
                 offsetX={0}
                 index={0}
                 className="left-[25%] sm:left-[28%] md:left-[30%] top-[50%] -translate-x-1/2 -translate-y-1/2 -mr-2 sm:-mr-4 md:-mr-6 lg:-mr-8"
-                widthClass="w-24 sm:w-28 md:w-36 lg:w-48 xl:w-56"
-                heightClass="h-32 sm:h-36 md:h-48 lg:h-64 xl:h-72"
+                widthClass="w-28 md:w-36 lg:w-48 xl:w-56"
+                heightClass="h-36 md:h-48 lg:h-64 xl:h-72"
             >
                 <Image
                     src="/img2.avif"
@@ -30,9 +30,9 @@ function Cards() {
                 initialRotation={5}
                 offsetX={0}
                 index={1}
-                className="left-[38%] sm:left-[38%] md:left-[40%] top-[52%] sm:top-[55%] -translate-x-1/2 -translate-y-1/2 -mr-2 sm:-mr-4 md:-mr-6 lg:-mr-8"
-                widthClass="w-24 sm:w-28 md:w-36 lg:w-48 xl:w-56"
-                heightClass="h-32 sm:h-36 md:h-48 lg:h-64 xl:h-72"
+                className="left-[50%] top-[55%] sm:left-[38%] md:left-[40%] sm:top-[55%] -translate-x-1/2 -translate-y-1/2 -mr-2 sm:-mr-4 md:-mr-6 lg:-mr-8"
+                widthClass="w-28 md:w-36 lg:w-48 xl:w-56"
+                heightClass="h-36 md:h-48 lg:h-64 xl:h-72"
             >
                 <Image
                     src="/img5.avif"
@@ -49,8 +49,9 @@ function Cards() {
                 offsetX={0}
                 index={2}
                 className="left-[50%] sm:left-[48%] md:left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 -mr-2 sm:-mr-4 md:-mr-6 lg:-mr-8"
-                widthClass="w-24 sm:w-28 md:w-36 lg:w-48 xl:w-56"
-                heightClass="h-32 sm:h-36 md:h-48 lg:h-64 xl:h-72"
+                widthClass="w-28 md:w-36 lg:w-48 xl:w-56"
+                heightClass="h-36 md:h-48 lg:h-64 xl:h-72"
+                mobileVisible={false}
             >
                 <Image
                     src="/img4.avif"
@@ -66,9 +67,9 @@ function Cards() {
                 initialRotation={6}
                 offsetX={0}
                 index={3}
-                className="left-[62%] sm:left-[58%] md:left-[60%] top-[52%] sm:top-[55%] -translate-x-1/2 -translate-y-1/2"
-                widthClass="w-24 sm:w-28 md:w-36 lg:w-48 xl:w-56"
-                heightClass="h-32 sm:h-36 md:h-48 lg:h-64 xl:h-72"
+                className="left-[75%] top-[52%] sm:left-[58%] md:left-[60%] sm:top-[55%] -translate-x-1/2 -translate-y-1/2"
+                widthClass="w-28 md:w-36 lg:w-48 xl:w-56"
+                heightClass="h-36 md:h-48 lg:h-64 xl:h-72"
             >
                 <Image
                     src="/img3.avif"

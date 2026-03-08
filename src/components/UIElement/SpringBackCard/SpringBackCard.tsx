@@ -20,6 +20,8 @@ export interface SpringBackCardProps {
   maxX?: number;
   maxY?: number;
   lerpSpeed?: number;
+  /** If false, card is hidden on mobile (< 640px). Default true. */
+  mobileVisible?: boolean;
 }
 
 interface SpringState {
@@ -48,6 +50,7 @@ function SpringBackCard({
   maxX = 80,
   maxY = 60,
   lerpSpeed = 0.1,
+  mobileVisible = true,
 }: SpringBackCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -56,18 +59,19 @@ function SpringBackCard({
     vx: 0, vy: 0, vr: 0,
   });
 
-  const rafId   = useRef<number | null>(null);
-  const baseRot = useRef(initialRotation);
+  const rafId          = useRef<number | null>(null);
+  const baseRot        = useRef(initialRotation);
+  const isMobile       = useRef(false);
+  initialRotation = isMobile ? initialRotation * 0.6 : initialRotation;
+  const touchStartPos  = useRef({ x: 0, y: 0, t: 0 });
 
-  // Cursor velocity tracking
+  // Cursor velocity tracking (mouse only)
   const cursor = useRef({ x: 0, y: 0, vx: 0, vy: 0, prevX: 0, prevY: 0, t: 0 });
 
   // ── Spring constants — buttery smooth ───────────────────────────────────────
-  // Low stiffness = slow lazy return. High damping = glides to rest, no chop.
-  // Just enough overshoot (damping < 1) for organic feel without ringing.
-  const SPRING  = 0.048;  // soft pull — card drifts back lazily
-  const DAMPING = 0.82;   // smooth glide, barely any oscillation
-  const SETTLE  = 0.012;  // run longer so the tail-end float is visible
+  const SPRING  = 0.048;
+  const DAMPING = 0.82;
+  const SETTLE  = 0.012;
 
   // ── Physics loop ─────────────────────────────────────────────────────────────
   const runSpring = useCallback(() => {
@@ -105,7 +109,7 @@ function SpringBackCard({
     if (!rafId.current) rafId.current = requestAnimationFrame(runSpring);
   }, [runSpring]);
 
-  // ── Global mousemove: track cursor velocity ──────────────────────────────────
+  // ── Mouse: track velocity globally ──────────────────────────────────────────
   const handleGlobalMouseMove = useCallback((e: MouseEvent) => {
     const now = performance.now();
     const dt  = Math.max(1, now - cursor.current.t);
@@ -118,45 +122,58 @@ function SpringBackCard({
     cursor.current.t     = now;
   }, []);
 
-  // ── mouseenter: edge crossing impulse ───────────────────────────────────────
-  // Impulse is proportional to cursor speed. Soft cap via square-root so fast
-  // moves hit harder but don't become jarring — preserves the smooth feel.
-  const handleMouseEnter = useCallback((_e: MouseEvent) => {
-    const cvx   = cursor.current.vx;
-    const cvy   = cursor.current.vy;
-    const speed = Math.sqrt(cvx * cvx + cvy * cvy);
-
+  const handleMouseEnter = useCallback(() => {
+    const { vx, vy } = cursor.current;
+    const speed = Math.sqrt(vx * vx + vy * vy);
     if (speed < 0.5) return;
-
-    // sqrt scaling: slow = small nudge, fast = noticeably bigger, never extreme
     const imp = Math.sqrt(speed) * 0.55;
-    const nx  = cvx / speed;
-    const ny  = cvy / speed;
-
+    const nx  = vx / speed;
+    const ny  = vy / speed;
     state.current.vx += nx * imp;
     state.current.vy += ny * imp;
-    state.current.vr += nx * imp * 0.35;
-
+    state.current.vr += nx * imp * 0.22;
     startSpring();
   }, [startSpring]);
 
-  // ── mousemove on card: continuous sweep accumulates gently ──────────────────
-  // Each frame of fast movement adds a little more — repeated pushing travels further.
-  const handleCardMouseMove = useCallback((_e: MouseEvent) => {
-    const cvx   = cursor.current.vx;
-    const cvy   = cursor.current.vy;
-    const speed = Math.sqrt(cvx * cvx + cvy * cvy);
-
+  const handleCardMouseMove = useCallback(() => {
+    const { vx, vy } = cursor.current;
+    const speed = Math.sqrt(vx * vx + vy * vy);
     if (speed < 1.5) return;
-
-    // Small per-frame addition — accumulates with repeated sweeps
     const SWEEP_SCALE = 0.018;
-    const nx = cvx / speed;
-    const ny = cvy / speed;
-
+    const nx = vx / speed;
+    const ny = vy / speed;
     state.current.vx += nx * speed * SWEEP_SCALE;
     state.current.vy += ny * speed * SWEEP_SCALE;
     state.current.vr += nx * speed * SWEEP_SCALE * 0.3;
+    startSpring();
+  }, [startSpring]);
+
+  // ── Touch: tap only — record start position, fire nudge on quick tap ─────────
+  const handleTouchStart = useCallback((e: TouchEvent) => {
+    const t = e.touches[0];
+    if (!t) return;
+    touchStartPos.current = { x: t.clientX, y: t.clientY, t: performance.now() };
+  }, []);
+
+  const handleTouchEnd = useCallback((e: TouchEvent) => {
+    const t = e.changedTouches[0];
+    if (!t) return;
+
+    const dx       = t.clientX - touchStartPos.current.x;
+    const dy       = t.clientY - touchStartPos.current.y;
+    const dist     = Math.sqrt(dx * dx + dy * dy);
+    const duration = performance.now() - touchStartPos.current.t;
+
+    // Only fire on a clean tap: tiny movement, quick touch
+    if (dist > 10 || duration > 250) return;
+
+    // Nudge in a lively random direction — like flicking the card
+    const angle = Math.random() * Math.PI * 2;
+    const imp   = 4 + Math.random() * 3; // 4–7 strength
+
+    state.current.vx += Math.cos(angle) * imp;
+    state.current.vy += Math.sin(angle) * imp;
+    state.current.vr += (Math.random() - 0.5) * imp * 0.45;
 
     startSpring();
   }, [startSpring]);
@@ -164,6 +181,10 @@ function SpringBackCard({
   useEffect(() => {
     const card = cardRef.current;
     if (!card || !interactive) return;
+
+    const checkMobile = () => { isMobile.current = window.innerWidth < 640; };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
 
     baseRot.current = initialRotation;
     gsap.set(card, { x: offsetX, y: 0, rotation: initialRotation });
@@ -184,31 +205,58 @@ function SpringBackCard({
       }
     );
 
+    // Mouse events (desktop)
     window.addEventListener("mousemove", handleGlobalMouseMove);
     card.addEventListener("mouseenter",  handleMouseEnter);
     card.addEventListener("mousemove",   handleCardMouseMove);
 
+    // Touch events (mobile) — tap only, no drag
+    card.addEventListener("touchstart", handleTouchStart, { passive: true });
+    card.addEventListener("touchend",   handleTouchEnd);
+
     return () => {
       window.removeEventListener("mousemove", handleGlobalMouseMove);
+      window.removeEventListener("resize",    checkMobile);
       card.removeEventListener("mouseenter",  handleMouseEnter);
       card.removeEventListener("mousemove",   handleCardMouseMove);
+      card.removeEventListener("touchstart",  handleTouchStart);
+      card.removeEventListener("touchend",    handleTouchEnd);
       if (rafId.current) {
         cancelAnimationFrame(rafId.current);
         rafId.current = null;
       }
     };
   }, [interactive, delay, index, offsetX, initialRotation,
-      handleGlobalMouseMove, handleMouseEnter, handleCardMouseMove]);
+      handleGlobalMouseMove, handleMouseEnter, handleCardMouseMove,
+      handleTouchStart, handleTouchEnd]);
+
+  const mobileClass = mobileVisible ? "" : "hidden sm:block";
 
   return (
-    <div className={`spring-back-card-wrapper absolute ${className}`} style={style}>
+    <div
+      className={`spring-back-card-wrapper absolute ${mobileClass} ${className}`}
+      style={style}
+    >
       <div
         ref={cardRef}
         className={`spring-back-card overflow-hidden rounded-lg shadow-2xl cursor-pointer select-none will-change-transform pointer-events-auto ${widthClass} ${heightClass}`}
         style={{ transformStyle: "preserve-3d", perspective: "1200px" }}
       >
         {children ? (
-          children
+          <div className="w-full h-full relative">
+            {imgSrc && (
+              <img
+                src={imgSrc}
+                alt={imgAlt}
+                className="w-full h-full object-cover"
+                draggable={false}
+              />
+            )}
+            {/* Text/label children hidden on mobile */}
+            <div className="hidden sm:block pointer-events-none">
+              {children}
+            </div>
+          </div>
         ) : imgSrc ? (
           <>
             <div className="w-full h-full relative">
