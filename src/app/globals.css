@@ -90,6 +90,9 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+  scrollbar-width: thin;
+  scrollbar-color: #C8FF00 black;
 }
 
 body {
