@@ -22,30 +22,17 @@ export default function ComponentsPage() {
       touchMultiplier: 2,
     });
     lenis.on("scroll", ScrollTrigger.update);
-    const raf = (t: number) => {
-      lenis.raf(t);
-      requestAnimationFrame(raf);
-    };
+    const raf = (t: number) => { lenis.raf(t); requestAnimationFrame(raf); };
     const id = requestAnimationFrame(raf);
     gsap.ticker.lagSmoothing(0);
-
-    return () => {
-      cancelAnimationFrame(id);
-      lenis.destroy();
-    };
+    return () => { cancelAnimationFrame(id); lenis.destroy(); };
   }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(".section-label", {
-        opacity: 0,
-        x: -20,
-        duration: 0.7,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".section-label",
-          start: "top 90%",
-        },
+        opacity: 0, x: -20, duration: 0.7, ease: "power3.out",
+        scrollTrigger: { trigger: ".section-label", start: "top 90%" },
       });
     }, containerRef);
     return () => ctx.revert();
@@ -55,202 +42,68 @@ export default function ComponentsPage() {
   const totalStr = String(total).padStart(2, "0");
 
   return (
-    <div
-      ref={containerRef}
-      style={{
-        background: "#070707",
-        color: "#fff",
-        minHeight: "100vh",
-        fontFamily: "'Syne', sans-serif",
-        overflowX: "hidden",
-      }}
-    >
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
-        * { box-sizing: border-box; }
-        ::-webkit-scrollbar { width: 0; }
-        ::selection { background: #C8FF00; color: #000; }
-      `}</style>
+    <div ref={containerRef} className="bg-[#070707] text-white min-h-screen overflow-x-hidden font-syne">
 
       <NavigationSidebar />
 
-      <div style={{ marginRight: "280px" }} className="lg:mr-[280px]">
-        <header
-          style={{
-            padding: "3rem 2.5rem 2rem",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+      {/* offset for sidebar on large screens */}
+      <div className="lg:mr-[280px]">
+
+        {/* ── Header ── */}
+        <header className="px-5 pt-20 pb-7 md:px-10 border-b border-white/5">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-3 mb-5">
             <Link
               href="/"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                color: "rgba(255,255,255,0.3)",
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "11px",
-                textDecoration: "none",
-                transition: "color 0.2s",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.3)")}
+              className="flex items-center gap-2 text-white/30 font-mono-jetbrains text-[11px] no-underline transition-colors duration-200 hover:text-white"
             >
-              <svg style={{ width: "14px", height: "14px" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
               </svg>
               Home
             </Link>
-            <span style={{ color: "rgba(255,255,255,0.15)" }}>/</span>
-            <span
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "11px",
-                color: "rgba(255,255,255,0.55)",
-                letterSpacing: "0.06em",
-              }}
-            >
+            <span className="text-white/15">/</span>
+            <span className="font-mono-jetbrains text-[11px] text-white/55 tracking-[0.06em]">
               Components
             </span>
           </div>
 
-          <h1
-            style={{
-              fontFamily: "'Syne', sans-serif",
-              fontSize: "clamp(2.5rem, 5vw, 4rem)",
-              fontWeight: 800,
-              letterSpacing: "-0.04em",
-              lineHeight: 0.9,
-              margin: 0,
-            }}
-          >
+          <h1 className="font-syne text-[clamp(2rem,6vw,4rem)] font-extrabold tracking-[-0.04em] leading-[0.9] m-0">
             Components
           </h1>
-          <p
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "12px",
-              color: "rgba(255,255,255,0.35)",
-              fontWeight: 300,
-              lineHeight: 1.6,
-              marginTop: "0.75rem",
-              maxWidth: "400px",
-            }}
-          >
+          <p className="font-mono-jetbrains text-xs text-white/35 font-light leading-relaxed mt-3 max-w-sm">
             Copy-paste animated components. Zero abstraction. Full control.
           </p>
         </header>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "1rem",
-            padding: "1rem 2.5rem",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
-            background: "rgba(0,0,0,0.2)",
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "10px",
-              color: "rgba(255,255,255,0.2)",
-              letterSpacing: "0.12em",
-            }}
-          >
+        {/* ── Stats bar ── */}
+        <div className="flex items-center gap-4 px-5 md:px-10 py-3 border-b border-white/5 bg-black/20">
+          <span className="font-mono-jetbrains text-[10px] text-white/20 tracking-[0.12em]">
             {totalStr} TOTAL
           </span>
-          <div style={{ width: "1px", height: "16px", background: "rgba(255,255,255,0.1)" }} />
-          <span
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "10px",
-              color: "rgba(255,255,255,0.25)",
-            }}
-          >
+          <div className="w-px h-4 bg-white/10" />
+          <span className="hidden sm:inline font-mono-jetbrains text-[10px] text-white/25">
             Click any component to view docs
           </span>
         </div>
 
+        {/* ── Component sections ── */}
         {components.map((component) => (
           <ComponentSection key={component.slug} component={component} total={total} />
         ))}
 
-        <section
-          style={{
-            padding: "4rem 2.5rem",
-            borderTop: "1px solid rgba(255,255,255,0.05)",
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "'Syne', sans-serif",
-              fontSize: "1.5rem",
-              fontWeight: 700,
-              marginBottom: "1.5rem",
-            }}
-          >
+        {/* ── All components grid ── */}
+        {/* <section className="px-5 md:px-10 py-12 md:py-16 border-t border-white/5">
+          <h2 className="font-syne text-xl md:text-2xl font-bold mb-6">
             All Components
           </h2>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: "1rem",
-            }}
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
             {components.map((component) => (
               <ComponentCard key={component.slug} component={component} />
             ))}
           </div>
-        </section>
+        </section> */}
 
-        <footer
-          style={{
-            padding: "3rem 2.5rem",
-            borderTop: "1px solid rgba(255,255,255,0.05)",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ display: "flex", gap: "2rem" }}>
-            <span
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "11px",
-                color: "rgba(255,255,255,0.25)",
-              }}
-            >
-              MIT License
-            </span>
-            <span
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "11px",
-                color: "rgba(255,255,255,0.25)",
-              }}
-            >
-              TypeScript
-            </span>
-          </div>
-          <Link
-            href="/"
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "11px",
-              color: "rgba(255,255,255,0.4)",
-              textDecoration: "none",
-              transition: "color 0.2s",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
-          >
-            ← Back to Home
-          </Link>
-        </footer>
       </div>
     </div>
   );

@@ -10,35 +10,26 @@ import GooeyStatusBar from "@/components/UIElement/GooeyBar/GoeeyBar";
 import InfiniteSlider from "@/components/UIElement/InfiniteSlider/page";
 
 const STROKE_CARDS = [
-  { id: "1", imgSrc: "/img1.avif", title: "Motion Design", strokeColor1: "#C8FF00", strokeColor2: "#FF3B3B" },
-  { id: "2", imgSrc: "/img2.avif", title: "Typography", strokeColor1: "#7B6BFF", strokeColor2: "#C8FF00" },
-  { id: "3", imgSrc: "/img3.avif", title: "Color Systems", strokeColor1: "#FF3B3B", strokeColor2: "#7B6BFF" },
+  { id: "1", imgSrc: "/img1.avif", title: "Motion Design",  strokeColor1: "#C8FF00", strokeColor2: "#FF3B3B" },
+  { id: "2", imgSrc: "/img2.avif", title: "Typography",     strokeColor1: "#7B6BFF", strokeColor2: "#C8FF00" },
+  { id: "3", imgSrc: "/img3.avif", title: "Color Systems",  strokeColor1: "#FF3B3B", strokeColor2: "#7B6BFF" },
 ];
 
 const TEAM_MEMBERS = [
-  { image: "/img4.avif", name: "Jack" },
-  { image: "/img2.avif", name: "Jane" },
-  { image: "/img3.avif", name: "Bob" },
-  { image: "/img1.avif", name: "John" },
-  { image: "/img5.avif", name: "Lisa" },
+  { image: "/img4.avif", name: "Jack"  },
+  { image: "/img2.avif", name: "Jane"  },
+  { image: "/img3.avif", name: "Bob"   },
+  { image: "/img1.avif", name: "John"  },
+  { image: "/img5.avif", name: "Lisa"  },
   { image: "/img6.avif", name: "Harry" },
 ];
 
-/*
- * DIALOG_SLUGS → components rendered inside an <iframe> pointing at their
- * own Next.js page route.  This gives them a completely isolated window,
- * scroll, Lenis instance, and GSAP context — identical to visiting the page
- * directly.  No window-scroll hacks, no Lenis conflicts.
- *
- * The iframe src must match the actual page route for each component.
- * Adjust the paths below if your file-system routes differ.
- */
 const DIALOG_IFRAME_ROUTES: Record<string, string> = {
   "more-space-scroll": "/preview/more-space-scroll",
-  "infinte-contact": "/preview/infinte-contact",
-  "glowing-light": "/preview/glowing-light",
-  "spring-back-card": "/preview/spring-back-card",
-  "infinite-slider": "/preview/infinite-slider",
+  "infinte-contact":   "/preview/infinte-contact",
+  "glowing-light":     "/preview/glowing-light",
+  "spring-back-card":  "/preview/spring-back-card",
+  "infinite-slider":   "/preview/infinite-slider",
 };
 
 /* ─── Section Label ─────────────────────────────────────────────── */
@@ -48,32 +39,34 @@ function SectionLabel({ count, total, tag, tagColor, slug, name, description }: 
   slug: string; name: string; description: string;
 }) {
   return (
-    <div
-      className="section-label"
-      style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", padding: "2.5rem 2.5rem 1.5rem" }}
-    >
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.2)", letterSpacing: "0.15em", fontFamily: "'JetBrains Mono', monospace" }}>
+    <div className="section-label flex items-start justify-between px-5 pt-8 pb-5 md:px-10 md:pt-10">
+
+      <div className="flex flex-col gap-2.5 flex-1 min-w-0 pr-4">
+        {/* counter + tag */}
+        <div className="flex items-center gap-3">
+          <span className="font-mono-jetbrains text-[11px] tracking-[0.15em] text-white/20">
             {count} / {total}
           </span>
-          <div style={{ width: "1px", height: "16px", background: "rgba(255,255,255,0.1)" }} />
-          <span style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase" as const, color: tagColor, fontFamily: "'JetBrains Mono', monospace" }}>
+          <div className="w-px h-4 bg-white/10" />
+          {/* tagColor is dynamic — must stay inline */}
+          <span className="font-mono-jetbrains text-[11px] tracking-[0.15em] uppercase" style={{ color: tagColor }}>
             {tag}
           </span>
         </div>
-        <h2 style={{ fontFamily: "'Syne', sans-serif", fontSize: "clamp(1.75rem, 3vw, 2.5rem)", fontWeight: 700, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1, margin: 0 }}>
+
+        <h2 className="font-syne text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-white tracking-[-0.02em] leading-none m-0">
           {name}
         </h2>
-        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "12px", color: "rgba(255,255,255,0.35)", maxWidth: "500px", lineHeight: 1.6, margin: 0 }}>
+
+        <p className="font-mono-jetbrains text-xs text-white/35 leading-relaxed m-0 max-w-md">
           {description}
         </p>
       </div>
+
+      {/* view docs — hidden on mobile, shown sm+ */}
       <Link
         href={`/components/${slug}`}
-        style={{ fontSize: "12px", color: "rgba(255,255,255,0.25)", fontFamily: "'JetBrains Mono', monospace", textDecoration: "none", transition: "color 0.2s", flexShrink: 0 }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-        onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.25)")}
+        className="hidden sm:inline-flex shrink-0 mt-1 font-mono-jetbrains text-xs text-white/25 no-underline transition-colors duration-200 hover:text-white"
       >
         View docs →
       </Link>
@@ -82,17 +75,11 @@ function SectionLabel({ count, total, tag, tagColor, slug, name, description }: 
 }
 
 /* ─── IFrame Dialog ─────────────────────────────────────────────── */
-/*
- * Renders into document.body via a portal so no parent CSS can interfere.
- * The <iframe> loads the component's own page route, giving it a fully
- * isolated browsing context: own window, own scroll, own Lenis/GSAP.
- */
 
 function IFrameDialog({ component, onClose }: { component: ComponentData; onClose: () => void }) {
   const src = DIALOG_IFRAME_ROUTES[component.slug];
   const [loaded, setLoaded] = useState(false);
 
-  /* Freeze page scroll */
   useEffect(() => {
     const htmlPrev = document.documentElement.style.overflow;
     const bodyPrev = document.body.style.overflow;
@@ -104,7 +91,6 @@ function IFrameDialog({ component, onClose }: { component: ComponentData; onClos
     };
   }, []);
 
-  /* Esc to close */
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", handler);
@@ -112,104 +98,63 @@ function IFrameDialog({ component, onClose }: { component: ComponentData; onClos
   }, [onClose]);
 
   const node = (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 2147483647,
-        display: "flex",
-        flexDirection: "column",
-        background: "#070707",
-      }}
-    >
+    <div className="fixed inset-0 flex flex-col bg-[#070707]" style={{ zIndex: 2147483647 }}>
+
       {/* Top bar */}
-      <div style={{
-        flexShrink: 0,
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "0.75rem 1.25rem",
-        background: "rgba(7,7,7,0.95)",
-        backdropFilter: "blur(16px)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
-        zIndex: 1,
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          <span style={{
-            fontFamily: "'JetBrains Mono', monospace", fontSize: "10px",
-            color: component.tagColor, background: `${component.tagColor}15`,
-            border: `1px solid ${component.tagColor}30`,
-            borderRadius: "9999px", padding: "0.3rem 0.7rem", letterSpacing: "0.1em",
-          }}>{component.tag}</span>
-          <span style={{ fontFamily: "'Syne', sans-serif", fontSize: "1rem", fontWeight: 600, color: "rgba(255,255,255,0.9)" }}>
+      <div className="shrink-0 flex items-center justify-between px-4 py-3 md:px-5 bg-[rgba(7,7,7,0.95)] backdrop-blur-xl border-b border-white/[0.06] z-10">
+        <div className="flex items-center gap-2.5 min-w-0">
+          {/* dynamic color — inline */}
+          <span
+            className="font-mono-jetbrains text-[10px] rounded-full px-3 py-1 tracking-[0.1em] shrink-0"
+            style={{
+              color: component.tagColor,
+              background: `${component.tagColor}15`,
+              border: `1px solid ${component.tagColor}30`,
+            }}
+          >
+            {component.tag}
+          </span>
+          <span className="font-syne text-base font-semibold text-white/90 truncate">
             {component.name}
           </span>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+
+        <div className="flex items-center gap-2.5 shrink-0 ml-3">
           <Link
             href={`/components/${component.slug}`}
-            style={{
-              display: "inline-flex", alignItems: "center", gap: "0.4rem",
-              padding: "0.45rem 1rem", background: component.tagColor,
-              borderRadius: "9999px", color: "#000",
-              fontFamily: "'JetBrains Mono', monospace", fontSize: "11px",
-              fontWeight: 500, textDecoration: "none",
-            }}
+            className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-mono-jetbrains text-[11px] font-medium text-black no-underline"
+            style={{ background: component.tagColor }}
           >
             Docs →
           </Link>
           <button
             onClick={onClose}
-            style={{
-              width: "34px", height: "34px", flexShrink: 0,
-              background: "rgba(255,255,255,0.06)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: "50%", cursor: "pointer",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}
+            className="w-9 h-9 shrink-0 rounded-full flex items-center justify-center cursor-pointer bg-white/[0.06] border border-white/10 transition-colors hover:bg-white/10"
           >
-            <svg style={{ width: "15px", height: "15px", color: "rgba(255,255,255,0.7)" }}
-              fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-4 h-4 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
       </div>
 
-      {/* Loading shimmer — shown until iframe fires onLoad */}
+      {/* Spinner */}
       {!loaded && (
-        <div style={{
-          position: "absolute", inset: "53px 0 0 0",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          background: "#070707", zIndex: 0,
-        }}>
-          <div style={{
-            display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem",
-          }}>
-            <div style={{
-              width: "40px", height: "40px", borderRadius: "50%",
-              border: `2px solid ${component.tagColor}33`,
-              borderTopColor: component.tagColor,
-              animation: "spin 0.8s linear infinite",
-            }} />
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "11px", color: "rgba(255,255,255,0.3)" }}>
-              Loading preview…
-            </span>
-          </div>
-          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        <div className="absolute top-[53px] inset-x-0 bottom-0 flex flex-col items-center justify-center gap-4 bg-[#070707]">
+          <div
+            className="w-10 h-10 rounded-full border-2 animate-spin"
+            style={{ borderColor: `${component.tagColor}33`, borderTopColor: component.tagColor }}
+          />
+          <span className="font-mono-jetbrains text-[11px] text-white/30">Loading preview…</span>
         </div>
       )}
 
-      {/* The iframe — gets its own window/scroll/Lenis */}
+      {/* iframe */}
       <iframe
         src={src}
         onLoad={() => setLoaded(true)}
-        style={{
-          flex: 1,
-          width: "100%",
-          border: "none",
-          opacity: loaded ? 1 : 0,
-          transition: "opacity 0.3s",
-          background: "#070707",
-        }}
+        className="flex-1 w-full border-none bg-[#070707] transition-opacity duration-300"
+        style={{ opacity: loaded ? 1 : 0 }}
         allow="autoplay"
       />
     </div>
@@ -222,55 +167,48 @@ function IFrameDialog({ component, onClose }: { component: ComponentData; onClos
 /* ─── Dialog Trigger Card ────────────────────────────────────────── */
 
 function DialogTriggerCard({ component }: { component: ComponentData }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen]       = useState(false);
   const [hovered, setHovered] = useState(false);
   const close = useCallback(() => setOpen(false), []);
 
   return (
-    <div style={{ position: "relative" }}>
+    <div className="relative">
       <div
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         onClick={() => setOpen(true)}
+        className="flex flex-col items-center justify-center gap-5 min-h-[240px] md:min-h-[300px] p-6 md:p-8 rounded-2xl cursor-pointer transition-all duration-300"
         style={{
-          display: "flex", flexDirection: "column", alignItems: "center",
-          justifyContent: "center", gap: "1.25rem",
-          minHeight: "300px", padding: "2rem",
           background: hovered ? "rgba(255,255,255,0.03)" : "transparent",
-          borderRadius: "1rem", cursor: "pointer",
-          transition: "background 0.25s",
           border: `1px solid ${hovered ? `${component.tagColor}33` : "transparent"}`,
         }}
       >
-        <div style={{
-          width: "56px", height: "56px", borderRadius: "50%",
-          background: `${component.tagColor}18`,
-          border: `1px solid ${component.tagColor}40`,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          transition: "transform 0.25s",
-          transform: hovered ? "scale(1.1)" : "scale(1)",
-        }}>
-          <svg style={{ width: "22px", height: "22px", color: component.tagColor, marginLeft: "3px" }}
-            fill="currentColor" viewBox="0 0 24 24">
+        {/* play circle — dynamic color inline */}
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center transition-transform duration-300"
+          style={{
+            background: `${component.tagColor}18`,
+            border: `1px solid ${component.tagColor}40`,
+            transform: hovered ? "scale(1.1)" : "scale(1)",
+          }}
+        >
+          <svg className="w-6 h-6 ml-0.5" style={{ color: component.tagColor }} fill="currentColor" viewBox="0 0 24 24">
             <path d="M8 5v14l11-7z" />
           </svg>
         </div>
 
-        <div style={{ textAlign: "center" }}>
-          <p style={{ fontFamily: "'Syne', sans-serif", fontSize: "1rem", fontWeight: 700, color: "#fff", margin: "0 0 0.35rem" }}>
-            {component.name}
-          </p>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "11px", color: "rgba(255,255,255,0.3)", lineHeight: 1.5, margin: 0, maxWidth: "280px" }}>
+        <div className="text-center">
+          <p className="font-syne text-base font-bold text-white mb-1.5 m-0">{component.name}</p>
+          <p className="font-mono-jetbrains text-[11px] text-white/30 leading-relaxed m-0 max-w-[280px]">
             {component.description}
           </p>
         </div>
 
-        <span style={{
-          fontFamily: "'JetBrains Mono', monospace", fontSize: "11px",
-          color: component.tagColor, letterSpacing: "0.06em",
-          opacity: hovered ? 1 : 0.6, transition: "opacity 0.2s",
-        }}>
-          Click to preview →
+        <span
+          className="font-mono-jetbrains text-[11px] tracking-[0.06em] transition-opacity duration-200"
+          style={{ color: component.tagColor, opacity: hovered ? 1 : 0.6 }}
+        >
+          Tap to preview →
         </span>
       </div>
 
@@ -285,11 +223,10 @@ function InlinePreview({ component }: { component: ComponentData }) {
   switch (component.slug) {
     case "stroke-cards":
       return (
-        <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", padding: "3rem 2rem" }}>
-            <StrokeCards cards={STROKE_CARDS} columns={3} gap="1rem" padding="0" />
+        <div className="w-full flex items-center justify-center p-10 px-6">
+          <StrokeCards cards={STROKE_CARDS} columns={3} gap="1rem" padding="0" />
         </div>
-      )
-
+      );
 
     case "team-section":
       return (
@@ -304,8 +241,8 @@ function InlinePreview({ component }: { component: ComponentData }) {
 
     case "gooey-bar":
       return (
-        <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", padding: "3rem 2rem" }}>
-          <div style={{ width: "100%", maxWidth: "600px" }}>
+        <div className="w-full flex items-center justify-center py-20 px-4">
+          <div className="w-full max-w-xl">
             <GooeyStatusBar barColor={component.tagColor} iconColor="#000000" />
           </div>
         </div>
@@ -313,22 +250,21 @@ function InlinePreview({ component }: { component: ComponentData }) {
 
     case "infinite-slider":
       return (
-        <div style={{ width: "100%", height: "100vh", position: "relative", overflow: "hidden" }}>
+        <div className="w-full h-screen relative overflow-hidden">
           <InfiniteSlider />
         </div>
       );
 
     default:
       return (
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "300px" }}>
+        <div className="flex items-center justify-center min-h-[240px]">
           <Link
             href={`/components/${component.slug}`}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-mono-jetbrains text-xs no-underline"
             style={{
-              display: "inline-flex", alignItems: "center", gap: "0.5rem",
-              padding: "0.75rem 1.5rem",
-              background: `${component.tagColor}20`, border: `1px solid ${component.tagColor}40`,
-              borderRadius: "9999px", color: component.tagColor,
-              fontFamily: "'JetBrains Mono', monospace", fontSize: "12px", textDecoration: "none",
+              background: `${component.tagColor}20`,
+              border: `1px solid ${component.tagColor}40`,
+              color: component.tagColor,
             }}
           >
             View {component.name} →
@@ -344,7 +280,7 @@ export default function ComponentSection({ component, total }: { component: Comp
   const needsDialog = component.slug in DIALOG_IFRAME_ROUTES;
 
   return (
-    <section style={{ position: "relative", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+    <section className="relative border-b border-white/5">
       <SectionLabel
         count={component.index}
         total={String(total)}
@@ -355,22 +291,26 @@ export default function ComponentSection({ component, total }: { component: Comp
         description={component.description}
       />
 
-      <div style={{ padding: "0 2.5rem 3rem" }}>
-        <div style={{
-          position: "relative",
-          background: "#0b0b0b",
-          borderRadius: "1rem",
-          overflow: "hidden",
-          border: "1px solid rgba(255,255,255,0.06)",
-        }}>
-          {/* accent glow */}
-          <div style={{
-            position: "absolute", top: 0, left: 0,
-            width: "200px", height: "100px",
-            background: component.tagColor, opacity: 0.05,
-            filter: "blur(60px)", pointerEvents: "none", zIndex: 0,
-          }} />
-          <div style={{ position: "relative", zIndex: 1 }}>
+      {/* mobile-only "view docs" link */}
+      <div className="sm:hidden px-5 pb-4">
+        <Link
+          href={`/components/${component.slug}`}
+          className="font-mono-jetbrains text-[11px] no-underline"
+          style={{ color: component.tagColor }}
+        >
+          View docs →
+        </Link>
+      </div>
+
+      {/* preview box */}
+      <div className="px-5 pb-8 md:px-10 md:pb-12">
+        <div className="relative bg-[#0b0b0b] rounded-2xl overflow-hidden border border-white/[0.06]">
+          {/* accent glow — dynamic color inline */}
+          <div
+            className="absolute top-0 left-0 w-48 h-24 pointer-events-none z-0"
+            style={{ background: component.tagColor, opacity: 0.05, filter: "blur(60px)" }}
+          />
+          <div className="relative z-[1]">
             {needsDialog
               ? <DialogTriggerCard component={component} />
               : <InlinePreview component={component} />

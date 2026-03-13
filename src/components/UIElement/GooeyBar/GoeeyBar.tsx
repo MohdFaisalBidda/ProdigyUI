@@ -130,13 +130,13 @@ export default function GooeyStatusBar({
   items = defaultStatusItems,
   renderContent,
   contentClassName = '',
-  barColor = '#000000',
-  iconColor = '#ffffff',
+  barColor = '#C8FF00',
+  iconColor = '#000000',
   className = '',
   iconSize = 'w-5 h-5',
   buttonSize = 'w-10 h-10',
   gap = 'gap-1',
-  padding = 'px-3 py-2',
+  padding = 'px-3',
 }: GooeyBarProps) {
   const [activeItem, setActiveItem] = useState<string | null>(null);
 
@@ -173,7 +173,7 @@ export default function GooeyStatusBar({
   const activeData = useMemo(() => items.find(i => i.id === activeItem), [activeItem, items]);
 
   return (
-    <div className={`flex justify-center w-full pt-4 ${className}`}>
+    <div className={`flex justify-center w-full ${className}`}>
       <div ref={containerRef} className="relative w-full">
         <div
           className={`flex items-center justify-center ${gap} ${padding}`}
@@ -182,7 +182,7 @@ export default function GooeyStatusBar({
           {items.map((item, index) => (
             <div
               key={item.id}
-              ref={el => (itemRefs.current[index] = el)}
+              ref={el => { itemRefs.current[index] = el; }}
               onMouseEnter={() => setActiveItem(item.id)}
               onMouseLeave={() => setActiveItem(null)}
             >

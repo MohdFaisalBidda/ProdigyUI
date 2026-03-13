@@ -1,762 +1,106 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
-import TeamSection from "@/components/UIElement/TeamSection/TeamSection";
-import Cards from "../../components/UIElement/StrokeCards/Cards";
-import StrokeCards from "../../components/UIElement/StrokeCards/StrokeCards";
-import GooeyStatusBar from "@/components/UIElement/GooeyBar/GoeeyBar";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
-/* ─── Data ─────────────────────────────────────────────────────── */
+/* ─── Static data ───────────────────────────────────────────────── */
 
-const TEAM = [
-  { image: "/img4.avif", name: "Jack" },
-  { image: "/img2.avif", name: "Jane" },
-  { image: "/img3.avif", name: "Bob" },
-  { image: "/img1.avif", name: "John" },
-  { image: "/img5.avif", name: "Lisa" },
-  { image: "/img6.avif", name: "Harry" },
+const STATS = [
+  { value: "8+", label: "Components" },
+  { value: "MIT", label: "License" },
+  { value: "TS", label: "Typed" },
+  { value: "0", label: "Dependencies" },
 ];
 
-const COMPONENTS = [
+const FEATURES = [
   {
-    slug: "stroke-cards",
-    index: "01",
-    name: "Stroke Cards",
-    tag: "Interactive",
-    tagColor: "#C8FF00",
-    desc: "SVG path-drawing with masked hover reveals",
-    snippet: `<Cards\n  imgSrc="/img.avif"\n  title="Motion"\n  strokeColor1="#C8FF00"\n  strokeColor2="#FF3B3B"\n/>`,
-    gif: "/previews/stroke-cards.gif",
+    icon: "⌥",
+    title: "Copy. Paste. Done.",
+    body: "Every component ships as a single self-contained file. No wrappers, no providers, no runtime package to version-lock yourself into.",
   },
   {
-    slug: "team-section",
-    index: "02",
-    name: "Team Section",
-    tag: "GSAP",
-    tagColor: "#FF3B3B",
-    desc: "Giant char-stagger reveal on image hover",
-    snippet: `<TeamSection\n  defaultName="Our Squad"\n  members={team}\n  accentColor="#FF3B3B"\n/>`,
-    gif: "/previews/stroke-cards.gif",
+    icon: "⬡",
+    title: "Motion-first",
+    body: "GSAP, Lenis, and spring physics baked in. Real scroll-driven animations — not CSS transitions pretending to be something more.",
   },
   {
-    slug: "gooey-bar",
-    index: "03",
-    name: "Gooey Bar",
-    tag: "Motion",
-    tagColor: "#7B6BFF",
-    desc: "Fluid spring-physics status bar with blob drip",
-    snippet: `<GooeyStatusBar\n  items={statusItems}\n  barColor="#000"\n  iconColor="#fff"\n/>`,
-    gif: "/previews/stroke-cards.gif",
+    icon: "◈",
+    title: "Full source control",
+    body: "You own the file. Tweak easing curves, swap colors, rewrite the whole thing. No black box, no abstraction tax.",
+  },
+  {
+    icon: "⌘",
+    title: "Zero opinion on stack",
+    body: "Works in any Next.js or React project using Tailwind CSS, Just drop the file in and install the listed peer deps.",
   },
 ];
 
-const STROKE_CARDS = [
-  { id: "1", imgSrc: "/img1.avif", title: "Motion Design", strokeColor1: "#C8FF00", strokeColor2: "#FF3B3B" },
-  { id: "2", imgSrc: "/img2.avif", title: "Typography", strokeColor1: "#7B6BFF", strokeColor2: "#C8FF00" },
-  { id: "3", imgSrc: "/img3.avif", title: "Color Systems", strokeColor1: "#FF3B3B", strokeColor2: "#7B6BFF" },
+const STACK = [
+  { name: "GSAP", color: "#88CE02" },
+  { name: "Lenis", color: "#C8FF00" },
+  { name: "React", color: "#61DAFB" },
+  { name: "TypeScript", color: "#3178C6" },
+  { name: "Tailwind", color: "#38BDF8" },
 ];
 
-/* ─── Component Badge ──────────────────────────────────────────── */
+const MARQUEE_ITEMS = [
+  "Stroke Cards", "Team Section", "Gooey Bar",
+  "Arc Slider", "More Space", "Spring Back",
+  "Spotlight", "Infinite Contact",
+];
 
-function ComponentBadge({
-  index,
-  name,
-  tag,
-  tagColor,
-  desc,
-  snippet,
-  slug,
-}: (typeof COMPONENTS)[0]) {
-  const [copied, setCopied] = useState(false);
+/* ─── Marquee ───────────────────────────────────────────────────── */
 
+function Marquee() {
+  const items = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS]; // duplicate for seamless loop
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-3">
-        <span
-          className="font-mono text-xs tracking-widest"
-          style={{ color: "rgba(255,255,255,0.3)", fontFamily: "'JetBrains Mono', monospace" }}
-        >
-          {index}
-        </span>
-        <span
-          className="font-mono text-xs tracking-widest uppercase rounded-full"
-          style={{
-            background: `${tagColor}22`,
-            color: tagColor,
-            border: `1px solid ${tagColor}44`,
-            padding: "0.25rem 0.625rem",
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "10px",
-          }}
-        >
-          {tag}
-        </span>
-      </div>
+    <div className="relative overflow-hidden border-y border-white/5 py-3.5 select-none">
+      {/* fade edges */}
+      <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+        style={{ background: "linear-gradient(to right, #070707, transparent)" }} />
+      <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+        style={{ background: "linear-gradient(to left, #070707, transparent)" }} />
 
-      <h2
-        className="font-bold tracking-tight leading-none"
-        style={{
-          fontFamily: "'Syne', sans-serif",
-          color: "#fff",
-          fontSize: "clamp(1.5rem, 3vw, 2.5rem)",
-        }}
-      >
-        {name}
-      </h2>
-
-      <p
-        className="text-sm leading-relaxed"
-        style={{
-          color: "rgba(255,255,255,0.4)",
-          maxWidth: "220px",
-          fontFamily: "'JetBrains Mono', monospace",
-          fontWeight: 300,
-        }}
-      >
-        {desc}
-      </p>
-
-      <div className="relative group" style={{ maxWidth: "260px" }}>
-        <pre
-          className="font-mono leading-relaxed cursor-pointer rounded-xl transition-colors overflow-hidden"
-          style={{
-            fontSize: "11px",
-            color: "rgba(255,255,255,0.5)",
-            background: "rgba(255,255,255,0.05)",
-            border: "1px solid rgba(255,255,255,0.08)",
-            padding: "0.75rem 1rem",
-          }}
-          onClick={() => {
-            navigator.clipboard.writeText(snippet);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-          }}
-        >
-          <code>{snippet}</code>
-          <span
-            className="absolute top-2 right-2 transition-colors"
-            style={{
-              fontSize: "9px",
-              fontFamily: "'JetBrains Mono', monospace",
-              color: copied ? "rgba(200,255,0,0.8)" : "rgba(255,255,255,0.3)",
-            }}
-          >
-            {copied ? "✓ copied" : "copy"}
+      <div className="flex gap-10 animate-marquee whitespace-nowrap">
+        {items.map((item, i) => (
+          <span key={i} className="flex items-center gap-10 font-mono-jetbrains text-[11px] tracking-[0.2em] uppercase text-white/20">
+            {item}
+            <span className="text-white/10">·</span>
           </span>
-        </pre>
-      </div>
-
-      <Link
-        href={`/components/${slug}`}
-        className="inline-flex items-center gap-2 transition-colors"
-        style={{
-          fontSize: "12px",
-          color: "rgba(255,255,255,0.4)",
-          fontFamily: "'JetBrains Mono', monospace",
-          textDecoration: "none",
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-        onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
-      >
-        View docs
-        <svg
-          style={{ width: "14px", height: "14px" }}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-        </svg>
-      </Link>
-    </div>
-  );
-}
-
-/* ─── Section Label ─────────────────────────────────────────────── */
-
-function SectionLabel({
-  count,
-  total,
-  tag,
-  tagColor,
-  slug,
-}: {
-  count: string;
-  total: string;
-  tag: string;
-  tagColor: string;
-  slug: string;
-}) {
-  return (
-    <div
-      className="section-label flex items-center justify-between"
-      style={{ padding: "2.5rem 2.5rem 1.5rem" }}
-    >
-      <div className="flex items-center gap-4">
-        <span
-          style={{
-            fontSize: "11px",
-            color: "rgba(255,255,255,0.2)",
-            letterSpacing: "0.15em",
-            fontFamily: "'JetBrains Mono', monospace",
-          }}
-        >
-          {count} / {total}
-        </span>
-        <div style={{ width: "1px", height: "16px", background: "rgba(255,255,255,0.1)" }} />
-        <span
-          style={{
-            fontSize: "11px",
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            color: tagColor,
-            fontFamily: "'JetBrains Mono', monospace",
-          }}
-        >
-          {tag}
-        </span>
-      </div>
-      <Link
-        href={`/components/${slug}`}
-        style={{
-          fontSize: "12px",
-          color: "rgba(255,255,255,0.25)",
-          fontFamily: "'JetBrains Mono', monospace",
-          textDecoration: "none",
-          transition: "color 0.2s",
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-        onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.25)")}
-      >
-        View docs →
-      </Link>
-    </div>
-  );
-}
-
-/* ─── Mobile Component List ─────────────────────────────────────── */
-
-function MobileComponentList() {
-  const items = [
-    {
-      ...COMPONENTS[0],
-      accent: "#C8FF00",
-      previewImgs: ["/img1.avif", "/img2.avif", "/img3.avif"],
-    },
-    {
-      ...COMPONENTS[1],
-      accent: "#FF3B3B",
-      previewImgs: ["/img4.avif", "/img2.avif", "/img5.avif"],
-    },
-    {
-      ...COMPONENTS[2],
-      accent: "#7B6BFF",
-      previewImgs: [] as string[],
-    },
-  ];
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        padding: "2rem 1.25rem 3rem",
-        borderTop: "1px solid rgba(255,255,255,0.06)",
-      }}
-    >
-      {/* Section header */}
-      <div
-        style={{
-          paddingBottom: "1.5rem",
-          display: "flex",
-          alignItems: "baseline",
-          justifyContent: "space-between",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "'Syne', sans-serif",
-            fontSize: "1.25rem",
-            fontWeight: 700,
-            color: "#fff",
-          }}
-        >
-          Components
-        </span>
-        <span
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "10px",
-            color: "rgba(255,255,255,0.2)",
-            letterSpacing: "0.12em",
-          }}
-        >
-          {items.length} total
-        </span>
-      </div>
-
-      {/* Cards */}
-      {items.map((item) => (
-        <Link
-          key={item.slug}
-          href={`/components/${item.slug}`}
-          style={{ textDecoration: "none" }}
-        >
-          <div
-            style={{
-              position: "relative",
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-              padding: "1.5rem",
-              background: "rgba(255,255,255,0.02)",
-              border: "1px solid rgba(255,255,255,0.06)",
-              borderRadius: "1rem",
-              marginBottom: "0.75rem",
-              overflow: "hidden",
-            }}
-          >
-            {/* Subtle accent glow */}
-            <div
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "120px",
-                height: "60px",
-                background: item.accent,
-                opacity: 0.06,
-                filter: "blur(40px)",
-                borderRadius: "0 0 100% 0",
-                pointerEvents: "none",
-              }}
-            />
-
-            {/* Top row: index + tag + arrow */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
-                <span
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "10px",
-                    color: "rgba(255,255,255,0.2)",
-                    letterSpacing: "0.12em",
-                  }}
-                >
-                  {item.index}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "9px",
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase" as const,
-                    color: item.accent,
-                    background: `${item.accent}18`,
-                    border: `1px solid ${item.accent}33`,
-                    borderRadius: "9999px",
-                    padding: "0.2rem 0.5rem",
-                  }}
-                >
-                  {item.tag}
-                </span>
-              </div>
-              <div
-                style={{
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "50%",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <svg
-                  style={{ width: "12px", height: "12px", color: "rgba(255,255,255,0.4)" }}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </div>
-            </div>
-
-            {/* Name + desc */}
-            <div>
-              <h3
-                style={{
-                  fontFamily: "'Syne', sans-serif",
-                  fontSize: "1.5rem",
-                  fontWeight: 700,
-                  color: "#fff",
-                  letterSpacing: "-0.02em",
-                  lineHeight: 1,
-                  marginBottom: "0.4rem",
-                }}
-              >
-                {item.name}
-              </h3>
-              <p
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "11px",
-                  color: "rgba(255,255,255,0.35)",
-                  lineHeight: 1.6,
-                  fontWeight: 300,
-                }}
-              >
-                {item.desc}
-              </p>
-            </div>
-
-            {/* Preview: image strip for card-based components */}
-            {item.previewImgs.length > 0 && (
-              <div style={{ display: "flex", gap: "0.5rem" }}>
-                {item.previewImgs.map((src, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      flex: 1,
-                      aspectRatio: "1 / 1",
-                      borderRadius: "0.5rem",
-                      overflow: "hidden",
-                      border: "1px solid rgba(255,255,255,0.06)",
-                    }}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={src}
-                      alt=""
-                      style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.7 }}
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Preview: icon mockup for GooeyBar */}
-            {item.previewImgs.length === 0 && (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "0.625rem",
-                  padding: "1rem",
-                  background: "rgba(0,0,0,0.4)",
-                  borderRadius: "0.75rem",
-                  border: "1px solid rgba(255,255,255,0.06)",
-                }}
-              >
-                {["♪", "⬡", "☁", "⌘", "▮", "◷"].map((icon, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      width: "36px",
-                      height: "36px",
-                      borderRadius: "50%",
-                      background: "rgba(123,107,255,0.12)",
-                      border: "1px solid rgba(123,107,255,0.2)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "13px",
-                      color: "rgba(255,255,255,0.45)",
-                    }}
-                  >
-                    {icon}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* View docs label */}
-            <div style={{ display: "flex", alignItems: "center", gap: "0.375rem" }}>
-              <span
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "11px",
-                  color: item.accent,
-                  letterSpacing: "0.05em",
-                }}
-              >
-                View docs
-              </span>
-              <svg
-                style={{ width: "10px", height: "10px", color: item.accent }}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2.5}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-              </svg>
-            </div>
-          </div>
-        </Link>
-      ))}
-    </div>
-  );
-}
-
-// function ComponentCard({ slug, index, name, tag, tagColor, desc }: (typeof COMPONENTS)[0]) {
-//   const [hovered, setHovered] = useState(false);
-
-//   return (
-//     <Link href={`/components/${slug}`} style={{ textDecoration: "none" }}>
-//       <div
-//         onMouseEnter={() => setHovered(true)}
-//         onMouseLeave={() => setHovered(false)}
-//         style={{
-//           position: "relative",
-//           display: "flex",
-//           flexDirection: "column",
-//           gap: "1rem",
-//           padding: "1.5rem",
-//           background: hovered ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.015)",
-//           border: `1px solid ${hovered ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.05)"}`,
-//           borderRadius: "1rem",
-//           overflow: "hidden",
-//           transition: "background 0.25s, border-color 0.25s",
-//           cursor: "pointer",
-//         }}
-//       >
-//         {/* Accent glow */}
-//         <div style={{
-//           position: "absolute", top: 0, left: 0, width: "160px", height: "80px",
-//           background: tagColor, opacity: hovered ? 0.08 : 0.03,
-//           filter: "blur(50px)", borderRadius: "0 0 100% 0", pointerEvents: "none",
-//           transition: "opacity 0.3s",
-//         }} />
-
-//         {/* Top row */}
-//         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-//           <div style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
-//             <span style={{
-//               fontFamily: "'JetBrains Mono', monospace", fontSize: "10px",
-//               color: "rgba(255,255,255,0.2)", letterSpacing: "0.12em",
-//             }}>{index}</span>
-//             <span style={{
-//               fontFamily: "'JetBrains Mono', monospace", fontSize: "9px",
-//               letterSpacing: "0.12em", textTransform: "uppercase" as const,
-//               color: tagColor, background: `${tagColor}18`,
-//               border: `1px solid ${tagColor}33`, borderRadius: "9999px",
-//               padding: "0.2rem 0.5rem",
-//             }}>{tag}</span>
-//           </div>
-//           <div style={{
-//             width: "26px", height: "26px", borderRadius: "50%",
-//             border: `1px solid ${hovered ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.08)"}`,
-//             display: "flex", alignItems: "center", justifyContent: "center",
-//             transition: "border-color 0.25s, transform 0.25s",
-//             transform: hovered ? "translate(2px, -2px)" : "none",
-//           }}>
-//             <svg style={{ width: "11px", height: "11px", color: hovered ? "#fff" : "rgba(255,255,255,0.3)", transition: "color 0.25s" }}
-//               fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-//               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-//             </svg>
-//           </div>
-//         </div>
-
-//         {/* Name + desc */}
-//         <div>
-//           <h3 style={{
-//             fontFamily: "'Syne', sans-serif", fontSize: "1.35rem", fontWeight: 700,
-//             color: "#fff", letterSpacing: "-0.02em", lineHeight: 1, marginBottom: "0.35rem",
-//           }}>{name}</h3>
-//           <p style={{
-//             fontFamily: "'JetBrains Mono', monospace", fontSize: "11px",
-//             color: "rgba(255,255,255,0.32)", lineHeight: 1.6, fontWeight: 300,
-//           }}>{desc}</p>
-//         </div>
-
-//       </div>
-//     </Link>
-//   );
-// }
-
-/* ─── Component Card (self-contained: header + gif + footer) ────── */
-
-function ComponentCard({
-  slug,
-  gif,
-  name,
-  tag,
-  tagColor,
-  index,
-  desc,
-  snippet,
-}: (typeof COMPONENTS)[0]) {
-  const [hovered, setHovered] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  return (
-    <Link href={`/components/${slug}`} style={{ textDecoration: "none", display: "block" }}>
-      <div
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          borderRadius: "0.875rem",
-          overflow: "hidden",
-          border: `1px solid ${hovered ? `${tagColor}44` : "rgba(255,255,255,0.07)"}`,
-          background: "#0e0e0e",
-          cursor: "pointer",
-          transition: "border-color 0.25s",
-        }}
-      >
-        {/* ── Card header ── */}
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0.75rem 1rem",
-          borderBottom: "1px solid rgba(255,255,255,0.05)",
-        }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <span style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "9px",
-              color: "rgba(255,255,255,0.2)",
-              letterSpacing: "0.12em",
-            }}>{index}</span>
-            <span style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "9px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase" as const,
-              color: tagColor,
-              background: `${tagColor}18`,
-              border: `1px solid ${tagColor}30`,
-              borderRadius: "9999px",
-              padding: "0.15rem 0.5rem",
-            }}>{tag}</span>
-          </div>
-          <span style={{
-            fontFamily: "'Syne', sans-serif",
-            fontSize: "0.8rem",
-            fontWeight: 700,
-            color: hovered ? "#fff" : "rgba(255,255,255,0.6)",
-            letterSpacing: "-0.01em",
-            transition: "color 0.2s",
-          }}>{name}</span>
-        </div>
-
-        {/* ── GIF area ── */}
-        <div style={{
-          position: "relative",
-          width: "100%",
-          aspectRatio: "4 / 3",
-          overflow: "hidden",
-          background: "#080808",
-        }}>
-          <img
-            src={gif}
-            alt={name}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              opacity: hovered ? 0.95 : 0.55,
-              transition: "opacity 0.35s, transform 0.5s",
-              transform: hovered ? "scale(1.03)" : "scale(1)",
-              display: "block",
-            }}
-          />
-          {/* subtle vignette */}
-          <div style={{
-            position: "absolute",
-            inset: 0,
-            background: "radial-gradient(ellipse at center, transparent 50%, rgba(7,7,7,0.5) 100%)",
-            pointerEvents: "none",
-          }} />
-          {/* accent glow top-left */}
-          <div style={{
-            position: "absolute", top: 0, left: 0,
-            width: "120px", height: "80px",
-            background: tagColor,
-            opacity: hovered ? 0.1 : 0,
-            filter: "blur(40px)",
-            transition: "opacity 0.35s",
-            pointerEvents: "none",
-          }} />
-        </div>
-
-        {/* ── Card footer ── */}
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0.75rem 1rem",
-          borderTop: "1px solid rgba(255,255,255,0.05)",
-        }}>
-          <p style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "10px",
-            color: "rgba(255,255,255,0.3)",
-            fontWeight: 300,
-            margin: 0,
-            lineHeight: 1.4,
-          }}>{desc}</p>
-          <div style={{
-            width: "26px", height: "26px",
-            borderRadius: "50%",
-            background: hovered ? tagColor : "rgba(255,255,255,0.06)",
-            border: `1px solid ${hovered ? tagColor : "rgba(255,255,255,0.1)"}`,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            flexShrink: 0, marginLeft: "0.75rem",
-            transition: "background 0.25s, border-color 0.25s, transform 0.25s",
-            transform: hovered ? "translate(2px,-2px)" : "none",
-          }}>
-            <svg style={{ width: "11px", height: "11px", color: hovered ? "#000" : "rgba(255,255,255,0.5)" }}
-              fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-/* ─── Component Card Grid (shared mobile + desktop) ─────────────── */
-
-function ComponentCardGrid() {
-  return (
-    <div style={{
-      padding: "2rem 2rem 3rem",
-      borderTop: "1px solid rgba(255,255,255,0.05)",
-    }}>
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-        gap: "0.875rem",
-      }}>
-        {COMPONENTS.map((c) => (
-          <ComponentCard key={c.slug} {...c} />
         ))}
       </div>
     </div>
   );
 }
 
-/* ─── Main ─────────────────────────────────────────────────────── */
+/* ─── Feature card ──────────────────────────────────────────────── */
+
+function FeatureCard({ icon, title, body }: { icon: string; title: string; body: string }) {
+  return (
+    <div className="group flex flex-col gap-4 p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.04] hover:border-white/[0.1] transition-all duration-300">
+      <span className="text-2xl text-white/30 group-hover:text-[#C8FF00] transition-colors duration-300">
+        {icon}
+      </span>
+      <div className="flex flex-col gap-2">
+        <h3 className="font-syne text-base font-bold text-white tracking-tight">{title}</h3>
+        <p className="font-mono-jetbrains text-[11px] text-white/35 leading-relaxed font-light">{body}</p>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Main ──────────────────────────────────────────────────────── */
 
 export default function HomePage() {
   const heroRef = useRef<HTMLElement>(null);
-  const heroWordRef = useRef<HTMLHeadingElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subRef = useRef<HTMLParagraphElement>(null);
 
   /* Lenis */
   useEffect(() => {
@@ -766,33 +110,40 @@ export default function HomePage() {
       touchMultiplier: 2,
     });
     lenis.on("scroll", ScrollTrigger.update);
-    const raf = (t: number) => {
-      lenis.raf(t);
-      requestAnimationFrame(raf);
-    };
+    const raf = (t: number) => { lenis.raf(t); requestAnimationFrame(raf); };
     const id = requestAnimationFrame(raf);
     gsap.ticker.lagSmoothing(0);
-    return () => {
-      cancelAnimationFrame(id);
-      lenis.destroy();
-    };
+    return () => { cancelAnimationFrame(id); lenis.destroy(); };
   }, []);
 
   /* Hero entrance */
   useEffect(() => {
-    if (!heroWordRef.current) return;
+    if (!titleRef.current || !subRef.current) return;
     const ctx = gsap.context(() => {
-      const split = SplitText.create(heroWordRef.current!, { type: "chars", mask: "chars" });
-      gsap.from(split.chars, {
-        yPercent: 100,
-        duration: 1.1,
+      const split = SplitText.create(titleRef.current!, { type: "chars", mask: "chars" });
+
+      const tl = gsap.timeline({ delay: 0.1 });
+
+      tl.from(split.chars, {
+        yPercent: 110,
+        duration: 1.0,
         ease: "power4.out",
-        stagger: { amount: 0.35 },
-        delay: 0.15,
-      });
+        stagger: { amount: 0.3 },
+      })
+        .from(subRef.current, {
+          opacity: 0, y: 16, duration: 0.7, ease: "power3.out",
+        }, "-=0.4")
+        .from(".hero-cta", {
+          opacity: 0, y: 12, duration: 0.6, ease: "power3.out", stagger: 0.1,
+        }, "-=0.4")
+        .from(".hero-stat", {
+          opacity: 0, y: 8, duration: 0.5, ease: "power2.out", stagger: 0.07,
+        }, "-=0.3");
+
+      /* parallax on scroll */
       gsap.to(heroRef.current, {
-        yPercent: -10,
-        opacity: 0.2,
+        yPercent: -8,
+        opacity: 0.15,
         ease: "none",
         scrollTrigger: {
           trigger: heroRef.current,
@@ -805,34 +156,21 @@ export default function HomePage() {
     return () => ctx.revert();
   }, []);
 
-  /* Section labels */
+  /* Scroll-in for sections */
   useEffect(() => {
-    document.querySelectorAll<HTMLElement>(".section-label").forEach((el) => {
-      gsap.from(el, {
-        opacity: 0,
-        x: -20,
-        duration: 0.7,
-        ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 90%" },
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray<HTMLElement>(".reveal-up").forEach((el) => {
+        gsap.from(el, {
+          opacity: 0, y: 30, duration: 0.8, ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 88%" },
+        });
       });
     });
+    return () => ctx.revert();
   }, []);
 
   return (
-    <div
-      style={{
-        background: "#070707",
-        color: "#fff",
-        overflowX: "hidden",
-        fontFamily: "'Syne', sans-serif",
-      }}
-    >
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
-        * { box-sizing: border-box; }
-        ::-webkit-scrollbar { width: 0; }
-        ::selection { background: #C8FF00; color: #000; }
-      `}</style>
+    <div className="bg-[#070707] text-white font-syne">
 
       {/* ══ HERO ══ */}
       <section ref={heroRef} className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center overflow-hidden">
@@ -849,18 +187,22 @@ export default function HomePage() {
           </div>
 
           <h1
-            ref={heroWordRef}
-            className="text-[clamp(4.5rem,14vw,14rem)] font-bold leading-[0.88] tracking-[-0.04em]"
+            ref={titleRef}
+            className="text-[clamp(3rem,7vw,6rem)] font-bold leading-[0.88] tracking-[-0.04em]"
           >
-            Build<br /><span style={{ color: "#C8FF00" }}>Different.</span>
+            Animations worth
+            <br />
+            <span className="text-[#C8FF00]">noticing.</span>
           </h1>
 
-          <p className="text-white/30 text-base max-w-sm leading-relaxed" style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 300 }}>
-            Copy-paste animated components. Zero abstraction. Full control.
+          <p className="text-white/30 text-xs md:text-base max-w-2xl leading-relaxed" style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 300 }}>
+            Production-ready animated components built with GSAP and Lenis.
+            Copy the source, drop it in your project, and customize every detail —
+            no wrestling with third-party APIs or version conflicts.
           </p>
 
           <div className="flex items-center gap-8">
-            {[{ n: "MIT", l: "license" }, { n: "3", l: "components" }, { n: "TS", l: "typed" }].map(({ n, l }) => (
+            {[{ n: "MIT", l: "license" }, { n: STATS[0].value, l: "components" }, { n: "TS", l: "typed" }].map(({ n, l }) => (
               <div key={l} className="flex flex-col items-center gap-0.5">
                 <span className="text-2xl font-bold text-white">{n}</span>
                 <span className="text-[10px] text-white/20 tracking-widest uppercase" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{l}</span>
@@ -880,346 +222,116 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+        <div className="absolute bottom-4 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
           <div className="w-px h-12 bg-gradient-to-b from-transparent via-white/15 to-transparent" />
           <span className="text-[9px] text-white/15 tracking-[0.25em] uppercase" style={{ fontFamily: "'JetBrains Mono', monospace" }}>scroll</span>
         </div>
       </section>
 
-      {/* ── Mobile: component card list ── */}
-      <div className="md:hidden">
-        <MobileComponentList />
-      </div>
+      {/* ══ MARQUEE ═══════════════════════════════════════════════ */}
+      <Marquee />
 
-      {/* ── Desktop: strip + live demos ── */}
-      <div className="hidden md:block">
+      {/* ══ HOW IT WORKS ══════════════════════════════════════════ */}
+      <section className="reveal-up max-w-6xl mx-auto px-5 md:px-10 py-20 md:py-28">
 
-        {/* Strip */}
-        <div
-          style={{
-            display: "flex",
-            borderTop: "1px solid rgba(255,255,255,0.05)",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
-          }}
-        >
-          {COMPONENTS.map((c, i) => (
-            <div
-              key={c.slug}
-              style={{
-                flex: 1,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "0.875rem 0",
-                borderRight: i < COMPONENTS.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "10px",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase",
-                  color: "rgba(255,255,255,0.15)",
-                  fontFamily: "'JetBrains Mono', monospace",
-                }}
-              >
-                {c.name}
-              </span>
+        {/* section label */}
+        <div className="flex items-center gap-4 mb-10">
+          <span className="font-mono-jetbrains text-[10px] text-white/20 tracking-[0.2em] uppercase">How it works</span>
+          <div className="flex-1 h-px bg-white/[0.06] max-w-[60px]" />
+        </div>
+
+        {/* big statement */}
+        <h2 className="font-syne text-[clamp(2rem,3vw,3rem)] font-extrabold tracking-[-0.03em] leading-[0.95] text-white mb-16 max-w-3xl">
+          Find a component.<br />
+          <span className="text-white/30">Run one command.</span>
+        </h2>
+
+        {/* steps */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/[0.06] rounded-2xl overflow-hidden">
+          {[
+            { step: "01", action: "Browse", detail: "Pick a component from the library. Preview it live, read the docs." },
+            { step: "02", action: "Install", detail: "Run npx prodigy-ui add <name>. The file lands in your project." },
+            { step: "03", action: "Ship", detail: "Own the source. Tweak it, extend it, delete it. No upstream breakage." },
+          ].map(({ step, action, detail }) => (
+            <div key={step} className="flex flex-col gap-5 p-7 md:p-8 bg-[#070707] hover:bg-white/[0.02] transition-colors duration-200">
+              <span className="font-mono-jetbrains text-[10px] text-[#C8FF00]/50 tracking-[0.2em]">{step}</span>
+              <h3 className="font-syne text-3xl md:text-4xl font-extrabold text-white tracking-[-0.02em]">{action}</h3>
+              <p className="font-mono-jetbrains text-[11px] text-white/30 leading-relaxed font-light">{detail}</p>
             </div>
           ))}
         </div>
+      </section>
 
-        {/* ══ 01 · STROKE CARDS ══ */}
-        <section
-          style={{
-            position: "relative",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
-          }}
-        >
-          <SectionLabel
-            count="01"
-            total="03"
-            tag="Interactive"
-            tagColor="#C8FF00"
-            slug="stroke-cards"
-          />
+      {/* ══ FEATURES GRID ═════════════════════════════════════════ */}
+      <section className="reveal-up max-w-6xl mx-auto px-5 md:px-10 pb-20 md:pb-28">
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr",
-              gap: "2.5rem",
-              padding: "0 2.5rem 3rem",
-            }}
-            className="md:grid-cols-[1fr_auto]"
-          >
-            {/* Cards grid */}
-            <StrokeCards cards={STROKE_CARDS} columns={3} gap="1rem" padding="0" />
-
-            {/* Badge */}
-            <div style={{ paddingTop: "0.5rem", minWidth: "260px" }}>
-              <ComponentBadge {...COMPONENTS[0]} />
-            </div>
-          </div>
-        </section>
-
-        {/* ══ 02 · TEAM SECTION ══ */}
-        <section
-          style={{
-            position: "relative",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
-          }}
-        >
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              zIndex: 20,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "2.5rem 2.5rem 1.5rem",
-              pointerEvents: "none",
-            }}
-            className="section-label"
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-              <span
-                style={{
-                  fontSize: "11px",
-                  color: "rgba(255,255,255,0.2)",
-                  letterSpacing: "0.15em",
-                  fontFamily: "'JetBrains Mono', monospace",
-                }}
-              >
-                02 / 03
-              </span>
-              <div style={{ width: "1px", height: "16px", background: "rgba(255,255,255,0.1)" }} />
-              <span
-                style={{
-                  fontSize: "11px",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase",
-                  color: "#FF3B3B",
-                  fontFamily: "'JetBrains Mono', monospace",
-                }}
-              >
-                GSAP
-              </span>
-            </div>
-            <Link
-              href="/components/team-section"
-              style={{
-                fontSize: "12px",
-                color: "rgba(255,255,255,0.25)",
-                fontFamily: "'JetBrains Mono', monospace",
-                textDecoration: "none",
-                pointerEvents: "auto",
-                transition: "color 0.2s",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.25)")}
-            >
-              View docs →
-            </Link>
-          </div>
-
-          <TeamSection
-            defaultName="Our Squad"
-            members={TEAM}
-            backgroundColor="#070707"
-            textColor="#e3e3db"
-            accentColor="#FF3B3B"
-          />
-
-          {/* Badge overlay on desktop */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: "2.5rem",
-              right: "2.5rem",
-              zIndex: 20,
-            }}
-            className="hidden md:block"
-          >
-            <ComponentBadge {...COMPONENTS[1]} />
-          </div>
-
-          {/* Badge inline on mobile */}
-          <div style={{ padding: "1.5rem 2.5rem 2.5rem" }} className="md:hidden">
-            <ComponentBadge {...COMPONENTS[1]} />
-          </div>
-        </section>
-
-        {/* ══ 03 · GOOEY BAR ══ */}
-        <section
-          style={{
-            position: "relative",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
-          }}
-        >
-          <SectionLabel
-            count="03"
-            total="03"
-            tag="Motion"
-            tagColor="#7B6BFF"
-            slug="gooey-bar"
-          />
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr",
-              gap: "2.5rem",
-              padding: "0 2.5rem 3rem",
-            }}
-            className="md:grid-cols-[1fr_auto]"
-          >
-            {/* Bar demo */}
-            <div
-              style={{
-                position: "relative",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "3.5rem 1.5rem",
-                background: "#0b0b0b",
-                borderRadius: "1rem",
-                minHeight: "180px",
-              }}
-            >
-              <span
-                style={{
-                  position: "absolute",
-                  top: "1rem",
-                  left: "1rem",
-                  fontSize: "10px",
-                  color: "rgba(255,255,255,0.2)",
-                  letterSpacing: "0.1em",
-                  fontFamily: "'JetBrains Mono', monospace",
-                }}
-              >
-                barColor=&quot;#C8FF00&quot;
-              </span>
-              <div style={{ width: "100%", maxWidth: "600px" }}>
-                <GooeyStatusBar barColor="#C8FF00" iconColor="#000000" />
-              </div>
-            </div>
-
-            {/* Badge */}
-            <div style={{ paddingTop: "0.5rem", minWidth: "260px" }}>
-              <ComponentBadge {...COMPONENTS[2]} />
-            </div>
-          </div>
-        </section>
-
-      </div> {/* end desktop-only wrapper */}
-
-      {/* ══ CTA ══ */}
-      <section
-        style={{
-          padding: "6rem 1.5rem",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-          gap: "3rem",
-        }}
-      >
-        <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-          <h2
-            style={{
-              fontSize: "clamp(2.5rem, 5vw, 5rem)",
-              fontWeight: 800,
-              letterSpacing: "-0.04em",
-              lineHeight: 0.95,
-              fontFamily: "'Syne', sans-serif",
-            }}
-          >
-            Start building
-            <br />
-            <span style={{ color: "#C8FF00" }}>today.</span>
-          </h2>
-          <p
-            style={{
-              color: "rgba(255,255,255,0.25)",
-              fontSize: "0.875rem",
-              lineHeight: 1.6,
-              fontFamily: "'JetBrains Mono', monospace",
-            }}
-          >
-            Every component is a copy-paste starting point. No lock-in.
-          </p>
+        <div className="flex items-center gap-4 mb-10">
+          <span className="font-mono-jetbrains text-[10px] text-white/20 tracking-[0.2em] uppercase">Why this</span>
+          <div className="flex-1 h-px bg-white/[0.06] max-w-[60px]" />
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-            width: "100%",
-            maxWidth: "320px",
-          }}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {FEATURES.map((f) => (
+            <FeatureCard key={f.title} {...f} />
+          ))}
+        </div>
+      </section>
+
+      {/* ══ STACK STRIP ═══════════════════════════════════════════ */}
+      <section className="reveal-up border-y border-white/[0.05] py-8 px-5 md:px-10">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-6">
+          <span className="font-mono-jetbrains text-[10px] text-white/20 tracking-[0.18em] uppercase shrink-0">
+            Peer deps
+          </span>
+          <div className="flex flex-wrap gap-3">
+            {STACK.map(({ name, color }) => (
+              <span
+                key={name}
+                className="font-mono-jetbrains text-[11px] rounded-full px-3.5 py-1.5 border tracking-wide"
+                style={{
+                  color,
+                  background: `${color}10`,
+                  borderColor: `${color}25`,
+                }}
+              >
+                {name}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══ CTA ═══════════════════════════════════════════════════ */}
+      <section className="reveal-up flex flex-col items-center text-center gap-8 px-5 md:px-10 py-24 md:py-36">
+
+        {/* big number */}
+        <span
+          className="font-syne font-extrabold text-[clamp(5rem,18vw,18rem)] leading-none tracking-[-0.05em] select-none pointer-events-none text-zinc-500/10"
+          aria-hidden
         >
+          {STATS[0].value}
+        </span>
+
+        <div className="-mt-[clamp(4rem,14vw,14rem)] flex flex-col items-center gap-6">
+          <h2 className="font-syne text-[clamp(2.5rem,6vw,6rem)] font-extrabold tracking-[-0.04em] leading-[0.92]">
+            Start building
+            <br />
+            <span className="text-[#C8FF00]">today.</span>
+          </h2>
+
+          <p className="font-mono-jetbrains text-xs text-white/25 max-w-xs leading-relaxed">
+            Every component is a copy-paste starting point. No lock-in, no surprises.
+          </p>
+
           <Link
             href="/components"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "0.5rem",
-              borderRadius: "9999px",
-              background: "#C8FF00",
-              color: "#000",
-              fontSize: "0.875rem",
-              fontWeight: 700,
-              letterSpacing: "0.05em",
-              padding: "0.75rem 2rem",
-              fontFamily: "'JetBrains Mono', monospace",
-              textDecoration: "none",
-              transition: "background 0.2s",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#fff")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "#C8FF00")}
+            className="inline-flex items-center gap-2.5 rounded-full bg-[#C8FF00] text-black font-mono-jetbrains text-sm font-bold px-8 py-3.5 hover:bg-white transition-colors duration-200"
           >
             Browse all components →
           </Link>
-          <a
-            href="https://github.com"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "0.75rem",
-              borderRadius: "9999px",
-              border: "1px solid rgba(255,255,255,0.1)",
-              color: "rgba(255,255,255,0.4)",
-              fontSize: "0.875rem",
-              padding: "0.75rem 2rem",
-              fontFamily: "'JetBrains Mono', monospace",
-              textDecoration: "none",
-              transition: "border-color 0.2s, color 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)";
-              e.currentTarget.style.color = "#fff";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
-              e.currentTarget.style.color = "rgba(255,255,255,0.4)";
-            }}
-          >
-            <svg viewBox="0 0 24 24" style={{ width: "16px", height: "16px" }} fill="currentColor">
-              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-            </svg>
-            Star on GitHub
-          </a>
         </div>
       </section>
+
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { components, ComponentData } from "@/data/componentData";
+import { components } from "@/data/componentData";
 
 interface NavigationSidebarProps {
   activeSlug?: string;
@@ -10,105 +10,54 @@ interface NavigationSidebarProps {
 
 export default function NavigationSidebar({ activeSlug }: NavigationSidebarProps) {
   return (
-    <aside
-      style={{
-        position: "fixed",
-        top: 0,
-        right: 0,
-        width: "280px",
-        height: "100vh",
-        background: "rgba(7, 7, 7, 0.95)",
-        borderLeft: "1px solid rgba(255,255,255,0.06)",
-        padding: "1.5rem 1rem",
-        overflowY: "auto",
-        zIndex: 50,
-      }}
-      className="hidden lg:block"
-    >
-      <div style={{ padding: "0 0.75rem", marginBottom: "1.5rem" }}>
-        <span
-          style={{
-            fontFamily: "'Syne', sans-serif",
-            fontSize: "0.875rem",
-            fontWeight: 700,
-            color: "#fff",
-            letterSpacing: "-0.02em",
-          }}
-        >
+    <aside className="hidden lg:flex flex-col fixed top-0 right-0 w-[280px] h-screen bg-[rgba(7,7,7,0.95)] border-l border-white/[0.06] overflow-y-auto z-50">
+
+      {/* Header */}
+      <div className="px-4 py-6 shrink-0">
+        <span className="font-syne text-sm font-bold text-white tracking-[-0.02em]">
           Components
         </span>
-        <span
-          style={{
-            display: "block",
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "10px",
-            color: "rgba(255,255,255,0.25)",
-            marginTop: "0.25rem",
-          }}
-        >
+        <span className="block font-mono-jetbrains text-[10px] text-white/25 mt-1">
           {components.length} total
         </span>
       </div>
 
-      <nav style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+      {/* Nav links */}
+      <nav className="flex flex-col gap-1 px-2 flex-1">
         {components.map((component) => {
           const isActive = activeSlug === component.slug;
           return (
             <Link
               key={component.slug}
               href={`/components/${component.slug}`}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-lg no-underline transition-all duration-200"
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.75rem",
-                padding: "0.625rem 0.75rem",
-                borderRadius: "0.5rem",
-                textDecoration: "none",
                 background: isActive ? "rgba(255,255,255,0.06)" : "transparent",
                 border: `1px solid ${isActive ? "rgba(255,255,255,0.1)" : "transparent"}`,
-                transition: "all 0.2s",
               }}
               onMouseEnter={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.background = "rgba(255,255,255,0.03)";
-                }
+                if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.03)";
               }}
               onMouseLeave={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.background = "transparent";
-                }
+                if (!isActive) e.currentTarget.style.background = "transparent";
               }}
             >
               <span
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "9px",
-                  color: isActive ? component.tagColor : "rgba(255,255,255,0.2)",
-                  letterSpacing: "0.1em",
-                  minWidth: "20px",
-                }}
+                className="font-mono-jetbrains text-[9px] tracking-[0.1em] min-w-[20px]"
+                style={{ color: isActive ? component.tagColor : "rgba(255,255,255,0.2)" }}
               >
                 {component.index}
               </span>
               <span
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "11px",
-                  color: isActive ? "#fff" : "rgba(255,255,255,0.4)",
-                  transition: "color 0.2s",
-                }}
+                className="font-mono-jetbrains text-[11px] transition-colors duration-200"
+                style={{ color: isActive ? "#fff" : "rgba(255,255,255,0.4)" }}
               >
                 {component.name}
               </span>
               {isActive && (
                 <div
-                  style={{
-                    marginLeft: "auto",
-                    width: "6px",
-                    height: "6px",
-                    borderRadius: "50%",
-                    background: component.tagColor,
-                  }}
+                  className="ml-auto w-1.5 h-1.5 rounded-full shrink-0"
+                  style={{ background: component.tagColor }}
                 />
               )}
             </Link>
@@ -116,37 +65,13 @@ export default function NavigationSidebar({ activeSlug }: NavigationSidebarProps
         })}
       </nav>
 
-      <div
-        style={{
-          marginTop: "auto",
-          paddingTop: "1.5rem",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-        }}
-      >
+      {/* Back to home */}
+      <div className="shrink-0 mt-auto px-2 pb-4 pt-4 border-t border-white/[0.06]">
         <Link
           href="/"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            padding: "0.625rem 0.75rem",
-            borderRadius: "0.5rem",
-            textDecoration: "none",
-            color: "rgba(255,255,255,0.4)",
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "11px",
-            transition: "color 0.2s",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
+          className="flex items-center gap-2 px-3 py-2.5 rounded-lg font-mono-jetbrains text-[11px] text-white/40 no-underline transition-colors duration-200 hover:text-white"
         >
-          <svg
-            style={{ width: "14px", height: "14px" }}
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
+          <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
           </svg>
           Back to Home

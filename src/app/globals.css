@@ -1,42 +1,88 @@
 @import "tailwindcss";
 
-/* @import url("https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"); */
+@theme {
+  --font-syne: "Syne", sans-serif;
+  --font-mono-jetbrains: "JetBrains Mono", monospace;
 
+  --animate-fire-pulse: firePulse 2s ease-in-out infinite;
+  --animate-marquee: marquee 28s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+
+  @keyframes firePulse {
+
+    0%,
+    100% {
+      transform: translate(-50%, -50%) scaleY(1);
+      opacity: 0.5;
+    }
+
+    25% {
+      transform: translate(-50%, -50%) scaleY(1.2);
+      opacity: 0.4;
+    }
+
+    50% {
+      transform: translate(-50%, -50%) scaleY(0.9);
+      opacity: 0.35;
+    }
+
+    75% {
+      transform: translate(-50%, -50%) scaleY(1.1);
+      opacity: 0.5;
+    }
+  }
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: #C8FF00 black;
+  }
+
+  body {
+    font-family: "Google Sans", sans-serif;
+  }
+
+  img {
+    border-radius: 0.3rem;
+  }
+
+  ::selection {
+    background: #C8FF00;
+    color: #000;
+  }
+}
+
+/* ── Component-specific CSS (unchanged) ── */
 :root {
-  /* ======================
-   Stroke Card
-====================== */
   --card-1-stroke: #e67339;
   --card-2-stroke: #e6b363;
   --card-3-stroke: #eb3828;
   --card-4-stroke: #a6a09d;
   --card-5-stroke: #99938a;
   --card-6-stroke: #b5c79b;
-
   --card-base-stroke: #e0e0e0;
   --card-copy: #000;
-
-  /* ======================
-   Infinity Contact
-====================== */
   --base-100: #fff;
   --base-200: #4f4f4f;
   --base-300: #0f0f0f;
-
-  /* ======================
- Glowing Light
-====================== */
   --light: #f2eec2;
   --dark: #141414;
   --mouse-x: 0;
   --mouse-y: 0;
 }
 
-/* ======================
-   Stroke Per Card
-====================== */
-
-/* Stroke 1 */
 #card-1 .svg-stroke-1 svg path {
   stroke: var(--card-1-stroke);
 }
@@ -61,7 +107,6 @@
   stroke: var(--card-6-stroke);
 }
 
-/* Stroke 2 (secondary stroke uses same color) */
 #card-1 .svg-stroke-2 svg path {
   stroke: var(--card-1-stroke);
 }
@@ -86,30 +131,12 @@
   stroke: var(--card-6-stroke);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-
-  scrollbar-width: thin;
-  scrollbar-color: #C8FF00 black;
-}
-
-body {
-  font-family: "Google Sans", sans-serif;
-}
-
 .profile-names {
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
 }
 
 .profile-images {
   gap: 1rem !important;
-  /* 4px */
-}
-
-img {
-  border-radius: 0.3rem;
 }
 
 @media (max-width: 900px) {
