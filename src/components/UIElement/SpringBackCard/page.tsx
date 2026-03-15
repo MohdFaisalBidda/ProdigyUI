@@ -6,7 +6,7 @@ import SpringBackCard from '@/components/UIElement/SpringBackCard/SpringBackCard
 
 function Cards() {
     return (
-        <section className='h-screen w-full flex items-center justify-center bg-[var(--base-300)] relative overflow-hidden'>
+        <section className='h-screen w-full flex items-center justify-center bg-[#0f0f0f] relative overflow-hidden'>
             <SpringBackCard
                 imgSrc="/img2.avif"
                 initialRotation={-6}

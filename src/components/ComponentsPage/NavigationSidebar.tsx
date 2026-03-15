@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { components } from "@/data/componentData";
+import { components } from "@/lib/component-registry";
 
 interface NavigationSidebarProps {
   activeSlug?: string;

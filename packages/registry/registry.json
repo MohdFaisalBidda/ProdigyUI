@@ -1,0 +1,140 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "name": "prodigy-ui",
+  "version": "1.0.0",
+  "description": "Animated UI components for modern web applications",
+  "components": [
+    {
+      "name": "stroke-cards",
+      "title": "Stroke Cards",
+      "description": "SVG path-drawing animation with masked image hover reveals. Each card traces its border on hover.",
+      "tag": "Interactive",
+      "files": [
+        {
+          "path": "stroke-cards/Cards.tsx",
+          "source": "http://localhost:3000/api/components/stroke-cards/Cards.tsx"
+        },
+        {
+          "path": "stroke-cards/StrokeCards.tsx",
+          "source": "http://localhost:3000/api/components/stroke-cards/StrokeCards.tsx"
+        }
+      ],
+      "dependencies": ["clsx", "tailwind-merge"],
+      "peerDependencies": ["gsap"],
+      "registryDependencies": []
+    },
+    {
+      "name": "team-section",
+      "title": "Team Section",
+      "description": "Interactive team member showcase with GSAP-powered hover animations. Names animate in on profile hover.",
+      "tag": "GSAP",
+      "files": [
+        {
+          "path": "team-section/TeamSection.tsx",
+          "source": "http://localhost:3000/api/components/team-section/TeamSection.tsx"
+        }
+      ],
+      "dependencies": ["clsx", "tailwind-merge"],
+      "peerDependencies": ["gsap"],
+      "registryDependencies": []
+    },
+    {
+      "name": "gooey-bar",
+      "title": "Gooey Bar",
+      "description": "Animated status bar with gooey SVG filter effects. Hover over items to see fluid morphing animations with tooltips.",
+      "tag": "Motion",
+      "files": [
+        {
+          "path": "gooey-bar/GooeyBar.tsx",
+          "source": "http://localhost:3000/api/components/gooey-bar/GooeyBar.tsx"
+        }
+      ],
+      "dependencies": ["clsx", "tailwind-merge"],
+      "peerDependencies": ["motion"],
+      "registryDependencies": []
+    },
+    {
+      "name": "spring-back-card",
+      "title": "Spring Back Card",
+      "description": "3D spring physics card that follows cursor movement with smooth lerp interpolation and rotation effects.",
+      "tag": "Interactive",
+      "files": [
+        {
+          "path": "spring-back-card/SpringBackCard.tsx",
+          "source": "http://localhost:3000/api/components/spring-back-card/SpringBackCard.tsx"
+        },
+        {
+          "path": "spring-back-card/page.tsx",
+          "source": "http://localhost:3000/api/components/spring-back-card/page.tsx"
+        }
+      ],
+      "dependencies": ["clsx", "tailwind-merge"],
+      "peerDependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "more-space-scroll",
+      "title": "More Space Scroll",
+      "description": "Smooth scrolling effect using Lenis with horizontal project showcase. Scroll vertically to move through horizontal content.",
+      "tag": "Scroll",
+      "files": [
+        {
+          "path": "more-space-scroll/MoreSpaceProjects.tsx",
+          "source": "http://localhost:3000/api/components/more-space-scroll/MoreSpaceProjects.tsx"
+        },
+        {
+          "path": "more-space-scroll/MoreSpaceScroll.tsx",
+          "source": "http://localhost:3000/api/components/more-space-scroll/page.tsx"
+        }
+      ],
+      "dependencies": ["clsx", "tailwind-merge"],
+      "peerDependencies": ["lenis", "gsap"],
+      "registryDependencies": []
+    },
+    {
+      "name": "infinite-contact",
+      "title": "Infinite Contact",
+      "description": "Scroll-triggered infinite contact section with GSAP animations. Contact info animates infinitely as you scroll.",
+      "tag": "Scroll",
+      "files": [
+        {
+          "path": "infinite-contact/InfiniteContact.tsx",
+          "source": "http://localhost:3000/api/components/infinite-contact/page.tsx"
+        }
+      ],
+      "dependencies": ["clsx", "tailwind-merge"],
+      "peerDependencies": ["gsap", "lenis"],
+      "registryDependencies": []
+    },
+    {
+      "name": "infinite-slider",
+      "title": "Infinite Slider",
+      "description": "Arc-shaped infinite image slider with GSAP scroll-triggered animations. Images arranged in a 3D arc perspective.",
+      "tag": "Interactive",
+      "files": [
+        {
+          "path": "infinite-slider/InfiniteSlider.tsx",
+          "source": "http://localhost:3000/api/components/infinite-slider/page.tsx"
+        }
+      ],
+      "dependencies": ["clsx", "tailwind-merge"],
+      "peerDependencies": ["gsap", "lenis"],
+      "registryDependencies": []
+    },
+    {
+      "name": "glowing-light",
+      "title": "Glowing Light",
+      "description": "Lottie-powered glowing light effect that tracks cursor movement with spotlight and mask animations.",
+      "tag": "Interactive",
+      "files": [
+        {
+          "path": "glowing-light/GlowingLight.tsx",
+          "source": "http://localhost:3000/api/components/glowing-light/page.tsx"
+        }
+      ],
+      "dependencies": ["clsx", "tailwind-merge"],
+      "peerDependencies": ["lenis", "lottie-web"],
+      "registryDependencies": []
+    }
+  ]
+}

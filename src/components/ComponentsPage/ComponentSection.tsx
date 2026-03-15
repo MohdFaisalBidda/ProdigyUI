@@ -3,34 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { ComponentData } from "@/data/componentData";
-import StrokeCards from "@/components/UIElement/StrokeCards/StrokeCards";
-import TeamSection from "@/components/UIElement/TeamSection/TeamSection";
-import GooeyStatusBar from "@/components/UIElement/GooeyBar/GoeeyBar";
-import InfiniteSlider from "@/components/UIElement/InfiniteSlider/page";
-
-const STROKE_CARDS = [
-  { id: "1", imgSrc: "/img1.avif", title: "Motion Design",  strokeColor1: "#C8FF00", strokeColor2: "#FF3B3B" },
-  { id: "2", imgSrc: "/img2.avif", title: "Typography",     strokeColor1: "#7B6BFF", strokeColor2: "#C8FF00" },
-  { id: "3", imgSrc: "/img3.avif", title: "Color Systems",  strokeColor1: "#FF3B3B", strokeColor2: "#7B6BFF" },
-];
-
-const TEAM_MEMBERS = [
-  { image: "/img4.avif", name: "Jack"  },
-  { image: "/img2.avif", name: "Jane"  },
-  { image: "/img3.avif", name: "Bob"   },
-  { image: "/img1.avif", name: "John"  },
-  { image: "/img5.avif", name: "Lisa"  },
-  { image: "/img6.avif", name: "Harry" },
-];
-
-const DIALOG_IFRAME_ROUTES: Record<string, string> = {
-  "more-space-scroll": "/preview/more-space-scroll",
-  "infinte-contact":   "/preview/infinte-contact",
-  "glowing-light":     "/preview/glowing-light",
-  "spring-back-card":  "/preview/spring-back-card",
-  "infinite-slider":   "/preview/infinite-slider",
-};
+import { componentRegistry, ComponentData, getComponentBySlug } from "@/lib/component-registry";
 
 /* ─── Section Label ─────────────────────────────────────────────── */
 
@@ -77,7 +50,8 @@ function SectionLabel({ count, total, tag, tagColor, slug, name, description }: 
 /* ─── IFrame Dialog ─────────────────────────────────────────────── */
 
 function IFrameDialog({ component, onClose }: { component: ComponentData; onClose: () => void }) {
-  const src = DIALOG_IFRAME_ROUTES[component.slug];
+  const registryItem = getComponentBySlug(component.slug);
+  const src = registryItem?.previewUrl;
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -220,64 +194,34 @@ function DialogTriggerCard({ component }: { component: ComponentData }) {
 /* ─── Inline preview ─────────────────────────────────────────────── */
 
 function InlinePreview({ component }: { component: ComponentData }) {
-  switch (component.slug) {
-    case "stroke-cards":
-      return (
-        <div className="w-full flex items-center justify-center p-10 px-6">
-          <StrokeCards cards={STROKE_CARDS} columns={3} gap="1rem" padding="0" />
-        </div>
-      );
-
-    case "team-section":
-      return (
-        <TeamSection
-          defaultName="Our Squad"
-          members={TEAM_MEMBERS}
-          backgroundColor="#070707"
-          textColor="#e3e3db"
-          accentColor={component.tagColor}
-        />
-      );
-
-    case "gooey-bar":
-      return (
-        <div className="w-full flex items-center justify-center py-20 px-4">
-          <div className="w-full max-w-xl">
-            <GooeyStatusBar barColor={component.tagColor} iconColor="#000000" />
-          </div>
-        </div>
-      );
-
-    case "infinite-slider":
-      return (
-        <div className="w-full h-screen relative overflow-hidden">
-          <InfiniteSlider />
-        </div>
-      );
-
-    default:
-      return (
-        <div className="flex items-center justify-center min-h-[240px]">
-          <Link
-            href={`/components/${component.slug}`}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-mono-jetbrains text-xs no-underline"
-            style={{
-              background: `${component.tagColor}20`,
-              border: `1px solid ${component.tagColor}40`,
-              color: component.tagColor,
-            }}
-          >
-            View {component.name} →
-          </Link>
-        </div>
-      );
+  const registryItem = getComponentBySlug(component.slug);
+  
+  if (registryItem?.preview) {
+    return registryItem.preview;
   }
+
+  return (
+    <div className="flex items-center justify-center min-h-[240px]">
+      <Link
+        href={`/components/${component.slug}`}
+        className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-mono-jetbrains text-xs no-underline"
+        style={{
+          background: `${component.tagColor}20`,
+          border: `1px solid ${component.tagColor}40`,
+          color: component.tagColor,
+        }}
+      >
+        View {component.name} →
+      </Link>
+    </div>
+  );
 }
 
 /* ─── Main export ────────────────────────────────────────────────── */
 
 export default function ComponentSection({ component, total }: { component: ComponentData; total: number }) {
-  const needsDialog = component.slug in DIALOG_IFRAME_ROUTES;
+  const registryItem = getComponentBySlug(component.slug);
+  const needsDialog = !!registryItem?.previewUrl;
 
   return (
     <section className="relative border-b border-white/5">

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ComponentData } from "@/data/componentData";
+import { ComponentData } from "@/lib/component-registry";
 
 export default function ComponentCard({ component }: { component: ComponentData }) {
   const [hovered, setHovered] = useState(false);

@@ -65,6 +65,9 @@ export type ComponentPageConfig = {
   /** siblings for prev/next navigation */
   prevComponent?: { slug: string; name: string };
   nextComponent?: { slug: string; name: string };
+
+  /** peer dependencies to install */
+  peerDependencies?: string[];
 };
 
 /* ══════════════════════════════════════════════════════════════
@@ -196,9 +199,10 @@ export default function ComponentPageLayout({
   codeSnippet, props: propFields,
   variants, activeVariant, onVariantChange,
   prevComponent, nextComponent,
+  peerDependencies,
 }: ComponentPageConfig) {
 
-  const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
+  const [activeTab, setActiveTab] = useState<"preview" | "install" | "code">("preview");
   const [iframeLoaded, setIframeLoaded] = useState(false);
 
   return (
@@ -285,7 +289,7 @@ export default function ComponentPageLayout({
           display: "flex", gap: "0", borderBottom: "1px solid rgba(255,255,255,0.05)",
           marginTop: "0",
         }}>
-          {(["preview", "code"] as const).map((tab) => (
+          {(["preview", "install", "code"] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -373,6 +377,39 @@ export default function ComponentPageLayout({
               {!previewUrl && preview && (
                 <div style={{ position: "relative", zIndex: 1 }}>
                   {preview}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Install */}
+          {activeTab === "install" && (
+            <div style={{ padding: "1.5rem" }}>
+              <div style={{ marginBottom: "1.5rem" }}>
+                <p style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: "12px",
+                  color: "rgba(255,255,255,0.5)",
+                  marginBottom: "1rem",
+                  lineHeight: 1.6,
+                }}>
+                  Run this command in your project root to add the component:
+                </p>
+                <CodeBlock code={`npx prodigy-ui add ${slug}`} />
+              </div>
+
+              {peerDependencies && peerDependencies.length > 0 && (
+                <div>
+                  <p style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "12px",
+                    color: "rgba(255,255,255,0.5)",
+                    marginBottom: "1rem",
+                    lineHeight: 1.6,
+                  }}>
+                    Install peer dependencies:
+                  </p>
+                  <CodeBlock code={`npm install ${peerDependencies.join(" ")}`} />
                 </div>
               )}
             </div>

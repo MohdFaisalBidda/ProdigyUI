@@ -5,7 +5,7 @@ import Link from "next/link";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { components } from "@/data/componentData";
+import { components } from "@/lib/component-registry";
 import NavigationSidebar from "@/components/ComponentsPage/NavigationSidebar";
 import ComponentSection from "@/components/ComponentsPage/ComponentSection";
 import ComponentCard from "@/components/ComponentsPage/ComponentCard";

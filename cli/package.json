@@ -1,0 +1,43 @@
+{
+  "name": "prodigy-ui-cli",
+  "version": "1.0.0",
+  "description": "Add animated components to your project",
+  "main": "./dist/index.js",
+  "bin": {
+    "prodigy": "./bin/prodigy"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "ui",
+    "components",
+    "animation",
+    "react",
+    "tailwind"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "clsx": "^2.1.1",
+    "commander": "^12.1.0",
+    "fs-extra": "^11.2.0",
+    "ora": "^8.0.1",
+    "picocolors": "^1.0.1",
+    "prompts": "^2.4.2",
+    "tailwind-merge": "^3.5.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.11.0",
+    "@types/prompts": "^2.4.9",
+    "tsup": "^8.1.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

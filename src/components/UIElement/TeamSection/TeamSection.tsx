@@ -206,8 +206,8 @@ export default function TeamSection({
         <div className="name default absolute w-full text-center">
           <h1
             ref={defaultNameRef}
-            className={`uppercase font-barlow-condensed text-[15rem] font-black tracking-[-0.5rem] leading-none translate-y-[-100%] select-none md:text-[4rem] md:tracking-normal ${defaultNameClassName}`}
-            style={{ color: textColor, ...defaultNameStyle }}
+            className={`uppercase text-[15rem] font-black tracking-[-0.5rem] leading-none translate-y-[-100%] select-none md:text-[4rem] md:tracking-normal ${defaultNameClassName}`}
+            style={{ color: textColor, fontFamily: "'Barlow Condensed', sans-serif", ...defaultNameStyle }}
           >
             {defaultName}
           </h1>
@@ -216,8 +216,8 @@ export default function TeamSection({
         {members.map((member, index) => (
           <div key={index} className="name absolute w-full text-center">
             <h1
-              className={`uppercase font-barlow-condensed text-[20rem] font-black tracking-[-0.5rem] leading-none select-none md:text-[4rem] md:tracking-normal ${memberNameClassName} ${member.nameClassName || ""}`}
-              style={{ color: accentColor, ...memberNameStyle, ...(member.nameStyle || {}) }}
+              className={`uppercase text-[20rem] font-black tracking-[-0.5rem] leading-none select-none md:text-[4rem] md:tracking-normal ${memberNameClassName} ${member.nameClassName || ""}`}
+              style={{ color: accentColor, fontFamily: "'Barlow Condensed', sans-serif", ...memberNameStyle, ...(member.nameStyle || {}) }}
             >
               {member.name}
             </h1>

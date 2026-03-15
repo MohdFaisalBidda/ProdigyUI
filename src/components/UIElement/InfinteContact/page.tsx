@@ -20,7 +20,7 @@ function TextContainer({ label, value, contactRows }: { label: string; value: st
     return (
         <div ref={contactRows} className="contact-row flex justify-center gap-4 will-change-auto z-40">
             <p className='text-base md:text-lg font-medium leading-6 tracking-tight flex-1 nth-[1]:text-right'>{label}</p>
-            <p className='text-base md:text-lg font-medium leading-6 tracking-tight flex-1 nth-[2]:text-[var(--base-200)]'>{value}</p>
+            <p className='text-base md:text-lg font-medium leading-6 tracking-tight flex-1 nth-[2]:text-[#4f4f4f]'>{value}</p>
         </div>
     );
 }
@@ -130,7 +130,7 @@ function InfiniteContact() {
     // };
 
     return (
-        <div className='font-sans bg-[var(--base-300)] text-[var(--base-100)]'>
+        <div className='font-sans bg-[#0f0f0f] text-[#fff]'>
             <section ref={contactVisual} className='fixed top-0 left-0 w-full h-svh flex justify-center items-center overflow-hidden'>
                 <div className="relative w-16 h-16 md:w-20 md:h-20">
                     <img ref={contactIcon} src="/img4.avif" alt="" className='w-full h-full object-cover' style={{
