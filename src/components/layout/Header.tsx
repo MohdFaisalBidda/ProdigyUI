@@ -16,7 +16,7 @@ function Header() {
             </Link>
             <div className="flex items-center gap-6">
                 <div className="hidden md:flex items-center gap-6 text-[13px] text-white/30" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-                    {["Components", "Docs", "GitHub"].map(l => (
+                    {["Components", "GitHub"].map(l => (
                         <Link key={l} href={`/${l.toLowerCase()}`} className="hover:text-white transition-colors">{l}</Link>
                     ))}
                 </div>

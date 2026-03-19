@@ -3,6 +3,7 @@
 @theme {
   --font-syne: "Syne", sans-serif;
   --font-mono-jetbrains: "JetBrains Mono", monospace;
+  --font-barlow: "Barlow Condensed", sans-serif;
 
   --animate-fire-pulse: firePulse 2s ease-in-out infinite;
   --animate-marquee: marquee 28s linear infinite;
@@ -136,10 +137,10 @@
 }
 
 .profile-images {
-  gap: 1rem !important;
+  gap: 0.5rem !important;
 }
 
-@media (max-width: 900px) {
+/* @media (max-width: 900px) {
   section {
     flex-direction: column-reverse;
   }
@@ -154,10 +155,10 @@
   }
 
   .name h1 {
-    font-size: 4rem;
+    font-size: 4rem;  
   }
 
   .profile-names {
     height: 4rem;
   }
-}
+} */

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Syne, JetBrains_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Syne, JetBrains_Mono, Barlow_Condensed } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -26,6 +26,13 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const barlowCondensed = Barlow_Condensed({
+  variable: "--font-barlow",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -45,6 +52,7 @@ export default function RootLayout({
           geistMono.variable,
           syne.variable,
           jetbrainsMono.variable,
+          barlowCondensed.variable,
           "antialiased",
         ].join(" ")}
       >

@@ -88,7 +88,7 @@ function Cards() {
                 widthClass="auto"
                 heightClass="auto"
             >
-                <p className='rounded-full rounded-bl-none bg-pink-300 pointer-events-none whitespace-nowrap text-xs sm:text-sm'
+                <p className='rounded-full rounded-bl-none bg-pink-300 pointer-events-none whitespace-nowrap text-xs sm:text-sm text-black'
                     style={{ padding: "0.5rem 1rem" }}
                 >This card looks like a spring back</p>
             </SpringBackCard>
@@ -101,7 +101,7 @@ function Cards() {
                 widthClass="auto"
                 heightClass="auto"
             >
-                <p className='rounded-full rounded-bl-none bg-red-500 pointer-events-none whitespace-nowrap text-xs sm:text-sm'
+                <p className='rounded-full rounded-bl-none bg-red-500 pointer-events-none whitespace-nowrap text-xs sm:text-sm text-black'
                 style={{ padding: "0.5rem 1rem" }}
                 >Catch me if you can</p>
             </SpringBackCard>
@@ -114,7 +114,7 @@ function Cards() {
                 widthClass="auto"
                 heightClass="auto"
             >
-                <p className='rounded-full rounded-bl-none bg-amber-100 pointer-events-none whitespace-nowrap text-xs sm:text-sm'
+                <p className='rounded-full rounded-bl-none bg-amber-100 pointer-events-none whitespace-nowrap text-xs sm:text-sm text-black'
                 style={{ padding: "0.5rem 1rem" }}
                 >I&apos;m a spring back card</p>
             </SpringBackCard>
