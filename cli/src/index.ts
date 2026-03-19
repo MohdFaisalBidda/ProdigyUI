@@ -10,9 +10,8 @@ import http from "http";
 import { spawn } from "child_process";
 import prompts from "prompts";
 
-// TODO: Update this to your GitHub repository URL after publishing
 const REGISTRY_URL =
-  "http://localhost:3000/api/registry";
+  "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/packages/registry/registry.json";
 
 const program = new Command();
 

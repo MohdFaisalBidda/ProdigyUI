@@ -162,7 +162,7 @@ const members = [
     tag: "Scroll",
     tagColor: "#7B6BFF",
     description: "Scroll-triggered infinite contact section with GSAP animations. Contact info animates infinitely as you scroll.",
-    snippet: `import InfiniteContact from "@/components/UIElement/InfinteContact/page";
+    snippet: `import InfiniteContact from "@/components/UIElement/InfiniteContact/page";
 
 <InfiniteContact />`,
     previewUrl: "/preview/infinte-contact",

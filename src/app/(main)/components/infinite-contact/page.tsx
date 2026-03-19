@@ -9,14 +9,14 @@ export default function InfiniteContactPage() {
       name="Infinite Contact"
       tag="Scroll"
       tagColor="#7B6BFF"
-      slug="infinte-contact"
+      slug="infinite-contact"
       description="Scroll-triggered infinite contact list with GSAP + Lenis."
 
       // ✅ iframe — component uses window.scroll, Lenis, GSAP ScrollTrigger
-      previewUrl="/preview/infinte-contact"
+      previewUrl="/preview/infinite-contact"
       previewHeight={700}           // optional, defaults to 600
 
-      codeSnippet={`import InfiniteContact from "@/components/UIElement/InfinteContact/page";
+      codeSnippet={`import InfiniteContact from "@/components/UIElement/InfiniteContact/page";
 
 export default function Example() {
   return <InfiniteContact />;
@@ -43,4 +43,4 @@ export default function Example() {
 
 // For every previewUrl you use, create a matching bare route, e.g.:
 //   app/preview/infinte-contact/page.tsx
-//     → export { default } from "@/components/UIElement/InfinteContact/page";
+//     → export { default } from "@/components/UIElement/InfiniteContact/page";

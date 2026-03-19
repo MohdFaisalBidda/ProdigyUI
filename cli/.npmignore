@@ -1,0 +1,14 @@
+src/
+tsup.config.ts
+tsconfig.json
+*.ts
+*.map
+node_modules/
+.env
+.env.*
+.git/
+.github/
+README.md
+SETUP.md
+.eslintrc*
+.prettierrc*

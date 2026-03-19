@@ -10,7 +10,7 @@ import https from "https";
 import http from "http";
 import { spawn } from "child_process";
 import prompts from "prompts";
-var REGISTRY_URL = "http://localhost:3000/api/registry";
+var REGISTRY_URL = "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/packages/registry/registry.json";
 var program = new Command();
 function fetchJSON(url) {
   return new Promise((resolve, reject) => {

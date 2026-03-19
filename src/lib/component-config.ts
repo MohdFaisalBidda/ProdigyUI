@@ -43,7 +43,7 @@ export const COMPONENT_MAP: Record<string, ComponentConfig> = {
     } 
   },
   "infinite-contact": { 
-    folder: "InfinteContact", 
+    folder: "InfiniteContact", 
     files: { 
       "page.tsx": { source: "page.tsx", exportName: "InfiniteContact" } 
     } 
