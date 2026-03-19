@@ -214,37 +214,6 @@ export default function ComponentPageLayout({
         ::selection { background: #C8FF00; color: #000; }
       `}</style>
 
-      {/* ── HEADER ── */}
-      {/* <header style={{
-        position: "sticky", top: 0, zIndex: 50,
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "0.875rem 2rem",
-        borderBottom: "1px solid rgba(255,255,255,0.05)",
-        background: "rgba(7,7,7,0.88)", backdropFilter: "blur(20px)",
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
-          <Link href="/" style={{
-            display: "flex", alignItems: "center", gap: "0.5rem",
-            textDecoration: "none",
-          }}>
-            <div style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#C8FF00" }} />
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "11px", letterSpacing: "0.1em", color: "rgba(255,255,255,0.4)" }}>
-              MOTION.UI
-            </span>
-          </Link>
-          <span style={{ color: "rgba(255,255,255,0.12)", fontSize: "12px" }}>/</span>
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "11px", color: "rgba(255,255,255,0.55)", letterSpacing: "0.06em" }}>
-            {name}
-          </span>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          <Badge label={tag} color={tagColor} />
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "10px", color: "rgba(255,255,255,0.2)", letterSpacing: "0.1em" }}>
-            {index}
-          </span>
-        </div>
-      </header> */}
-
       <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "2rem 2rem" }}>
 
         {/* ── PAGE TITLE ── */}

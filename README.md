@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Prodigy UI
 
-## Getting Started
+> A library of production-ready animated UI components for React/Next.js with Tailwind CSS.
 
-First, run the development server:
+Prodigy UI provides a collection of beautifully crafted, copy-paste-ready animated components. Each component is self-contained with all logic and styles inline - no runtime dependencies required.
+
+## Features
+
+- **Copy-Paste Ready** - Components are designed to be copied directly into your project
+- **Zero Runtime Dependencies** - No package installs needed for the components themselves
+- **GSAP-Powered** - Smooth, professional animations using GSAP
+- **Tailwind CSS** - Fully styled with Tailwind CSS utilities
+- **TypeScript** - Full TypeScript support with typed props
+- **Responsive** - Mobile-first design with responsive breakpoints
+
+## Components
+
+| Component | Tag | Description |
+|-----------|-----|-------------|
+| [Stroke Cards](/components/stroke-cards) | Interactive | SVG path-drawing animation with masked image hover reveals |
+| [Team Section](/components/team-section) | GSAP | Interactive team member showcase with GSAP-powered hover animations |
+| [Spring Back Card](/components/spring-back-card) | Interactive | 3D spring physics card that follows cursor movement |
+| [More Space Scroll](/components/more-space-scroll) | Scroll | Smooth horizontal scrolling with Lenis |
+| [Infinite Contact](/components/infinte-contact) | Scroll | Scroll-triggered infinite contact section |
+| [Infinite Slider](/components/infinite-slider) | Interactive | Arc-shaped infinite image slider |
+| [Glowing Light](/components/glowing-light) | Interactive | Lottie-powered cursor tracking spotlight effect |
+| [Gooey Bar](/components/gooey-bar) | Motion | Animated status bar with gooey SVG filter effects |
+
+## Quick Start
+
+### Option 1: CLI (Recommended)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Initialize prodigy-ui in your project
+npx prodigy-ui init
+
+# Add a specific component
+npx prodigy-ui add stroke-cards
+
+# Add all components
+npx prodigy-ui add-all
+
+# List all available components
+npx prodigy-ui list
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Option 2: Copy-Paste
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Simply copy the component code from the documentation and paste it into your project. Each component is self-contained.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Documentation
 
-## Learn More
+Visit our [documentation site](https://prodigyui.in) for:
 
-To learn more about Next.js, take a look at the following resources:
+- Live component previews
+- Detailed props documentation
+- Usage examples
+- Installation instructions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Peer Dependencies
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Some components require additional packages. Install them with:
 
-## Deploy on Vercel
+```bash
+npm install gsap lenis lottie-web motion
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Package | Used By |
+|---------|---------|
+| gsap | Stroke Cards, Team Section, Infinite Contact, Infinite Slider |
+| lenis | More Space Scroll, Infinite Contact, Infinite Slider, Glowing Light |
+| lottie-web | Glowing Light |
+| motion | Gooey Bar |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Tech Stack
+
+- **React 19** / **Next.js 15**
+- **TypeScript 5**
+- **Tailwind CSS 4**
+- **GSAP** (animations)
+- **Lenis** (smooth scrolling)
+- **Motion** (Framer Motion fork)
+
+## License
+
+MIT

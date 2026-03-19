@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Lenis from "lenis";
 import gsap from "gsap";
@@ -55,18 +55,55 @@ const MARQUEE_ITEMS = [
   "Spotlight", "Infinite Contact",
 ];
 
+/* ─── Command tabs ──────────────────────────────────────────────── */
+
+const INSTALL_CMD = "npx prodigy-ui add <component>";
+
+function CommandWidget() {
+  const [copied, setCopied] = useState(false);
+
+  const copy = () => {
+    navigator.clipboard.writeText(INSTALL_CMD);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <button
+      onClick={copy}
+      className="group flex items-center gap-3 rounded-full border border-white/[0.08] px-5 py-2.5 hover:border-white/[0.16] transition-colors duration-200"
+      style={{ background: "rgba(255,255,255,0.03)" }}
+    >
+      <span className="text-[11px] select-none" style={{ color: "#C8FF00", fontFamily: "'JetBrains Mono', monospace" }}>$</span>
+      <span className="text-[12px] text-white/45 tracking-wide" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+        {INSTALL_CMD}
+      </span>
+      <span className="transition-colors duration-200 text-white/20 group-hover:text-white/40">
+        {copied ? (
+          <svg className="w-3.5 h-3.5" style={{ color: "#C8FF00" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        ) : (
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2v1" />
+          </svg>
+        )}
+      </span>
+    </button>
+  );
+}
+
 /* ─── Marquee ───────────────────────────────────────────────────── */
 
 function Marquee() {
-  const items = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS]; // duplicate for seamless loop
+  const items = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
   return (
     <div className="relative overflow-hidden border-y border-white/5 py-3.5 select-none">
-      {/* fade edges */}
       <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
         style={{ background: "linear-gradient(to right, #070707, transparent)" }} />
       <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
         style={{ background: "linear-gradient(to left, #070707, transparent)" }} />
-
       <div className="flex gap-10 animate-marquee whitespace-nowrap">
         {items.map((item, i) => (
           <span key={i} className="flex items-center gap-10 font-mono-jetbrains text-[11px] tracking-[0.2em] uppercase text-white/20">
@@ -138,7 +175,10 @@ export default function HomePage() {
         }, "-=0.4")
         .from(".hero-stat", {
           opacity: 0, y: 8, duration: 0.5, ease: "power2.out", stagger: 0.07,
-        }, "-=0.3");
+        }, "-=0.3")
+        .from(".hero-command", {
+          opacity: 0, y: 10, duration: 0.5, ease: "power3.out",
+        }, "-=0.2");
 
       /* parallax on scroll */
       gsap.to(heroRef.current, {
@@ -195,24 +235,31 @@ export default function HomePage() {
             <span className="text-[#C8FF00]">noticing.</span>
           </h1>
 
-          <p className="text-white/30 text-xs md:text-base max-w-2xl leading-relaxed" style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 300 }}>
+          <p ref={subRef} className="text-white/30 text-xs md:text-base max-w-3xl leading-relaxed" style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 300 }}>
             Production-ready animated components built with GSAP and Lenis.
             Copy the source, drop it in your project, and customize every detail —
             no wrestling with third-party APIs or version conflicts.
           </p>
 
+          {/* Stats */}
           <div className="flex items-center gap-8">
             {[{ n: "MIT", l: "license" }, { n: STATS[0].value, l: "components" }, { n: "TS", l: "typed" }].map(({ n, l }) => (
-              <div key={l} className="flex flex-col items-center gap-0.5">
+              <div key={l} className="hero-stat flex flex-col items-center gap-0.5">
                 <span className="text-2xl font-bold text-white">{n}</span>
                 <span className="text-[10px] text-white/20 tracking-widest uppercase" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{l}</span>
               </div>
             ))}
           </div>
 
+          {/* ── Command widget ── */}
+          <div className="hero-command flex justify-center">
+            <CommandWidget />
+          </div>
+          
+          {/* CTA button */}
           <Link
             href="/components"
-            className="inline-flex items-center gap-3 rounded-full text-black text-sm font-bold tracking-wide hover:scale-[1.03] active:scale-[0.98] transition-transform"
+            className="hero-cta inline-flex items-center gap-3 rounded-full text-black text-sm font-bold tracking-wide hover:scale-[1.03] active:scale-[0.98] transition-transform"
             style={{ background: "#C8FF00", fontFamily: "'JetBrains Mono', monospace", padding: "0.75rem 2rem" }}
           >
             Browse components
@@ -220,6 +267,7 @@ export default function HomePage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
             </svg>
           </Link>
+
         </div>
 
         <div className="absolute bottom-4 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
@@ -234,19 +282,16 @@ export default function HomePage() {
       {/* ══ HOW IT WORKS ══════════════════════════════════════════ */}
       <section className="reveal-up max-w-6xl mx-auto px-5 md:px-10 py-20 md:py-28">
 
-        {/* section label */}
         <div className="flex items-center gap-4 mb-10">
           <span className="font-mono-jetbrains text-[10px] text-white/20 tracking-[0.2em] uppercase">How it works</span>
           <div className="flex-1 h-px bg-white/[0.06] max-w-[60px]" />
         </div>
 
-        {/* big statement */}
         <h2 className="font-syne text-[clamp(2rem,3vw,3rem)] font-extrabold tracking-[-0.03em] leading-[0.95] text-white mb-16 max-w-3xl">
           Find a component.<br />
           <span className="text-white/30">Run one command.</span>
         </h2>
 
-        {/* steps */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/[0.06] rounded-2xl overflow-hidden">
           {[
             { step: "01", action: "Browse", detail: "Pick a component from the library. Preview it live, read the docs." },
@@ -304,7 +349,6 @@ export default function HomePage() {
       {/* ══ CTA ═══════════════════════════════════════════════════ */}
       <section className="reveal-up flex flex-col items-center text-center gap-8 px-5 md:px-10 py-24 md:py-36">
 
-        {/* big number */}
         <span
           className="font-syne font-extrabold text-[clamp(5rem,18vw,18rem)] leading-none tracking-[-0.05em] select-none pointer-events-none text-zinc-500/10"
           aria-hidden
