@@ -128,7 +128,7 @@ function syncActiveTitle(
 }
 
 
-function page() {
+function Page() {
     const sliderContainer = useRef<HTMLDivElement>(null);
     const titleDisplay = useRef<HTMLParagraphElement>(null);
 
@@ -195,4 +195,4 @@ function page() {
     )
 }
 
-export default page
+export default Page

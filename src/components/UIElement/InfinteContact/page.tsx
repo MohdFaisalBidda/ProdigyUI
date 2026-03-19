@@ -50,8 +50,8 @@ function InfiniteContact() {
         lenis.on("scroll", () => {
             const viewportCenter = window.innerHeight / 2;
 
-            let closestRow: HTMLDivElement | null = null;
-            let minDistance = Infinity;
+            const closestRow: HTMLDivElement | null = null;
+            const minDistance = Infinity;
 
             let centeredRow: HTMLDivElement | null = null;
 
