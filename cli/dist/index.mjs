@@ -10,10 +10,15 @@ import https from "https";
 import http from "http";
 import { spawn } from "child_process";
 import prompts from "prompts";
-var REGISTRY_URL = "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/packages/registry/registry.json";
+var REGISTRY_URL = process.env.LOCAL_REGISTRY || "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/packages/registry/registry.json";
 var program = new Command();
 function fetchJSON(url) {
   return new Promise((resolve, reject) => {
+    if (url.startsWith("file://") || !url.startsWith("http")) {
+      const filePath = url.replace("file://", "");
+      fs.readFile(filePath, "utf-8").then(JSON.parse).then(resolve).catch(reject);
+      return;
+    }
     const client = url.startsWith("https") ? https : http;
     client.get(url, (res) => {
       let data = "";
@@ -143,6 +148,16 @@ ${chalk.cyan("\u25BA")} Adding ${component.title}\u2026`));
 `)
       );
     }
+    if (component.installSteps && component.installSteps.length > 0) {
+      console.log(chalk.bold(`
+  ${chalk.cyan("Installation Steps:")}`));
+      component.installSteps.forEach((step, index) => {
+        console.log(`
+  ${chalk.green(`${index + 1}.`)} ${chalk.bold(step.title)}`);
+        console.log(chalk.dim(`     ${step.description}`));
+        console.log(chalk.cyan(`     ${step.code}`));
+      });
+    }
   }
   console.log(chalk.green.bold("\n\u2713 Done!\n"));
   console.log(
@@ -236,6 +251,23 @@ ${chalk.cyan("\u25BA")} Adding all ${targets.length} components\u2026
     );
   }
   console.log(chalk.green.bold("\n\u2713 All components added!\n"));
+  const uniqueSteps = /* @__PURE__ */ new Map();
+  registry.components.forEach((c) => {
+    if (c.installSteps) {
+      c.installSteps.forEach((step) => {
+        uniqueSteps.set(step.title, step);
+      });
+    }
+  });
+  if (uniqueSteps.size > 0) {
+    console.log(chalk.bold(`${chalk.cyan("Important Setup Steps:")}
+`));
+    uniqueSteps.forEach((step, title) => {
+      console.log(`  ${chalk.green("\u2022")} ${chalk.bold(step.title)}`);
+      console.log(chalk.dim(`    ${step.description}`));
+      console.log();
+    });
+  }
   console.log(
     chalk.dim(`  Import and use the components in your project.
 `)
@@ -261,7 +293,7 @@ ${chalk.cyan("Available components:")}
     );
     if (c.peerDependencies && c.peerDependencies.length > 0) {
       console.log(
-        chalk.dim(`    Deps: ${c.peerDependencies.join(", ")}`)
+        chalk.yellow(`    \u26A0 Setup required: ${c.peerDependencies.join(", ")}`)
       );
     }
     console.log();

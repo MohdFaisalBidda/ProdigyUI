@@ -2,7 +2,8 @@
   "$schema": "https://ui.shadcn.com/schema.json",
   "name": "prodigy-ui",
   "version": "1.0.0",
-  "description": "Animated UI components for modern web applications",
+  "description": "Animated UI components for modern web applications. Compatible with React 18+ and Next.js 13+.",
+  "assetsNote": "This library does not bundle images. Components use placeholder images from https://picsum.photos when no images are provided. You can provide your own images via component props.",
   "components": [
     {
       "name": "stroke-cards",
@@ -21,7 +22,18 @@
       ],
       "dependencies": ["clsx", "tailwind-merge"],
       "peerDependencies": ["gsap"],
-      "registryDependencies": []
+      "installSteps": [
+        {
+          "title": "Install GSAP",
+          "description": "Install gsap package for animations",
+          "code": "npm install gsap"
+        },
+        {
+          "title": "Register GSAP Plugin",
+          "description": "Add GSAP plugin registration in your app",
+          "code": "// In your layout or component\nimport { SplitText } from 'gsap/SplitText'\ngsap.registerPlugin(SplitText)"
+        }
+      ]
     },
     {
       "name": "team-section",
@@ -36,7 +48,18 @@
       ],
       "dependencies": ["clsx", "tailwind-merge"],
       "peerDependencies": ["gsap"],
-      "registryDependencies": []
+      "installSteps": [
+        {
+          "title": "Install GSAP",
+          "description": "Install gsap package for animations",
+          "code": "npm install gsap"
+        },
+        {
+          "title": "Register GSAP Plugin",
+          "description": "Add GSAP plugin registration in your app",
+          "code": "// In your layout or component\nimport { SplitText } from 'gsap/SplitText'\ngsap.registerPlugin(SplitText)"
+        }
+      ]
     },
     {
       "name": "gooey-bar",
@@ -46,12 +69,18 @@
       "files": [
         {
           "path": "gooey-bar/GooeyBar.tsx",
-          "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/GooeyBar/GooeyBar.tsx"
+          "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/GooeyBar/GoeeyBar.tsx"
         }
       ],
       "dependencies": ["clsx", "tailwind-merge"],
       "peerDependencies": ["motion"],
-      "registryDependencies": []
+      "installSteps": [
+        {
+          "title": "Install Motion",
+          "description": "Install motion package for animations",
+          "code": "npm install motion"
+        }
+      ]
     },
     {
       "name": "spring-back-card",
@@ -62,15 +91,11 @@
         {
           "path": "spring-back-card/SpringBackCard.tsx",
           "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/SpringBackCard/SpringBackCard.tsx"
-        },
-        {
-          "path": "spring-back-card/page.tsx",
-          "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/SpringBackCard/page.tsx"
         }
       ],
       "dependencies": ["clsx", "tailwind-merge"],
       "peerDependencies": [],
-      "registryDependencies": []
+      "installSteps": []
     },
     {
       "name": "more-space-scroll",
@@ -89,7 +114,23 @@
       ],
       "dependencies": ["clsx", "tailwind-merge"],
       "peerDependencies": ["lenis", "gsap"],
-      "registryDependencies": []
+      "installSteps": [
+        {
+          "title": "Install Dependencies",
+          "description": "Install lenis and gsap packages",
+          "code": "npm install lenis gsap"
+        },
+        {
+          "title": "Register GSAP Plugin",
+          "description": "Add GSAP ScrollTrigger registration",
+          "code": "// In your component\nimport { ScrollTrigger } from 'gsap/ScrollTrigger'\ngsap.registerPlugin(ScrollTrigger)"
+        },
+        {
+          "title": "Setup Lenis",
+          "description": "Wrap your app with ReactLenis for smooth scrolling",
+          "code": "// In your layout\nimport { ReactLenis } from 'lenis/react'\n\nexport default function RootLayout({ children }) {\n  return (\n    <html lang=\"en\">\n      <body>\n        <ReactLenis root>\n          {children}\n        </ReactLenis>\n      </body>\n    </html>\n  )\n}"
+        }
+      ]
     },
     {
       "name": "infinite-contact",
@@ -104,7 +145,23 @@
       ],
       "dependencies": ["clsx", "tailwind-merge"],
       "peerDependencies": ["gsap", "lenis"],
-      "registryDependencies": []
+      "installSteps": [
+        {
+          "title": "Install Dependencies",
+          "description": "Install gsap and lenis packages",
+          "code": "npm install gsap lenis"
+        },
+        {
+          "title": "Register GSAP Plugins",
+          "description": "Add GSAP ScrollTrigger registration",
+          "code": "// In your component\nimport { ScrollTrigger } from 'gsap/ScrollTrigger'\ngsap.registerPlugin(ScrollTrigger)"
+        },
+        {
+          "title": "Setup Lenis",
+          "description": "Wrap your app with ReactLenis for smooth scrolling",
+          "code": "// In your layout\nimport { ReactLenis } from 'lenis/react'\n\nexport default function RootLayout({ children }) {\n  return (\n    <html lang=\"en\">\n      <body>\n        <ReactLenis root>\n          {children}\n        </ReactLenis>\n      </body>\n    </html>\n  )\n}"
+        }
+      ]
     },
     {
       "name": "infinite-slider",
@@ -118,8 +175,14 @@
         }
       ],
       "dependencies": ["clsx", "tailwind-merge"],
-      "peerDependencies": ["gsap", "lenis"],
-      "registryDependencies": []
+      "peerDependencies": ["gsap"],
+      "installSteps": [
+        {
+          "title": "Install GSAP",
+          "description": "Install gsap package for animations",
+          "code": "npm install gsap"
+        }
+      ]
     },
     {
       "name": "glowing-light",
@@ -134,7 +197,23 @@
       ],
       "dependencies": ["clsx", "tailwind-merge"],
       "peerDependencies": ["lenis", "lottie-web"],
-      "registryDependencies": []
+      "installSteps": [
+        {
+          "title": "Install Dependencies",
+          "description": "Install lenis and lottie-web packages",
+          "code": "npm install lenis lottie-web"
+        },
+        {
+          "title": "Add Lottie Animation",
+          "description": "Copy a Lottie JSON file to your public folder and pass the path",
+          "code": "// The component uses /fire.json by default\n// You can provide your own Lottie animation:\n<GlowingLight lottiePath=\"/your-animation.json\" />"
+        },
+        {
+          "title": "Setup Lenis",
+          "description": "Wrap your app with ReactLenis for smooth scrolling",
+          "code": "// In your layout\nimport { ReactLenis } from 'lenis/react'\n\nexport default function RootLayout({ children }) {\n  return (\n    <html lang=\"en\">\n      <body>\n        <ReactLenis root>\n          {children}\n        </ReactLenis>\n      </body>\n    </html>\n  )\n}"
+        }
+      ]
     }
   ]
 }

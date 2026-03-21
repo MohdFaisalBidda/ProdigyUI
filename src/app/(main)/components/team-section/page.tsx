@@ -3,14 +3,15 @@
 import React from "react";
 import TeamSection from "@/components/UIElement/TeamSection/TeamSection";
 import ComponentPageLayout from "@/components/layout/ComponentPageLayout";
+import { getImageSrc } from "@/lib/images";
 
 const TEAM_MEMBERS = [
-  { image: "/img4.avif", name: "Jack" },
-  { image: "/img2.avif", name: "Jane" },
-  { image: "/img3.avif", name: "Bob" },
-  { image: "/img1.avif", name: "John" },
-  { image: "/img5.avif", name: "Lisa" },
-  { image: "/img6.avif", name: "Harry" },
+  { image: getImageSrc("/img4.avif", 1), name: "Jack" },
+  { image: getImageSrc("/img2.avif", 2), name: "Jane" },
+  { image: getImageSrc("/img3.avif", 3), name: "Bob" },
+  { image: getImageSrc("/img1.avif", 4), name: "John" },
+  { image: getImageSrc("/img5.avif", 5), name: "Lisa" },
+  { image: getImageSrc("/img6.avif", 6), name: "Harry" },
 ];
 
 export default function TeamSectionPage() {
@@ -30,9 +31,9 @@ export default function TeamSectionPage() {
       codeSnippet={`import TeamSection from "@/components/UIElement/TeamSection/TeamSection";
 
 const members = [
-  { image: "/img4.avif", name: "Jack" },
-  { image: "/img2.avif", name: "Jane" },
-  { image: "/img3.avif", name: "Bob" },
+  { image: "https://picsum.photos/seed/1/200/200", name: "Jack" },
+  { image: "https://picsum.photos/seed/2/200/200", name: "Jane" },
+  { image: "https://picsum.photos/seed/3/200/200", name: "Bob" },
 ];
 
 export default function Example() {

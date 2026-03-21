@@ -63,7 +63,7 @@ const members = [
 <MoreSpaceScroll />`,
   },
   {
-    slug: "infinte-contact",
+    slug: "infinite-contact",
     index: "05",
     name: "Infinite Contact",
     tag: "Scroll",

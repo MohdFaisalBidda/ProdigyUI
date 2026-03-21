@@ -11,12 +11,21 @@ import { spawn } from "child_process";
 import prompts from "prompts";
 
 const REGISTRY_URL =
+  process.env.LOCAL_REGISTRY ||
   "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/packages/registry/registry.json";
 
 const program = new Command();
 
 function fetchJSON(url: string): Promise<any> {
   return new Promise((resolve, reject) => {
+    if (url.startsWith("file://") || !url.startsWith("http")) {
+      const filePath = url.replace("file://", "");
+      fs.readFile(filePath, "utf-8")
+        .then(JSON.parse)
+        .then(resolve)
+        .catch(reject);
+      return;
+    }
     const client = url.startsWith("https") ? https : http;
     client.get(url, (res) => {
       let data = "";
@@ -170,6 +179,15 @@ program
           chalk.dim(`  ${installCommand(pm, peerDependencies)}\n`)
         );
       }
+
+      if (component.installSteps && component.installSteps.length > 0) {
+        console.log(chalk.bold(`\n  ${chalk.cyan("Installation Steps:")}`));
+        component.installSteps.forEach((step: any, index: number) => {
+          console.log(`\n  ${chalk.green(`${index + 1}.`)} ${chalk.bold(step.title)}`);
+          console.log(chalk.dim(`     ${step.description}`));
+          console.log(chalk.cyan(`     ${step.code}`));
+        });
+      }
     }
 
     console.log(chalk.green.bold("\n✓ Done!\n"));
@@ -283,6 +301,25 @@ program
     }
 
     console.log(chalk.green.bold("\n✓ All components added!\n"));
+
+    const uniqueSteps = new Map<string, any>();
+    registry.components.forEach((c: any) => {
+      if (c.installSteps) {
+        c.installSteps.forEach((step: any) => {
+          uniqueSteps.set(step.title, step);
+        });
+      }
+    });
+
+    if (uniqueSteps.size > 0) {
+      console.log(chalk.bold(`${chalk.cyan("Important Setup Steps:")}\n`));
+      uniqueSteps.forEach((step, title) => {
+        console.log(`  ${chalk.green("•")} ${chalk.bold(step.title)}`);
+        console.log(chalk.dim(`    ${step.description}`));
+        console.log();
+      });
+    }
+
     console.log(
       chalk.dim(`  Import and use the components in your project.\n`)
     );
@@ -310,7 +347,7 @@ program
       );
       if (c.peerDependencies && c.peerDependencies.length > 0) {
         console.log(
-          chalk.dim(`    Deps: ${c.peerDependencies.join(", ")}`)
+          chalk.yellow(`    ⚠ Setup required: ${c.peerDependencies.join(", ")}`)
         );
       }
       console.log();

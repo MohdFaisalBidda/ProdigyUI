@@ -34,7 +34,7 @@ export interface CardsProps {
 }
 
 function Cards({
-  imgSrc = "/img1.avif",
+  imgSrc = "https://picsum.photos/seed/1/800/600",
   imgAlt = "",
   title = "Hello World",
   strokeColor1 = "#F5EE41",

@@ -1,10 +1,14 @@
-"use client"
+"use client";
 
 import Lenis from 'lenis';
 import lottie from 'lottie-web';
 import React, { useEffect, useRef, useState } from 'react'
 
-function GlowingLight() {
+interface GlowingLightProps {
+    lottiePath?: string;
+}
+
+function GlowingLight({ lottiePath = "/fire.json" }: GlowingLightProps) {
     const lottieRef = useRef<HTMLDivElement>(null);
     const spotlightRef = useRef<HTMLDivElement>(null);
     const lottieContainerRef = useRef<HTMLDivElement>(null);
@@ -101,9 +105,9 @@ function GlowingLight() {
             renderer: "svg",
             loop: true,
             autoplay: true,
-            path: "/fire.json"
+            path: lottiePath
         })
-    }, []);
+    }, [lottiePath]);
 
     useEffect(() => {
         animate();

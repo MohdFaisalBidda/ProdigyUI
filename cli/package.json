@@ -1,10 +1,10 @@
 {
   "name": "prodigy-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Add animated components to your project",
   "main": "./dist/index.js",
   "bin": {
-    "prodigy": "./bin/prodigy"
+    "prodigy": "bin/prodigy"
   },
   "scripts": {
     "build": "tsup",

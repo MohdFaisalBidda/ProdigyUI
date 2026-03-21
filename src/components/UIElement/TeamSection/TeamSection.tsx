@@ -1,9 +1,8 @@
   "use client";
 
-  import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
   import gsap from "gsap";
   import { SplitText } from "gsap/SplitText";
-  import Image from "next/image";
 
   gsap.registerPlugin(SplitText);
 
@@ -250,11 +249,9 @@
               className={`profile-image relative w-[70px] h-[70px] cursor-pointer transition-[width,height] duration-300 md:w-[80px] md:h-[80px] ${member.imageClassName || ""}`}
               style={member.imageStyle}
             >
-              <Image
+              <img
                 src={member.image}
                 alt={member.name}
-                width={140}
-                height={140}
                 className="w-full h-full rounded object-cover"
               />
             </div>

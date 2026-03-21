@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
@@ -6,17 +6,20 @@ import { useEffect, useRef } from "react";
 const SLIDE_WIDTH = 200;
 const SLIDE_HEIGHT = 275;
 const SLIDE_GAP = 100;
-const SLIDE_COUNT = 6;
 const ARC_DEPTH = 200;
 const CENTER_LIFT = 100;
 const SCROLL_LERP = 0.05;
 
-const slideSources = Array.from(
-    { length: SLIDE_COUNT },
-    (_, i) => `/img${i + 1}.avif`
-);
+interface InfiniteSliderProps {
+    images?: string[];
+    titles?: string[];
+    slideCount?: number;
+}
 
-const slideTitles = [
+const getDefaultSlideSources = (count: number) =>
+    Array.from({ length: count }, (_, i) => `https://picsum.photos/seed/${i + 1}/800/600`);
+
+const getDefaultSlideTitles = () => [
     "The Enchanted Forest",
     "Mystic Mountains",
     "Serene Lakeside",
@@ -24,10 +27,10 @@ const slideTitles = [
     "Whispering Meadows",
     "Hidden Caves",
     "Starlit Skies"
-]
+];
 
-function createSlides(container: HTMLDivElement) {
-    slideSources.forEach((src) => {
+function createSlides(container: HTMLDivElement, sources: string[]) {
+    sources.forEach((src) => {
         const slideEl = document.createElement("div");
         slideEl.classList.add("slide");
         slideEl.style.position = "absolute";
@@ -104,7 +107,8 @@ function syncActiveTitle(
     scrollOffset: number,
     activeIndexRef: { current: number },
     titleElement: HTMLParagraphElement | null,
-    config: [number, number, number, number]
+    config: [number, number, number, number],
+    titles: string[]
 ) {
     let closestIndex = 0;
     let closestDist = Infinity;
@@ -122,26 +126,33 @@ function syncActiveTitle(
         activeIndexRef.current = closestIndex;
 
         if (titleElement) {
-            titleElement.textContent = slideTitles[closestIndex];
+            titleElement.textContent = titles[closestIndex] || "";
         }
     }
 }
 
 
-function Page() {
+function InfiniteSlider({
+    images,
+    titles,
+    slideCount = 6,
+}: InfiniteSliderProps) {
     const sliderContainer = useRef<HTMLDivElement>(null);
     const titleDisplay = useRef<HTMLParagraphElement>(null);
+
+    const slideSources = images && images.length > 0 ? images : getDefaultSlideSources(slideCount);
+    const slideTitles = titles && titles.length > 0 ? titles : getDefaultSlideTitles();
 
     useEffect(() => {
         if (!sliderContainer.current) return;
 
         const container = sliderContainer.current;
 
-        const slides = createSlides(container);
+        const slides = createSlides(container, slideSources);
 
         const activeSlideIndex = { current: 0 };
 
-        const trackWidth = SLIDE_COUNT * SLIDE_GAP;
+        const trackWidth = slideSources.length * SLIDE_GAP;
 
         let windowWidth = window.innerWidth;
         let windowHeight = window.innerHeight;
@@ -164,7 +175,8 @@ function Page() {
                 scrollCurrent,
                 activeSlideIndex,
                 titleDisplay.current,
-                config
+                config,
+                slideTitles
             );
 
             rafId = requestAnimationFrame(animate);
@@ -184,15 +196,13 @@ function Page() {
             container.removeEventListener("wheel", handleWheel);
             container.innerHTML = "";
         };
-    }, []);
+    }, [slideSources, slideTitles]);
 
     return (
-        <>
-            <section ref={sliderContainer} className='slider relative w-full h-svh overflow-hidden'>
-                <p ref={titleDisplay} id="slide-title" className='absolute bottom-[25svh] left-1/2 -translate-x-1/2 font-medium text-2xl text-[#e8e8e2]'>Slide Title</p>
-            </section>
-        </>
-    )
+        <section ref={sliderContainer} className='slider relative w-full h-svh overflow-hidden'>
+            <p ref={titleDisplay} id="slide-title" className='absolute bottom-[25svh] left-1/2 -translate-x-1/2 font-medium text-2xl text-[#e8e8e2]'>Slide Title</p>
+        </section>
+    );
 }
 
-export default Page
+export default InfiniteSlider;

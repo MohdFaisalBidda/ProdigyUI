@@ -14,15 +14,19 @@ export interface StrokeCardsProps {
   gap?: string;
   /** Padding around the grid */
   padding?: string;
+  /** Minimum card width */
+  minCardWidth?: string;
+  /** Maximum card width */
+  maxCardWidth?: string;
 }
 
 const DEFAULT_CARDS: CardEntry[] = [
-  { id: "1", imgSrc: "/img1.avif", title: "Motion Design" },
-  { id: "2", imgSrc: "/img2.avif", title: "Typography" },
-  { id: "3", imgSrc: "/img3.avif", title: "Color Systems" },
-  { id: "4", imgSrc: "/img4.avif", title: "Layout Grid" },
-  { id: "5", imgSrc: "/img5.avif", title: "Interaction" },
-  { id: "6", imgSrc: "/img6.avif", title: "Animation" },
+  { id: "1", title: "Motion Design" },
+  { id: "2", title: "Typography" },
+  { id: "3", title: "Color Systems" },
+  { id: "4", title: "Layout Grid" },
+  { id: "5", title: "Interaction" },
+  { id: "6", title: "Animation" },
 ];
 
 function StrokeCards({
@@ -30,7 +34,13 @@ function StrokeCards({
   columns = 2,
   gap = "1rem",
   padding = "0 2rem",
+  minCardWidth = "280px",
+  maxCardWidth = "400px",
 }: StrokeCardsProps) {
+  if (!cards || cards.length === 0) {
+    return null;
+  }
+
   const rows: CardEntry[][] = [];
   for (let i = 0; i < cards.length; i += columns) {
     rows.push(cards.slice(i, i + columns));
@@ -49,7 +59,13 @@ function StrokeCards({
             style={{ gap }}
           >
             {row.map((card) => (
-              <Cards key={card.id} {...card} />
+              <div
+                key={card.id}
+                style={{ minWidth: minCardWidth, maxWidth: maxCardWidth }}
+                className="w-full"
+              >
+                <Cards {...card} />
+              </div>
             ))}
           </div>
         ))}

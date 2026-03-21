@@ -191,11 +191,11 @@ const members = [
       { name: "No props", type: "standalone", default: "N/A", description: "This component renders a complete scroll experience - customize by editing the source" },
     ],
     prevComponent: { slug: "spring-back-card", name: "Spring Back Card" },
-    nextComponent: { slug: "infinte-contact", name: "Infinite Contact" },
+    nextComponent: { slug: "infinite-contact", name: "Infinite Contact" },
     peerDependencies: ["lenis", "gsap"],
   },
   {
-    slug: "infinte-contact",
+    slug: "infinite-contact",
     index: "05",
     name: "Infinite Contact",
     tag: "Scroll",
@@ -204,7 +204,7 @@ const members = [
     snippet: `import InfiniteContact from "@/components/UIElement/InfiniteContact/page";
 
 <InfiniteContact />`,
-    previewUrl: "/preview/infinte-contact",
+    previewUrl: "/preview/infinite-contact",
     previewHeight: 600,
     props: [
       { name: "No props", type: "standalone", default: "N/A", description: "This component renders a complete scroll experience - customize by editing the source" },
@@ -228,7 +228,7 @@ const members = [
     props: [
       { name: "No props", type: "standalone", default: "N/A", description: "This component renders a complete interactive slider - customize by editing the source" },
     ],
-    prevComponent: { slug: "infinte-contact", name: "Infinite Contact" },
+    prevComponent: { slug: "infinite-contact", name: "Infinite Contact" },
     nextComponent: { slug: "glowing-light", name: "Glowing Light" },
     peerDependencies: ["gsap"],
   },

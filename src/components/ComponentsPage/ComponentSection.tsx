@@ -39,7 +39,8 @@ function SectionLabel({ count, total, tag, tagColor, slug, name, description }: 
       {/* view docs — hidden on mobile, shown sm+ */}
       <Link
         href={`/components/${slug}`}
-        className="hidden sm:inline-flex shrink-0 mt-1 font-mono-jetbrains text-xs text-white/25 no-underline transition-colors duration-200 hover:text-white"
+        className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-mono-jetbrains text-[11px] font-medium no-underline transition-transform duration-200 hover:scale-105"
+        style={{ background: tagColor, color: '#0f0f0f' }}
       >
         View docs →
       </Link>
@@ -141,7 +142,7 @@ function IFrameDialog({ component, onClose }: { component: ComponentData; onClos
 /* ─── Dialog Trigger Card ────────────────────────────────────────── */
 
 function DialogTriggerCard({ component }: { component: ComponentData }) {
-  const [open, setOpen]       = useState(false);
+  const [open, setOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
   const close = useCallback(() => setOpen(false), []);
 
@@ -195,7 +196,7 @@ function DialogTriggerCard({ component }: { component: ComponentData }) {
 
 function InlinePreview({ component }: { component: ComponentData }) {
   const registryItem = getComponentBySlug(component.slug);
-  
+
   if (registryItem?.preview) {
     return registryItem.preview;
   }
@@ -239,8 +240,8 @@ export default function ComponentSection({ component, total }: { component: Comp
       <div className="sm:hidden px-5 pb-4">
         <Link
           href={`/components/${component.slug}`}
-          className="font-mono-jetbrains text-[11px] no-underline"
-          style={{ color: component.tagColor }}
+          className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-mono-jetbrains text-[11px] font-medium no-underline transition-transform duration-200 hover:scale-105"
+          style={{ background: component.tagColor, color: '#0f0f0f' }}
         >
           View docs →
         </Link>

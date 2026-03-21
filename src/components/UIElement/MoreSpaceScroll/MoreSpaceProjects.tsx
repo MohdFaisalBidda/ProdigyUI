@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -6,113 +6,34 @@ import React, { useEffect, useRef } from 'react'
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PROJECTS = [
-    {
-        name: 'Project 1',
-        img: '/img1.avif',
-        year: '2022',
-    },
-    {
-        name: 'Project 2',
-        img: '/img2.avif',
-        year: '2023',
-    },
-    {
-        name: 'Project 3',
-        img: '/img3.avif',
-        year: '2024',
-    },
-    {
-        name: 'Project 4',
-        img: '/img4.avif',
-        year: '2025',
-    },
-    {
-        name: 'Project 5',
-        img: '/img5.avif',
-        year: '2026',
-    },
-    {
-        name: 'Project 6',
-        img: '/img6.avif',
-        year: '2027',
-    },
-    {
-        name: 'Project 7',
-        img: '/img1.avif',
-        year: '2028',
-    },
-    {
-        name: 'Project 8',
-        img: '/img2.avif',
-        year: '2029',
-    },
-    {
-        name: 'Project 9',
-        img: '/img3.avif',
-        year: '2030',
-    },
-    {
-        name: 'Project 10',
-        img: '/img4.avif',
-        year: '2031',
-    },
-    {
-        name: 'Project 11',
-        img: '/img5.avif',
-        year: '2032',
-    },
-    {
-        name: 'Project 12',
-        img: '/img6.avif',
-        year: '2033',
-    },
-    {
-        name: 'Project 13',
-        img: '/img1.avif',
-        year: '2034',
-    },
-    {
-        name: 'Project 14',
-        img: '/img2.avif',
-        year: '2035',
-    },
-    {
-        name: 'Project 15',
-        img: '/img3.avif',
-        year: '2036',
-    },
-    {
-        name: 'Project 16',
-        img: '/img4.avif',
-        year: '2037',
-    },
-    {
-        name: 'Project 17',
-        img: '/img5.avif',
-        year: '2038',
-    },
-    {
-        name: 'Project 18',
-        img: '/img6.avif',
-        year: '2039',
-    },
-    {
-        name: 'Project 19',
-        img: '/img1.avif',
-        year: '2040',
-    },
-    {
-        name: 'Project 20',
-        img: '/img2.avif',
-        year: '2041',
-    },
-]
+export interface Project {
+    name: string;
+    img: string;
+    year: string;
+}
 
-const PROJECTS_PER_ROW = 9
-const TOTAL_ROWS = 10
+export interface MoreSpaceProjectsProps {
+    projects?: Project[];
+    projectsPerRow?: number;
+    totalRows?: number;
+}
 
-function MoreSpaceProjects() {
+function MoreSpaceProjects({
+    projects,
+    projectsPerRow = 9,
+    totalRows = 10,
+}: MoreSpaceProjectsProps) {
+    const defaultProjects: Project[] = [
+        { name: 'Project 1', img: 'https://picsum.photos/seed/1/800/600', year: '2022' },
+        { name: 'Project 2', img: 'https://picsum.photos/seed/2/800/600', year: '2023' },
+        { name: 'Project 3', img: 'https://picsum.photos/seed/3/800/600', year: '2024' },
+        { name: 'Project 4', img: 'https://picsum.photos/seed/4/800/600', year: '2025' },
+        { name: 'Project 5', img: 'https://picsum.photos/seed/5/800/600', year: '2026' },
+        { name: 'Project 6', img: 'https://picsum.photos/seed/6/800/600', year: '2027' },
+    ];
+
+    const projectsToUse = projects && projects.length > 0 ? projects : defaultProjects;
+
     const sectionRef = useRef<HTMLDivElement>(null)
     const rowsRef = useRef<HTMLDivElement[]>([])
     const rowStartWidth = useRef<number>(125)
@@ -184,13 +105,13 @@ function MoreSpaceProjects() {
     const rowsData = [];
     let currentProjectIndex = 0;
 
-    for (let r = 0; r < TOTAL_ROWS; r++) {
-        const projects: { name: string, img: string, year: string }[] = []
-        for (let c = 0; c < PROJECTS_PER_ROW; c++) {
-            projects.push(PROJECTS[currentProjectIndex % PROJECTS.length])
+    for (let r = 0; r < totalRows; r++) {
+        const rowProjects: Project[] = []
+        for (let c = 0; c < projectsPerRow; c++) {
+            rowProjects.push(projectsToUse[currentProjectIndex % projectsToUse.length])
             currentProjectIndex++
         }
-        rowsData.push(projects)
+        rowsData.push(rowProjects)
     }
 
     return (

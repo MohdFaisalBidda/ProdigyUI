@@ -1,14 +1,16 @@
 "use client"
 
-import Image from 'next/image'
 import React from 'react'
 import SpringBackCard from '@/components/UIElement/SpringBackCard/SpringBackCard'
+import { getImageSrc } from '@/lib/images'
+
+const localImages = ['/img2.avif', '/img5.avif', '/img4.avif', '/img3.avif']
 
 function Cards() {
     return (
         <section className='h-screen w-full flex items-center justify-center bg-[#0f0f0f] relative overflow-hidden'>
             <SpringBackCard
-                imgSrc="/img2.avif"
+                imgSrc={getImageSrc(localImages[0], 1)}
                 initialRotation={-6}
                 offsetX={0}
                 index={0}
@@ -16,17 +18,15 @@ function Cards() {
                 widthClass="w-28 md:w-36 lg:w-48 xl:w-56"
                 heightClass="h-36 md:h-48 lg:h-64 xl:h-72"
             >
-                <Image
-                    src="/img2.avif"
+                <img
+                    src={getImageSrc(localImages[0], 1)}
                     alt='card1'
-                    width={1000}
-                    height={1000}
                     className='w-full h-full object-cover'
                 />
             </SpringBackCard>
 
             <SpringBackCard
-                imgSrc="/img5.avif"
+                imgSrc={getImageSrc(localImages[1], 2)}
                 initialRotation={5}
                 offsetX={0}
                 index={1}
@@ -34,17 +34,15 @@ function Cards() {
                 widthClass="w-28 md:w-36 lg:w-48 xl:w-56"
                 heightClass="h-36 md:h-48 lg:h-64 xl:h-72"
             >
-                <Image
-                    src="/img5.avif"
+                <img
+                    src={getImageSrc(localImages[1], 2)}
                     alt='card2'
-                    width={1000}
-                    height={1000}
                     className='w-full h-full object-cover'
                 />
             </SpringBackCard>
 
             <SpringBackCard
-                imgSrc="/img4.avif"
+                imgSrc={getImageSrc(localImages[2], 3)}
                 initialRotation={-5}
                 offsetX={0}
                 index={2}
@@ -53,17 +51,15 @@ function Cards() {
                 heightClass="h-36 md:h-48 lg:h-64 xl:h-72"
                 mobileVisible={false}
             >
-                <Image
-                    src="/img4.avif"
+                <img
+                    src={getImageSrc(localImages[2], 3)}
                     alt='card3'
-                    width={1000}
-                    height={1000}
                     className='w-full h-full object-cover'
                 />
             </SpringBackCard>
 
             <SpringBackCard
-                imgSrc="/img3.avif"
+                imgSrc={getImageSrc(localImages[3], 4)}
                 initialRotation={6}
                 offsetX={0}
                 index={3}
@@ -71,11 +67,9 @@ function Cards() {
                 widthClass="w-28 md:w-36 lg:w-48 xl:w-56"
                 heightClass="h-36 md:h-48 lg:h-64 xl:h-72"
             >
-                <Image
-                    src="/img3.avif"
+                <img
+                    src={getImageSrc(localImages[3], 4)}
                     alt='card4'
-                    width={1000}
-                    height={1000}
                     className='w-full h-full object-cover'
                 />
             </SpringBackCard>

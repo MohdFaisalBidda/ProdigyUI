@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap';
@@ -7,14 +7,18 @@ import Lenis from "lenis"
 
 gsap.registerPlugin(ScrollTrigger);
 
-const data = [
-    { label: "Alex Morgan", value: "Founder & CEO" },
-    { label: "Sophia Carter", value: "Creative Director" },
-    { label: "Ethan Williams", value: "Lead Developer" },
-    { label: "Noah Thompson", value: "Marketing Strategist" },
-    { label: "Isabella Reed", value: "UX Designer" },
-    { label: "James Turne", value: "Product Manager" },
-];
+interface ContactItem {
+    label: string;
+    value: string;
+}
+
+interface InfiniteContactProps {
+    data?: ContactItem[];
+    images?: string[];
+}
+
+const getDefaultImages = (count: number) =>
+    Array.from({ length: count }, (_, i) => `https://picsum.photos/seed/${i + 1}/100/100`);
 
 function TextContainer({ label, value, contactRows }: { label: string; value: string; contactRows: (el: HTMLDivElement | null) => void; }) {
     return (
@@ -25,13 +29,26 @@ function TextContainer({ label, value, contactRows }: { label: string; value: st
     );
 }
 
-function InfiniteContact() {
+function InfiniteContact({
+    data = [
+        { label: "Alex Morgan", value: "Founder & CEO" },
+        { label: "Sophia Carter", value: "Creative Director" },
+        { label: "Ethan Williams", value: "Lead Developer" },
+        { label: "Noah Thompson", value: "Marketing Strategist" },
+        { label: "Isabella Reed", value: "UX Designer" },
+        { label: "James Turne", value: "Product Manager" },
+    ],
+    images,
+}: InfiniteContactProps) {
     const containerInfo = useRef<HTMLDivElement>(null);
     const contactVisual = useRef<HTMLDivElement>(null);
     const contactRows = useRef<HTMLDivElement[]>([]);
     const lastCenteredRow = useRef<HTMLDivElement | null>(null);
     const currentIconIndex = useRef(1);
     const contactIcon = useRef<HTMLImageElement>(null);
+
+    const defaultImages = getDefaultImages(data.length);
+    const contactImages = images && images.length > 0 ? images : defaultImages;
 
     useEffect(() => {
         if (typeof window === "undefined") return;
@@ -76,8 +93,8 @@ function InfiniteContact() {
                 const rowIndex = allRowsArray.indexOf(centeredRow);
                 const originalIndex = rowIndex % data.length;
 
-                if (contactIcon.current) {
-                    contactIcon.current.src = `/img${originalIndex + 1}.avif`;
+                if (contactIcon.current && contactImages[originalIndex]) {
+                    contactIcon.current.src = contactImages[originalIndex];
                 }
             }
         });
@@ -86,7 +103,7 @@ function InfiniteContact() {
             gsap.ticker.remove(update);
             lenis.destroy();
         };
-    }, []);
+    }, [data, contactImages]);
 
 
     useEffect(() => {
@@ -133,7 +150,7 @@ function InfiniteContact() {
         <div className='font-sans bg-[#0f0f0f] text-[#fff]'>
             <section ref={contactVisual} className='fixed top-0 left-0 w-full h-svh flex justify-center items-center overflow-hidden'>
                 <div className="relative w-16 h-16 md:w-20 md:h-20">
-                    <img ref={contactIcon} src="/img4.avif" alt="" className='w-full h-full object-cover' style={{
+                    <img ref={contactIcon} src={contactImages[3] || contactImages[0]} alt="" className='w-full h-full object-cover' style={{
                         borderRadius: "100px"
                     }} />
                 </div>

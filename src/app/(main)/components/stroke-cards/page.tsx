@@ -1,13 +1,12 @@
-"use client";
-
 import React from "react";
 import StrokeCards from "@/components/UIElement/StrokeCards/StrokeCards";
 import ComponentPageLayout from "@/components/layout/ComponentPageLayout";
+import { getLocalImage } from "@/lib/images";
 
 const PREVIEW_CARDS = [
-  { id: "1", imgSrc: "/img1.avif", title: "Motion Design", strokeColor1: "#C8FF00", strokeColor2: "#FF3B3B" },
-  { id: "2", imgSrc: "/img2.avif", title: "Typography", strokeColor1: "#7B6BFF", strokeColor2: "#C8FF00" },
-  { id: "3", imgSrc: "/img3.avif", title: "Color Systems", strokeColor1: "#FF3B3B", strokeColor2: "#7B6BFF" },
+  { id: "1", imgSrc: getLocalImage(0, 1), title: "Motion Design", strokeColor1: "#C8FF00", strokeColor2: "#FF3B3B" },
+  { id: "2", imgSrc: getLocalImage(1, 2), title: "Typography", strokeColor1: "#7B6BFF", strokeColor2: "#C8FF00" },
+  { id: "3", imgSrc: getLocalImage(2, 3), title: "Color Systems", strokeColor1: "#FF3B3B", strokeColor2: "#7B6BFF" },
 ];
 
 export default function StrokeCardsPage() {
@@ -34,7 +33,7 @@ export default function StrokeCardsPage() {
 const cards = [
   {
     id: "1",
-    imgSrc: "/img1.avif",
+    imgSrc: "https://picsum.photos/seed/1/800/600",
     title: "Motion Design",
     strokeColor1: "#C8FF00",
     strokeColor2: "#FF3B3B",
@@ -53,18 +52,12 @@ export default function Example() {
 }`}
 
       props={[
-        { name: "imgSrc", type: "string", default: '"/img1.avif"', description: "Background image path" },
-        { name: "imgAlt", type: "string", default: '""', description: "Alt text for the image" },
-        { name: "title", type: "string", default: '"Hello World"', description: "Title text revealed on hover" },
-        { name: "strokeColor1", type: "string", default: '"#F5EE41"', description: "Primary SVG stroke colour" },
-        { name: "strokeColor2", type: "string", default: '"#6E44FF"', description: "Secondary SVG stroke colour" },
-        { name: "titleColor", type: "string", default: '"white"', description: "Title text colour" },
-        { name: "borderRadius", type: "string", default: '"2rem"', description: "Card corner radius" },
-        { name: "strokeAnimDuration", type: "number", default: "1.5", description: "Stroke draw animation duration (s)" },
-        { name: "titleAnimDuration", type: "number", default: "0.75", description: "Title reveal animation duration (s)" },
-        { name: "className", type: "string", default: '""', description: "Extra CSS classes for the wrapper" },
-        { name: "onClick", type: "() => void", default: "—", description: "Optional click handler" },
-        { name: "children", type: "ReactNode", default: "—", description: "Custom overlay content" },
+        { name: "cards", type: "CardEntry[]", default: "default cards with picsum images", description: "Array of card data" },
+        { name: "columns", type: "2 | 3 | 4", default: "2", description: "Number of cards per row" },
+        { name: "gap", type: "string", default: '"1rem"', description: "Gap between cards" },
+        { name: "padding", type: "string", default: '"0 2rem"', description: "Padding around the grid" },
+        { name: "minCardWidth", type: "string", default: '"280px"', description: "Minimum card width" },
+        { name: "maxCardWidth", type: "string", default: '"400px"', description: "Maximum card width" },
       ]}
 
       nextComponent={{ slug: "team-section", name: "Team Section" }}
