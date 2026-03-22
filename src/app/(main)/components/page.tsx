@@ -1,14 +1,12 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import Link from "next/link";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { components } from "@/lib/component-registry";
 import NavigationSidebar from "@/components/ComponentsPage/NavigationSidebar";
 import ComponentSection from "@/components/ComponentsPage/ComponentSection";
-import ComponentCard from "@/components/ComponentsPage/ComponentCard";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -50,24 +48,7 @@ export default function ComponentsPage() {
       <div className="lg:mr-[280px]">
 
         {/* ── Header ── */}
-        <header className="px-5 pt-20 pb-7 md:px-10 border-b border-white/5">
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-3 mb-5">
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-white/30 font-mono-jetbrains text-[11px] no-underline transition-colors duration-200 hover:text-white"
-            >
-              <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-              </svg>
-              Home
-            </Link>
-            <span className="text-white/15">/</span>
-            <span className="font-mono-jetbrains text-[11px] text-white/55 tracking-[0.06em]">
-              Components
-            </span>
-          </div>
-
+        <header className="px-5 pt-10 pb-7 md:px-10 border-b border-white/5">
           <h1 className="font-syne text-[clamp(2rem,6vw,4rem)] font-extrabold tracking-[-0.04em] leading-[0.9] m-0">
             Components
           </h1>

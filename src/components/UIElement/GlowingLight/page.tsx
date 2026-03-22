@@ -4,7 +4,7 @@ import Lenis from 'lenis';
 import lottie from 'lottie-web';
 import React, { useEffect, useRef, useState } from 'react'
 
-interface GlowingLightProps {
+export interface GlowingLightProps {
     lottiePath?: string;
 }
 

@@ -217,7 +217,7 @@ export default function ComponentPageLayout({
       <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "2rem 2rem" }}>
 
         {/* ── PAGE TITLE ── */}
-        <div style={{ padding: "2.5rem 0 2rem", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+        <div style={{ padding: "0.5rem 0 2rem", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.625rem" }}>
               <h1 style={{

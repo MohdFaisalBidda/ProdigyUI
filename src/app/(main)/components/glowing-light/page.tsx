@@ -1,33 +1,29 @@
 "use client";
 
 import React from "react";
-import GlowingLight from "@/components/UIElement/GlowingLight/page";
 import ComponentPageLayout from "@/components/layout/ComponentPageLayout";
+import { getComponentBySlug } from "@/lib/component-registry";
 
 export default function GlowingLightPage() {
+  const component = getComponentBySlug("glowing-light");
+
+  if (!component) return null;
+
   return (
     <ComponentPageLayout
-      index="07"
-      name="Glowing Light"
-      tag="Interactive"
-      tagColor="#C8FF00"
-      slug="glowing-light"
-      description="Lottie-powered glowing light effect that tracks cursor movement with spotlight and mask animations."
-
-      preview={
-        <GlowingLight />
-      }
-
-      codeSnippet={`import GlowingLight from "@/components/UIElement/GlowingLight/page";
-
-export default function Example() {
-  return <GlowingLight />;
-}`}
-
-      props={[]}
-
-      prevComponent={{ slug: "infinite-slider", name: "Infinite Slider" }}
-      nextComponent={{ slug: "gooey-bar", name: "Gooey Bar" }}
+      index={component.index}
+      name={component.name}
+      tag={component.tag}
+      tagColor={component.tagColor}
+      slug={component.slug}
+      description={component.description}
+      previewUrl={component.previewUrl}
+      previewHeight={component.previewHeight}
+      codeSnippet={component.snippet}
+      props={component.props}
+      prevComponent={component.prevComponent}
+      nextComponent={component.nextComponent}
+      peerDependencies={component.peerDependencies}
     />
   );
 }

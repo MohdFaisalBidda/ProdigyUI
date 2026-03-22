@@ -182,13 +182,20 @@ const members = [
     tag: "Scroll",
     tagColor: "#C8FF00",
     description: "Smooth scrolling effect using Lenis with horizontal project showcase. Scroll vertically to move through horizontal content.",
-    snippet: `import MoreSpaceScroll from "@/components/UIElement/MoreSpaceScroll/page";
+    snippet: `import MoreSpaceScroll from "@/components/UIElement/MoreSpaceScroll/MoreSpaceProjects";
 
-<MoreSpaceScroll />`,
+const projects = [
+  { name: "Project 1", img: "/project1.jpg", year: "2024" },
+  { name: "Project 2", img: "/project2.jpg", year: "2025" },
+];
+
+<MoreSpaceScroll projects={projects} projectsPerRow={9} totalRows={10} />`,
     previewUrl: "/preview/more-space-scroll",
     previewHeight: 600,
     props: [
-      { name: "No props", type: "standalone", default: "N/A", description: "This component renders a complete scroll experience - customize by editing the source" },
+      { name: "projects", type: "Project[]", default: "default projects", description: "Array of project objects with name, img (image URL), and year properties" },
+      { name: "projectsPerRow", type: "number", default: "9", description: "Number of projects to display per row" },
+      { name: "totalRows", type: "number", default: "10", description: "Total number of rows to render" },
     ],
     prevComponent: { slug: "spring-back-card", name: "Spring Back Card" },
     nextComponent: { slug: "infinite-contact", name: "Infinite Contact" },
@@ -203,11 +210,19 @@ const members = [
     description: "Scroll-triggered infinite contact section with GSAP animations. Contact info animates infinitely as you scroll.",
     snippet: `import InfiniteContact from "@/components/UIElement/InfiniteContact/page";
 
-<InfiniteContact />`,
+const contacts = [
+  { label: "Alex Morgan", value: "Founder & CEO" },
+  { label: "Sophia Carter", value: "Creative Director" },
+];
+
+const images = ["/avatar1.jpg", "/avatar2.jpg"];
+
+<InfiniteContact data={contacts} images={images} />`,
     previewUrl: "/preview/infinite-contact",
     previewHeight: 600,
     props: [
-      { name: "No props", type: "standalone", default: "N/A", description: "This component renders a complete scroll experience - customize by editing the source" },
+      { name: "data", type: "ContactItem[]", default: "default contacts", description: "Array of contact objects with label and value properties" },
+      { name: "images", type: "string[]", default: "default avatars", description: "Array of image URLs for the contact avatars" },
     ],
     prevComponent: { slug: "more-space-scroll", name: "More Space Scroll" },
     nextComponent: { slug: "infinite-slider", name: "Infinite Slider" },
@@ -222,11 +237,16 @@ const members = [
     description: "Arc-shaped infinite image slider with GSAP scroll-triggered animations. Images arranged in a 3D arc perspective.",
     snippet: `import InfiniteSlider from "@/components/UIElement/InfiniteSlider/page";
 
-<InfiniteSlider />`,
+const images = ["/slide1.jpg", "/slide2.jpg", "/slide3.jpg"];
+const titles = ["First Slide", "Second Slide", "Third Slide"];
+
+<InfiniteSlider images={images} titles={titles} slideCount={6} />`,
     previewUrl: "/preview/infinite-slider",
     previewHeight: 600,
     props: [
-      { name: "No props", type: "standalone", default: "N/A", description: "This component renders a complete interactive slider - customize by editing the source" },
+      { name: "images", type: "string[]", default: "picsum images", description: "Array of image URLs for the slides" },
+      { name: "titles", type: "string[]", default: "default titles", description: "Array of title strings displayed below the slider" },
+      { name: "slideCount", type: "number", default: "6", description: "Number of slide duplicates for infinite scrolling effect" },
     ],
     prevComponent: { slug: "infinite-contact", name: "Infinite Contact" },
     nextComponent: { slug: "glowing-light", name: "Glowing Light" },
@@ -241,11 +261,11 @@ const members = [
     description: "Lottie-powered glowing light effect that tracks cursor movement with spotlight and mask animations.",
     snippet: `import GlowingLight from "@/components/UIElement/GlowingLight/page";
 
-<GlowingLight />`,
+<GlowingLight lottiePath="/fire.json" />`,
     previewUrl: "/preview/glowing-light",
     previewHeight: 600,
     props: [
-      { name: "No props", type: "standalone", default: "N/A", description: "This component renders a complete cursor-tracking effect - customize by editing the source" },
+      { name: "lottiePath", type: "string", default: '"/fire.json"', description: "Path to the Lottie JSON animation file" },
     ],
     prevComponent: { slug: "infinite-slider", name: "Infinite Slider" },
     nextComponent: { slug: "gooey-bar", name: "Gooey Bar" },

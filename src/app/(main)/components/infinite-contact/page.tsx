@@ -1,46 +1,28 @@
 "use client";
 import React from "react";
 import ComponentPageLayout from "@/components/layout/ComponentPageLayout";
+import { getComponentBySlug } from "@/lib/component-registry";
 
 export default function InfiniteContactPage() {
+  const component = getComponentBySlug("infinite-contact");
+
+  if (!component) return null;
+
   return (
     <ComponentPageLayout
-      index="05"
-      name="Infinite Contact"
-      tag="Scroll"
-      tagColor="#7B6BFF"
-      slug="infinite-contact"
-      description="Scroll-triggered infinite contact list with GSAP + Lenis."
-
-      // ✅ iframe — component uses window.scroll, Lenis, GSAP ScrollTrigger
-      previewUrl="/preview/infinite-contact"
-      previewHeight={700}           // optional, defaults to 600
-
-      codeSnippet={`import InfiniteContact from "@/components/UIElement/InfiniteContact/page";
-
-export default function Example() {
-  return <InfiniteContact />;
-}`}
-      props={[]}
-      prevComponent={{ slug: "more-space-scroll", name: "More Space Scroll" }}
-      nextComponent={{ slug: "infinite-slider", name: "Infinite Slider" }}
+      index={component.index}
+      name={component.name}
+      tag={component.tag}
+      tagColor={component.tagColor}
+      slug={component.slug}
+      description={component.description}
+      previewUrl={component.previewUrl}
+      previewHeight={component.previewHeight}
+      codeSnippet={component.snippet}
+      props={component.props}
+      prevComponent={component.prevComponent}
+      nextComponent={component.nextComponent}
+      peerDependencies={component.peerDependencies}
     />
   );
 }
-
-
-// ─────────────────────────────────────────────────────────────────────────────
-// RULE OF THUMB
-// ─────────────────────────────────────────────────────────────────────────────
-// Use `preview={<MyComponent />}`   when the component renders in isolation
-//                                    with no window-scroll/Lenis dependency.
-
-// Use `previewUrl="/preview/slug"`  when the component calls:
-//   • new Lenis(...)
-//   • gsap.ticker / ScrollTrigger
-//   • window.scrollY / window.addEventListener("scroll", ...)
-//   • requestAnimationFrame loops that read scroll position
-
-// For every previewUrl you use, create a matching bare route, e.g.:
-//   app/preview/infinte-contact/page.tsx
-//     → export { default } from "@/components/UIElement/InfiniteContact/page";

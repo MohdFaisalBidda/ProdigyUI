@@ -7,12 +7,12 @@ import Lenis from "lenis"
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface ContactItem {
+export interface ContactItem {
     label: string;
     value: string;
 }
 
-interface InfiniteContactProps {
+export interface InfiniteContactProps {
     data?: ContactItem[];
     images?: string[];
 }

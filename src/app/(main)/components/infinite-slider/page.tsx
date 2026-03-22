@@ -2,29 +2,28 @@
 
 import React from "react";
 import ComponentPageLayout from "@/components/layout/ComponentPageLayout";
+import { getComponentBySlug } from "@/lib/component-registry";
 
 export default function InfiniteSliderPage() {
+  const component = getComponentBySlug("infinite-slider");
+
+  if (!component) return null;
+
   return (
     <ComponentPageLayout
-      index="06"
-      name="Infinite Slider"
-      tag="Interactive"
-      tagColor="#FF3B3B"
-      slug="infinite-slider"
-      description="Arc-shaped infinite image slider with GSAP scroll-triggered animations. Images arranged in a 3D arc perspective."
-
-      previewUrl="/preview/infinite-slider"
-
-      codeSnippet={`import InfiniteSlider from "@/components/UIElement/InfiniteSlider/page";
-
-export default function Example() {
-  return <InfiniteSlider />;
-}`}
-
-      props={[]}
-
-      prevComponent={{ slug: "infinte-contact", name: "Infinite Contact" }}
-      nextComponent={{ slug: "glowing-light", name: "Glowing Light" }}
+      index={component.index}
+      name={component.name}
+      tag={component.tag}
+      tagColor={component.tagColor}
+      slug={component.slug}
+      description={component.description}
+      previewUrl={component.previewUrl}
+      previewHeight={component.previewHeight}
+      codeSnippet={component.snippet}
+      props={component.props}
+      prevComponent={component.prevComponent}
+      nextComponent={component.nextComponent}
+      peerDependencies={component.peerDependencies}
     />
   );
 }

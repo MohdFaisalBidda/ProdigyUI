@@ -1,33 +1,29 @@
 "use client";
 
 import React from "react";
-import MoreSpaceScroll from "@/components/UIElement/MoreSpaceScroll/page";
 import ComponentPageLayout from "@/components/layout/ComponentPageLayout";
+import { getComponentBySlug } from "@/lib/component-registry";
 
 export default function MoreSpaceScrollPage() {
+  const component = getComponentBySlug("more-space-scroll");
+
+  if (!component) return null;
+
   return (
     <ComponentPageLayout
-      index="04"
-      name="More Space Scroll"
-      tag="Scroll"
-      tagColor="#C8FF00"
-      slug="more-space-scroll"
-      description="Smooth scrolling effect using Lenis with horizontal project showcase. Scroll vertically to move through horizontal content."
-
-      preview={
-        <MoreSpaceScroll />
-      }
-
-      codeSnippet={`import MoreSpaceScroll from "@/components/UIElement/MoreSpaceScroll/page";
-
-export default function Example() {
-  return <MoreSpaceScroll />;
-}`}
-
-      props={[]}
-
-      prevComponent={{ slug: "spring-back-card", name: "Spring Back Card" }}
-      nextComponent={{ slug: "infinte-contact", name: "Infinite Contact" }}
+      index={component.index}
+      name={component.name}
+      tag={component.tag}
+      tagColor={component.tagColor}
+      slug={component.slug}
+      description={component.description}
+      previewUrl={component.previewUrl}
+      previewHeight={component.previewHeight}
+      codeSnippet={component.snippet}
+      props={component.props}
+      prevComponent={component.prevComponent}
+      nextComponent={component.nextComponent}
+      peerDependencies={component.peerDependencies}
     />
   );
 }

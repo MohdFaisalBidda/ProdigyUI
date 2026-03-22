@@ -10,7 +10,7 @@ const ARC_DEPTH = 200;
 const CENTER_LIFT = 100;
 const SCROLL_LERP = 0.05;
 
-interface InfiniteSliderProps {
+export interface InfiniteSliderProps {
     images?: string[];
     titles?: string[];
     slideCount?: number;
