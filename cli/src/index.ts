@@ -74,6 +74,51 @@ function installCommand(
   return cmds[pm];
 }
 
+async function appendGlobals(sourceUrl: string): Promise<void> {
+  const spinner = ora("Adding global styles…").start();
+
+  const possiblePaths = [
+    "src/app/globals.css",
+    "src/styles/globals.css",
+    "styles/globals.css",
+    "app/globals.css",
+    "globals.css",
+  ];
+
+  let globalsPath: string | null = null;
+
+  for (const p of possiblePaths) {
+    const fullPath = path.join(process.cwd(), p);
+    if (await fs.pathExists(fullPath)) {
+      globalsPath = fullPath;
+      break;
+    }
+  }
+
+  if (!globalsPath) {
+    globalsPath = path.join(process.cwd(), "src/app/globals.css");
+    await fs.ensureDir(path.dirname(globalsPath));
+    await fs.writeFile(globalsPath, "", "utf-8");
+  }
+
+  try {
+    const globalsContent = await fetchText(sourceUrl);
+    const marker = "/* ProdigyUI Global Styles */";
+    const existingContent = await fs.readFile(globalsPath!, "utf-8");
+
+    if (existingContent.includes(marker)) {
+      spinner.info(`  Global styles already added to ${globalsPath}`);
+      return;
+    }
+
+    const newContent = `\n${marker}\n${globalsContent}\n`;
+    await fs.writeFile(globalsPath!, existingContent.trimEnd() + newContent, "utf-8");
+    spinner.succeed(`  ${chalk.green("✓")} Added global styles to ${globalsPath}`);
+  } catch {
+    console.log(chalk.yellow("  Warning: Could not add global styles. You may need to add them manually."));
+  }
+}
+
 program
   .name("prodigy")
   .description("Add animated components to your project")
@@ -118,6 +163,10 @@ program
     if (!targets || targets.length === 0) {
       console.log(chalk.yellow("No components selected."));
       process.exit(0);
+    }
+
+    if (registry.globals) {
+      await appendGlobals(registry.globals.source);
     }
 
     for (const name of targets) {
@@ -245,6 +294,10 @@ program
     const pm = detectPackageManager();
 
     console.log(chalk.bold(`\n${chalk.cyan("►")} Adding all ${targets.length} components…\n`));
+
+    if (registry.globals) {
+      await appendGlobals(registry.globals.source);
+    }
 
     for (const name of targets) {
       const component = registry.components.find((c: any) => c.name === name);

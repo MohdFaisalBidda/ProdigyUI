@@ -1,0 +1,64 @@
+/* ProdigyUI Global Styles - Add these to your globals.css */
+
+/* Stroke Cards CSS Variables */
+:root {
+  --card-1-stroke: #e67339;
+  --card-2-stroke: #e6b363;
+  --card-3-stroke: #eb3828;
+  --card-4-stroke: #a6a09d;
+  --card-5-stroke: #99938a;
+  --card-6-stroke: #b5c79b;
+  --card-base-stroke: #e0e0e0;
+  --card-copy: #000;
+  --base-100: #fff;
+  --base-200: #4f4f4f;
+  --base-300: #0f0f0f;
+  --light: #f2eec2;
+  --dark: #141414;
+  --mouse-x: 0;
+  --mouse-y: 0;
+}
+
+/* Team Section Styles */
+#card-1 .svg-stroke-1 svg path {
+  stroke: var(--card-1-stroke);
+}
+#card-2 .svg-stroke-1 svg path {
+  stroke: var(--card-2-stroke);
+}
+#card-3 .svg-stroke-1 svg path {
+  stroke: var(--card-3-stroke);
+}
+#card-4 .svg-stroke-1 svg path {
+  stroke: var(--card-4-stroke);
+}
+#card-5 .svg-stroke-1 svg path {
+  stroke: var(--card-5-stroke);
+}
+#card-6 .svg-stroke-1 svg path {
+  stroke: var(--card-6-stroke);
+}
+#card-1 .svg-stroke-2 svg path {
+  stroke: var(--card-1-stroke);
+}
+#card-2 .svg-stroke-2 svg path {
+  stroke: var(--card-2-stroke);
+}
+#card-3 .svg-stroke-2 svg path {
+  stroke: var(--card-3-stroke);
+}
+#card-4 .svg-stroke-2 svg path {
+  stroke: var(--card-4-stroke);
+}
+#card-5 .svg-stroke-2 svg path {
+  stroke: var(--card-5-stroke);
+}
+#card-6 .svg-stroke-2 svg path {
+  stroke: var(--card-6-stroke);
+}
+.profile-names {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+.profile-images {
+  gap: 0.5rem !important;
+}

@@ -59,6 +59,46 @@ function installCommand(pm, deps, isDev = false) {
   };
   return cmds[pm];
 }
+async function appendGlobals(sourceUrl) {
+  const spinner = ora("Adding global styles\u2026").start();
+  const possiblePaths = [
+    "src/app/globals.css",
+    "src/styles/globals.css",
+    "styles/globals.css",
+    "app/globals.css",
+    "globals.css"
+  ];
+  let globalsPath = null;
+  for (const p of possiblePaths) {
+    const fullPath = path.join(process.cwd(), p);
+    if (await fs.pathExists(fullPath)) {
+      globalsPath = fullPath;
+      break;
+    }
+  }
+  if (!globalsPath) {
+    globalsPath = path.join(process.cwd(), "src/app/globals.css");
+    await fs.ensureDir(path.dirname(globalsPath));
+    await fs.writeFile(globalsPath, "", "utf-8");
+  }
+  try {
+    const globalsContent = await fetchText(sourceUrl);
+    const marker = "/* ProdigyUI Global Styles */";
+    const existingContent = await fs.readFile(globalsPath, "utf-8");
+    if (existingContent.includes(marker)) {
+      spinner.info(`  Global styles already added to ${globalsPath}`);
+      return;
+    }
+    const newContent = `
+${marker}
+${globalsContent}
+`;
+    await fs.writeFile(globalsPath, existingContent.trimEnd() + newContent, "utf-8");
+    spinner.succeed(`  ${chalk.green("\u2713")} Added global styles to ${globalsPath}`);
+  } catch {
+    console.log(chalk.yellow("  Warning: Could not add global styles. You may need to add them manually."));
+  }
+}
 program.name("prodigy").description("Add animated components to your project").version("1.0.0");
 program.command("add [components...]").description("Add one or more components to your project").option("-y, --yes", "skip confirmation prompts").option(
   "--path <path>",
@@ -91,6 +131,9 @@ program.command("add [components...]").description("Add one or more components t
   if (!targets || targets.length === 0) {
     console.log(chalk.yellow("No components selected."));
     process.exit(0);
+  }
+  if (registry.globals) {
+    await appendGlobals(registry.globals.source);
   }
   for (const name of targets) {
     const component = registry.components.find((c) => c.name === name);
@@ -200,6 +243,9 @@ program.command("add-all").description("Add all components to your project").opt
   console.log(chalk.bold(`
 ${chalk.cyan("\u25BA")} Adding all ${targets.length} components\u2026
 `));
+  if (registry.globals) {
+    await appendGlobals(registry.globals.source);
+  }
   for (const name of targets) {
     const component = registry.components.find((c) => c.name === name);
     if (!component) continue;

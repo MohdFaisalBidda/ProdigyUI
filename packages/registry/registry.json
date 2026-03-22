@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "description": "Animated UI components for modern web applications. Compatible with React 18+ and Next.js 13+.",
   "assetsNote": "This library does not bundle images. Components use placeholder images from https://picsum.photos when no images are provided. You can provide your own images via component props.",
+  "globals": {
+    "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/packages/registry/globals.css"
+  },
   "components": [
     {
       "name": "stroke-cards",
