@@ -261,7 +261,7 @@ const titles = ["First Slide", "Second Slide", "Third Slide"];
     description: "Lottie-powered glowing light effect that tracks cursor movement with spotlight and mask animations.",
     snippet: `import GlowingLight from "@/components/UIElement/GlowingLight/page";
 
-<GlowingLight lottiePath="/fire.json" />`,
+<GlowingLight lottiePath="./fire.json" />`,
     previewUrl: "/preview/glowing-light",
     previewHeight: 600,
     props: [

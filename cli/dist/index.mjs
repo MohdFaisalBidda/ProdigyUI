@@ -61,23 +61,8 @@ function installCommand(pm, deps, isDev = false) {
 }
 async function appendGlobals(sourceUrl) {
   const spinner = ora("Adding global styles\u2026").start();
-  const possiblePaths = [
-    "src/app/globals.css",
-    "src/styles/globals.css",
-    "styles/globals.css",
-    "app/globals.css",
-    "globals.css"
-  ];
-  let globalsPath = null;
-  for (const p of possiblePaths) {
-    const fullPath = path.join(process.cwd(), p);
-    if (await fs.pathExists(fullPath)) {
-      globalsPath = fullPath;
-      break;
-    }
-  }
-  if (!globalsPath) {
-    globalsPath = path.join(process.cwd(), "src/app/globals.css");
+  let globalsPath = path.join(process.cwd(), getDefaultGlobalsPath());
+  if (!await fs.pathExists(globalsPath)) {
     await fs.ensureDir(path.dirname(globalsPath));
     await fs.writeFile(globalsPath, "", "utf-8");
   }
@@ -99,12 +84,55 @@ ${globalsContent}
     console.log(chalk.yellow("  Warning: Could not add global styles. You may need to add them manually."));
   }
 }
+function getDefaultComponentsPath() {
+  const root = process.cwd();
+  const srcExists = fs.existsSync(path.join(root, "src"));
+  const appInSrc = fs.existsSync(path.join(root, "src/app"));
+  const appInRoot = fs.existsSync(path.join(root, "app"));
+  if (srcExists) {
+    if (appInSrc) {
+      return "src/components/ui";
+    }
+    const componentsInSrc = fs.existsSync(path.join(root, "src/components"));
+    if (componentsInSrc) {
+      return "src/components/ui";
+    }
+    return "src/components/ui";
+  }
+  if (appInRoot) {
+    return "components/ui";
+  }
+  return "components/ui";
+}
+function getDefaultGlobalsPath() {
+  const root = process.cwd();
+  if (fs.existsSync(path.join(root, "src/app/globals.css"))) {
+    return "src/app/globals.css";
+  }
+  if (fs.existsSync(path.join(root, "app/globals.css"))) {
+    return "app/globals.css";
+  }
+  if (fs.existsSync(path.join(root, "src/styles/globals.css"))) {
+    return "src/styles/globals.css";
+  }
+  if (fs.existsSync(path.join(root, "styles/globals.css"))) {
+    return "styles/globals.css";
+  }
+  if (fs.existsSync(path.join(root, "src/app"))) {
+    return "src/app/globals.css";
+  }
+  if (fs.existsSync(path.join(root, "app"))) {
+    return "app/globals.css";
+  }
+  return "src/app/globals.css";
+}
 program.name("prodigy").description("Add animated components to your project").version("1.0.0");
 program.command("add [components...]").description("Add one or more components to your project").option("-y, --yes", "skip confirmation prompts").option(
   "--path <path>",
-  "destination folder relative to project root",
-  "src/components/ui"
+  "destination folder relative to project root (auto-detected if not specified)"
 ).action(async (components, opts) => {
+  const defaultPath = getDefaultComponentsPath();
+  const componentsPath = opts.path || defaultPath;
   const spinner = ora("Fetching registry\u2026").start();
   let registry;
   try {
@@ -148,7 +176,7 @@ ${chalk.cyan("\u25BA")} Adding ${component.title}\u2026`));
     for (const file of component.files) {
       const destPath = path.join(
         process.cwd(),
-        opts.path,
+        componentsPath,
         file.path
       );
       await fs.ensureDir(path.dirname(destPath));
@@ -162,6 +190,32 @@ ${chalk.cyan("\u25BA")} Adding ${component.title}\u2026`));
       } catch {
         fileSpinner.fail(`  Failed to download ${file.path}`);
       }
+    }
+    try {
+      const publicAssets = {
+        "glowing-light": [{ path: "fire.json", source: "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/public/fire.json" }]
+      };
+      const componentPublicAssets = publicAssets[component.name] || [];
+      if (componentPublicAssets.length) {
+        console.log(chalk.dim(`
+  Copying public assets\u2026`));
+        const publicPath = path.join(process.cwd(), "public");
+        await fs.ensureDir(publicPath);
+        for (const asset of componentPublicAssets) {
+          const destPath = path.join(publicPath, asset.path);
+          const assetSpinner = ora(`  Copying ${asset.path} to public/`).start();
+          try {
+            const source = await fetchText(asset.source);
+            await fs.writeFile(destPath, source, "utf-8");
+            assetSpinner.succeed(`  ${chalk.green("\u2713")} public/${asset.path}`);
+          } catch (err) {
+            assetSpinner.fail(`  Failed to copy public/${asset.path}`);
+            console.log(chalk.dim(`  Error: ${err?.message || "Unknown error"}`));
+          }
+        }
+      }
+    } catch (err) {
+      console.log(chalk.red(`ERROR in public assets: ${err?.message}`));
     }
     const dependencies = component.dependencies || [];
     const peerDependencies = component.peerDependencies || [];
@@ -184,12 +238,21 @@ ${chalk.cyan("\u25BA")} Adding ${component.title}\u2026`));
       }
     }
     if (peerDependencies.length) {
-      console.log(chalk.yellow(`
-  Peer dependencies required:`));
-      console.log(
-        chalk.dim(`  ${installCommand(pm, peerDependencies)}
-`)
-      );
+      console.log(chalk.dim(`
+  Installing peer dependencies\u2026`));
+      const peerDepSpinner = ora("  Installing peer dependencies").start();
+      try {
+        const peerDepCmd = installCommand(pm, peerDependencies);
+        console.log(chalk.dim(`  Running: ${peerDepCmd}`));
+        await execShellCommand(peerDepCmd);
+        peerDepSpinner.succeed("  Peer dependencies installed");
+      } catch (err) {
+        peerDepSpinner.fail("  Failed to install peer dependencies");
+        console.log(chalk.dim(`  Run manually: ${installCommand(pm, peerDependencies)}`));
+        if (err?.message) {
+          console.log(chalk.dim(`  Error: ${err.message}`));
+        }
+      }
     }
     if (component.installSteps && component.installSteps.length > 0) {
       console.log(chalk.bold(`
@@ -226,9 +289,10 @@ program.command("init").description("Initialize prodigy-ui in your project").opt
 });
 program.command("add-all").description("Add all components to your project").option("-y, --yes", "skip confirmation prompts").option(
   "--path <path>",
-  "destination folder relative to project root",
-  "src/components/ui"
+  "destination folder relative to project root (auto-detected if not specified)"
 ).action(async (opts) => {
+  const defaultPath = getDefaultComponentsPath();
+  const componentsPath = opts.path || defaultPath;
   const spinner = ora("Fetching registry\u2026").start();
   let registry;
   try {
@@ -254,7 +318,7 @@ ${chalk.cyan("\u25BA")} Adding all ${targets.length} components\u2026
     for (const file of component.files) {
       const destPath = path.join(
         process.cwd(),
-        opts.path,
+        componentsPath,
         file.path
       );
       await fs.ensureDir(path.dirname(destPath));

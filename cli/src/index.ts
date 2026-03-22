@@ -77,26 +77,9 @@ function installCommand(
 async function appendGlobals(sourceUrl: string): Promise<void> {
   const spinner = ora("Adding global styles…").start();
 
-  const possiblePaths = [
-    "src/app/globals.css",
-    "src/styles/globals.css",
-    "styles/globals.css",
-    "app/globals.css",
-    "globals.css",
-  ];
+  let globalsPath = path.join(process.cwd(), getDefaultGlobalsPath());
 
-  let globalsPath: string | null = null;
-
-  for (const p of possiblePaths) {
-    const fullPath = path.join(process.cwd(), p);
-    if (await fs.pathExists(fullPath)) {
-      globalsPath = fullPath;
-      break;
-    }
-  }
-
-  if (!globalsPath) {
-    globalsPath = path.join(process.cwd(), "src/app/globals.css");
+  if (!(await fs.pathExists(globalsPath))) {
     await fs.ensureDir(path.dirname(globalsPath));
     await fs.writeFile(globalsPath, "", "utf-8");
   }
@@ -119,6 +102,57 @@ async function appendGlobals(sourceUrl: string): Promise<void> {
   }
 }
 
+function getDefaultComponentsPath(): string {
+  const root = process.cwd();
+  
+  const srcExists = fs.existsSync(path.join(root, "src"));
+  const appInSrc = fs.existsSync(path.join(root, "src/app"));
+  const appInRoot = fs.existsSync(path.join(root, "app"));
+  
+  if (srcExists) {
+    if (appInSrc) {
+      return "src/components/ui";
+    }
+    const componentsInSrc = fs.existsSync(path.join(root, "src/components"));
+    if (componentsInSrc) {
+      return "src/components/ui";
+    }
+    return "src/components/ui";
+  }
+  
+  if (appInRoot) {
+    return "components/ui";
+  }
+  
+  return "components/ui";
+}
+
+function getDefaultGlobalsPath(): string {
+  const root = process.cwd();
+  
+  if (fs.existsSync(path.join(root, "src/app/globals.css"))) {
+    return "src/app/globals.css";
+  }
+  if (fs.existsSync(path.join(root, "app/globals.css"))) {
+    return "app/globals.css";
+  }
+  if (fs.existsSync(path.join(root, "src/styles/globals.css"))) {
+    return "src/styles/globals.css";
+  }
+  if (fs.existsSync(path.join(root, "styles/globals.css"))) {
+    return "styles/globals.css";
+  }
+  
+  if (fs.existsSync(path.join(root, "src/app"))) {
+    return "src/app/globals.css";
+  }
+  if (fs.existsSync(path.join(root, "app"))) {
+    return "app/globals.css";
+  }
+  
+  return "src/app/globals.css";
+}
+
 program
   .name("prodigy")
   .description("Add animated components to your project")
@@ -130,10 +164,12 @@ program
   .option("-y, --yes", "skip confirmation prompts")
   .option(
     "--path <path>",
-    "destination folder relative to project root",
-    "src/components/ui"
+    "destination folder relative to project root (auto-detected if not specified)"
   )
   .action(async (components: string[], opts) => {
+    const defaultPath = getDefaultComponentsPath();
+    const componentsPath = opts.path || defaultPath;
+    
     const spinner = ora("Fetching registry…").start();
 
     let registry: any;
@@ -183,7 +219,7 @@ program
       for (const file of component.files) {
         const destPath = path.join(
           process.cwd(),
-          opts.path,
+          componentsPath,
           file.path
         );
         await fs.ensureDir(path.dirname(destPath));
@@ -198,6 +234,33 @@ program
         } catch {
           fileSpinner.fail(`  Failed to download ${file.path}`);
         }
+      }
+
+      try {
+        const publicAssets: Record<string, { path: string; source: string }[]> = {
+          "glowing-light": [{ path: "fire.json", source: "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/public/fire.json" }]
+        };
+
+        const componentPublicAssets = publicAssets[component.name] || [];
+        if (componentPublicAssets.length) {
+          console.log(chalk.dim(`\n  Copying public assets…`));
+          const publicPath = path.join(process.cwd(), "public");
+          await fs.ensureDir(publicPath);
+          for (const asset of componentPublicAssets) {
+            const destPath = path.join(publicPath, asset.path);
+            const assetSpinner = ora(`  Copying ${asset.path} to public/`).start();
+            try {
+              const source = await fetchText(asset.source);
+              await fs.writeFile(destPath, source, "utf-8");
+              assetSpinner.succeed(`  ${chalk.green("✓")} public/${asset.path}`);
+            } catch (err: any) {
+              assetSpinner.fail(`  Failed to copy public/${asset.path}`);
+              console.log(chalk.dim(`  Error: ${err?.message || "Unknown error"}`));
+            }
+          }
+        }
+      } catch (err: any) {
+        console.log(chalk.red(`ERROR in public assets: ${err?.message}`));
       }
 
       const dependencies = component.dependencies || [];
@@ -223,10 +286,20 @@ program
       }
 
       if (peerDependencies.length) {
-        console.log(chalk.yellow(`\n  Peer dependencies required:`));
-        console.log(
-          chalk.dim(`  ${installCommand(pm, peerDependencies)}\n`)
-        );
+        console.log(chalk.dim(`\n  Installing peer dependencies…`));
+        const peerDepSpinner = ora("  Installing peer dependencies").start();
+        try {
+          const peerDepCmd = installCommand(pm, peerDependencies);
+          console.log(chalk.dim(`  Running: ${peerDepCmd}`));
+          await execShellCommand(peerDepCmd);
+          peerDepSpinner.succeed("  Peer dependencies installed");
+        } catch (err: any) {
+          peerDepSpinner.fail("  Failed to install peer dependencies");
+          console.log(chalk.dim(`  Run manually: ${installCommand(pm, peerDependencies)}`));
+          if (err?.message) {
+            console.log(chalk.dim(`  Error: ${err.message}`));
+          }
+        }
       }
 
       if (component.installSteps && component.installSteps.length > 0) {
@@ -275,10 +348,12 @@ program
   .option("-y, --yes", "skip confirmation prompts")
   .option(
     "--path <path>",
-    "destination folder relative to project root",
-    "src/components/ui"
+    "destination folder relative to project root (auto-detected if not specified)"
   )
   .action(async (opts) => {
+    const defaultPath = getDefaultComponentsPath();
+    const componentsPath = opts.path || defaultPath;
+    
     const spinner = ora("Fetching registry…").start();
 
     let registry: any;
@@ -308,7 +383,7 @@ program
       for (const file of component.files) {
         const destPath = path.join(
           process.cwd(),
-          opts.path,
+          componentsPath,
           file.path
         );
         await fs.ensureDir(path.dirname(destPath));

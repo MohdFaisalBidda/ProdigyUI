@@ -1,127 +1,79 @@
 "use client"
 
 import React from 'react'
-import SpringBackCard from '@/components/UIElement/SpringBackCard/SpringBackCard'
-import { getImageSrc } from '@/lib/images'
+import SpringBackCard from './SpringBackCard'
 
-const localImages = ['/img2.avif', '/img5.avif', '/img4.avif', '/img3.avif']
+const defaultImages = [
+  { src: 'https://picsum.photos/seed/1/400/500', alt: 'card1' },
+  { src: 'https://picsum.photos/seed/2/400/500', alt: 'card2' },
+  { src: 'https://picsum.photos/seed/3/400/500', alt: 'card3' },
+  { src: 'https://picsum.photos/seed/4/400/500', alt: 'card4' },
+]
 
-function Cards() {
-    return (
-        <section className='h-screen w-full flex items-center justify-center bg-[#0f0f0f] relative overflow-hidden'>
-            <SpringBackCard
-                imgSrc={getImageSrc(localImages[0], 1)}
-                initialRotation={-6}
-                offsetX={0}
-                index={0}
-                className="left-[25%] sm:left-[28%] md:left-[30%] top-[50%] -translate-x-1/2 -translate-y-1/2 -mr-2 sm:-mr-4 md:-mr-6 lg:-mr-8"
-                widthClass="w-28 md:w-36 lg:w-48 xl:w-56"
-                heightClass="h-36 md:h-48 lg:h-64 xl:h-72"
-            >
-                <img
-                    src={getImageSrc(localImages[0], 1)}
-                    alt='card1'
-                    className='w-full h-full object-cover'
-                />
-            </SpringBackCard>
+const defaultLabels = [
+  { text: 'This card looks like a spring back', bgColor: 'bg-pink-300' },
+  { text: 'Catch me if you can', bgColor: 'bg-red-500' },
+  { text: "I'm a spring back card", bgColor: 'bg-amber-100' },
+]
 
-            <SpringBackCard
-                imgSrc={getImageSrc(localImages[1], 2)}
-                initialRotation={5}
-                offsetX={0}
-                index={1}
-                className="left-[50%] top-[55%] sm:left-[38%] md:left-[40%] sm:top-[55%] -translate-x-1/2 -translate-y-1/2 -mr-2 sm:-mr-4 md:-mr-6 lg:-mr-8"
-                widthClass="w-28 md:w-36 lg:w-48 xl:w-56"
-                heightClass="h-36 md:h-48 lg:h-64 xl:h-72"
-            >
-                <img
-                    src={getImageSrc(localImages[1], 2)}
-                    alt='card2'
-                    className='w-full h-full object-cover'
-                />
-            </SpringBackCard>
+export default function SpringBackCards({ 
+  images = defaultImages, 
+  labels = defaultLabels,
+  className = '' 
+}: {
+  images?: { src: string; alt: string }[]
+  labels?: { text: string; bgColor: string }[]
+  className?: string
+}) {
+  return (
+    <section className={`h-screen w-full flex items-center justify-center bg-[#0f0f0f] relative overflow-hidden ${className}`}>
+      {images.slice(0, 4).map((img, i) => (
+        <SpringBackCard
+          key={`img-${i}`}
+          imgSrc={img.src}
+          initialRotation={i % 2 === 0 ? -6 : 6}
+          offsetX={0}
+          index={i}
+          className={
+            [
+              'left-[25%] sm:left-[28%] md:left-[30%] top-[50%] -translate-x-1/2 -translate-y-1/2 -mr-2 sm:-mr-4 md:-mr-6 lg:-mr-8',
+              'left-[50%] top-[55%] sm:left-[38%] md:left-[40%] sm:top-[55%] -translate-x-1/2 -translate-y-1/2 -mr-2 sm:-mr-4 md:-mr-6 lg:-mr-8',
+              'left-[50%] sm:left-[48%] md:left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 -mr-2 sm:-mr-4 md:-mr-6 lg:-mr-8',
+              'left-[75%] top-[52%] sm:left-[58%] md:left-[60%] sm:top-[55%] -translate-x-1/2 -translate-y-1/2',
+            ][i]
+          }
+          widthClass="w-28 md:w-36 lg:w-48 xl:w-56"
+          heightClass="h-36 md:h-48 lg:h-64 xl:h-72"
+          mobileVisible={i === 2 ? false : undefined}
+        >
+          <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
+        </SpringBackCard>
+      ))}
 
-            <SpringBackCard
-                imgSrc={getImageSrc(localImages[2], 3)}
-                initialRotation={-5}
-                offsetX={0}
-                index={2}
-                className="left-[50%] sm:left-[48%] md:left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 -mr-2 sm:-mr-4 md:-mr-6 lg:-mr-8"
-                widthClass="w-28 md:w-36 lg:w-48 xl:w-56"
-                heightClass="h-36 md:h-48 lg:h-64 xl:h-72"
-                mobileVisible={false}
-            >
-                <img
-                    src={getImageSrc(localImages[2], 3)}
-                    alt='card3'
-                    className='w-full h-full object-cover'
-                />
-            </SpringBackCard>
-
-            <SpringBackCard
-                imgSrc={getImageSrc(localImages[3], 4)}
-                initialRotation={6}
-                offsetX={0}
-                index={3}
-                className="left-[75%] top-[52%] sm:left-[58%] md:left-[60%] sm:top-[55%] -translate-x-1/2 -translate-y-1/2"
-                widthClass="w-28 md:w-36 lg:w-48 xl:w-56"
-                heightClass="h-36 md:h-48 lg:h-64 xl:h-72"
-            >
-                <img
-                    src={getImageSrc(localImages[3], 4)}
-                    alt='card4'
-                    className='w-full h-full object-cover'
-                />
-            </SpringBackCard>
-
-            <SpringBackCard
-                initialRotation={0}
-                offsetX={0}
-                index={4}
-                className=" top-[35%] sm:top-[40%] left-[30%] sm:left-[35%] -translate-x-1/2 -translate-y-1/2"
-                widthClass="auto"
-                heightClass="auto"
-            >
-                <p className='rounded-full rounded-bl-none bg-pink-300 pointer-events-none whitespace-nowrap text-xs sm:text-sm text-black'
-                    style={{ padding: "0.5rem 1rem" }}
-                >This card looks like a spring back</p>
-            </SpringBackCard>
-
-            <SpringBackCard
-                initialRotation={0}
-                offsetX={0}
-                index={5}
-                className="bottom-[30%] sm:bottom-[35%] left-[45%] sm:left-[45%] -translate-x-1/2 -translate-y-1/2"
-                widthClass="auto"
-                heightClass="auto"
-            >
-                <p className='rounded-full rounded-bl-none bg-red-500 pointer-events-none whitespace-nowrap text-xs sm:text-sm text-black'
-                style={{ padding: "0.5rem 1rem" }}
-                >Catch me if you can</p>
-            </SpringBackCard>
-
-            <SpringBackCard
-                initialRotation={0}
-                offsetX={0}
-                index={6}
-                className="right-[20%] sm:right-[23%] top-[45%] sm:top-[50%] -translate-x-1/2 -translate-y-1/2"
-                widthClass="auto"
-                heightClass="auto"
-            >
-                <p className='rounded-full rounded-bl-none bg-amber-100 pointer-events-none whitespace-nowrap text-xs sm:text-sm text-black'
-                style={{ padding: "0.5rem 1rem" }}
-                >I&apos;m a spring back card</p>
-            </SpringBackCard>
-        </section>
-    )
+      {labels.slice(0, 3).map((label, i) => (
+        <SpringBackCard
+          key={`label-${i}`}
+          initialRotation={0}
+          offsetX={0}
+          index={i + 4}
+          className={
+            [
+              'top-[35%] sm:top-[40%] left-[30%] sm:left-[35%] -translate-x-1/2 -translate-y-1/2',
+              'bottom-[30%] sm:bottom-[35%] left-[45%] sm:left-[45%] -translate-x-1/2 -translate-y-1/2',
+              'right-[20%] sm:right-[23%] top-[45%] sm:top-[50%] -translate-x-1/2 -translate-y-1/2',
+            ][i]
+          }
+          widthClass="auto"
+          heightClass="auto"
+        >
+          <p 
+            className={`rounded-full rounded-bl-none pointer-events-none whitespace-nowrap text-xs sm:text-sm text-black ${label.bgColor}`}
+            style={{ padding: '0.5rem 1rem' }}
+          >
+            {label.text}
+          </p>
+        </SpringBackCard>
+      ))}
+    </section>
+  )
 }
-
-function SpringBackCards() {
-    return (
-        <div>
-            <Cards />
-        </div>
-    )
-}
-
-export default SpringBackCards

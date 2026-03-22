@@ -94,6 +94,10 @@
         {
           "path": "spring-back-card/SpringBackCard.tsx",
           "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/SpringBackCard/SpringBackCard.tsx"
+        },
+        {
+          "path": "spring-back-card/SpringBackCardDemo.tsx",
+          "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/SpringBackCard/page.tsx"
         }
       ],
       "dependencies": ["clsx", "tailwind-merge"],
@@ -205,11 +209,6 @@
           "title": "Install Dependencies",
           "description": "Install lenis and lottie-web packages",
           "code": "npm install lenis lottie-web"
-        },
-        {
-          "title": "Add Lottie Animation",
-          "description": "Copy a Lottie JSON file to your public folder and pass the path",
-          "code": "// The component uses /fire.json by default\n// You can provide your own Lottie animation:\n<GlowingLight lottiePath=\"/your-animation.json\" />"
         },
         {
           "title": "Setup Lenis",
