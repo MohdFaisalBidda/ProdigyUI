@@ -178,7 +178,7 @@ function GlowingLight({ lottiePath = "/fire.json" }: GlowingLightProps) {
                 <div
                     className="lottie-container relative z-10 flex flex-col items-center gap-4 group-hover:opacity-100 opacity-40">
 
-                    <div ref={lottieContainerRef} className="relative w-32 h-32 pointer-events-none">
+                    <div ref={lottieContainerRef} className="relative w-20 h-20 md:w-32 md:h-32 pointer-events-none">
                         <div className="fire-glow absolute inset-0
         bg-[radial-gradient(circle,rgba(255,0,72,0.75)_0%,rgba(255,145,0,0.6)_30%,rgba(255,242,140,0.25)_50%,transparent_70%)]
         blur-xl opacity-40">
@@ -189,11 +189,11 @@ function GlowingLight({ lottiePath = "/fire.json" }: GlowingLightProps) {
                 </div>
 
 
-                <h1 className="text-[clamp(3rem,5vw,7rem)] tracking-tighter font-medium">
+                <h1 className="text-2xl md:text-[clamp(3rem,5vw,7rem)] tracking-tighter font-medium">
                     Guided by Interaction
                 </h1>
 
-                <p className="text-[1.5rem] w-full lg:text-3xl lg:w-[60%] text-center">
+                <p className="text-[1rem] w-full lg:text-3xl lg:w-[60%] text-center">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore facere vitae minima. Quasi fugit totam officia consequuntur nisi dignissimos, perspiciatis praesentium tempore perferendis ad esse tempora cumque numquam architecto accusamus! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur nam nisi et vitae odio error deleniti consequuntur, voluptatibus ut eligendi. Atque, amet eligendi harum obcaecati libero rerum laudantium quae laborum.
                 </p>
 

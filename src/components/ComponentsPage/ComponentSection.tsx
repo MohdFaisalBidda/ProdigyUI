@@ -240,7 +240,7 @@ export default function ComponentSection({ component, total }: { component: Comp
       <div className="sm:hidden px-5 pb-4">
         <Link
           href={`/components/${component.slug}`}
-          className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-mono-jetbrains text-[11px] font-medium no-underline transition-transform duration-200 hover:scale-105"
+          className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-full font-mono-jetbrains text-[11px] font-medium no-underline transition-transform duration-200 hover:scale-105"
           style={{ background: component.tagColor, color: '#0f0f0f' }}
         >
           View docs →
