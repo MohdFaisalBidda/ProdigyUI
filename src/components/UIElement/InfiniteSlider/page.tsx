@@ -275,9 +275,20 @@ function InfiniteSlider({
     }, [slideSources, slideTitles, isMobileBreakpoint, slideGap, scrollLerp]);
 
     return (
-        <section ref={sliderContainer} className='slider relative w-full h-svh overflow-hidden'>
-            <p ref={titleDisplay} id="slide-title" className={`absolute left-1/2 -translate-x-1/2 font-medium text-[#e8e8e2] ${isMobile ? "bottom-[20svh] text-lg" : "bottom-[25svh] text-2xl"}`}>Slide Title</p>
-        </section>
+        <>
+            <section ref={sliderContainer} className='slider absolute inset-0 w-full h-full overflow-x-hidden' />
+            <p
+                ref={titleDisplay}
+                id="slide-title"
+                className={`absolute left-1/2 -translate-x-1/2 font-medium text-[#e8e8e2] pointer-events-none font-barlow ${isMobile ? "bottom-28 text-base sm:text-lg" : "bottom-32 text-xl sm:text-2xl"}`}
+                style={{
+                    textShadow: '0 2px 12px rgba(0,0,0,0.7)',
+                    zIndex: 9999,
+                }}
+            >
+                Slide Title
+            </p>
+        </>
     );
 }
 

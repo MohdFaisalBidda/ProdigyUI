@@ -1,43 +1,71 @@
-"use client";
-
-import React from "react";
+import type { Metadata } from "next";
 import GooeyStatusBar from "@/components/UIElement/GooeyBar/GoeeyBar";
 import ComponentPageLayout from "@/components/layout/ComponentPageLayout";
+import { getComponentBySlug } from "@/lib/component-registry";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const component = getComponentBySlug("gooey-bar");
+
+  if (!component) {
+    return { title: "Gooey Bar | Prodigy UI" };
+  }
+
+  return {
+    title: component.name,
+    description: component.description,
+    keywords: [
+      component.name,
+      component.tag,
+      "react component",
+      "animation",
+      "svg filter",
+      "gooey effect",
+      "prodigy ui",
+    ],
+    openGraph: {
+      title: `${component.name} | Prodigy UI`,
+      description: component.description,
+      images: [
+        {
+          url: `/og-${component.slug}.png`,
+          width: 1200,
+          height: 630,
+          alt: `${component.name} Component Preview`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${component.name} | Prodigy UI`,
+      description: component.description,
+      images: [`/og-${component.slug}.png`],
+    },
+  };
+}
 
 export default function GooeyBarPage() {
+  const component = getComponentBySlug("gooey-bar");
+
+  if (!component) return null;
+
   return (
     <ComponentPageLayout
-      index="08"
-      name="Gooey Bar"
-      tag="Interactive"
-      tagColor="#7B6BFF"
-      slug="gooey-bar"
-      description="Animated status bar with gooey SVG filter effects. Hover over items to see fluid morphing animations with tooltips."
-
+      index={component.index}
+      name={component.name}
+      tag={component.tag}
+      tagColor={component.tagColor}
+      slug={component.slug}
+      description={component.description}
       preview={
-        <GooeyStatusBar />
+      <GooeyStatusBar />
       }
-
-      codeSnippet={`import GooeyStatusBar from "@/components/UIElement/GooeyBar/GoeeyBar";
-
-export default function Example() {
-  return <GooeyStatusBar />;
-}`}
-
-      props={[
-        { name: "items", type: "StatusItem[]", default: "defaultStatusItems", description: "Items to display in the bar" },
-        { name: "renderContent", type: "(item: StatusItem) => ReactNode", default: "—", description: "Custom renderer for tooltip content" },
-        { name: "contentClassName", type: "string", default: '""', description: "Extra classes for tooltip text" },
-        { name: "barColor", type: "string", default: '"black"', description: "Background color of bar and gooey blob" },
-        { name: "iconColor", type: "string", default: '"white"', description: "Text/icon color" },
-        { name: "className", type: "string", default: '""', description: "Extra class for outer wrapper" },
-        { name: "iconSize", type: "string", default: '"w-5 h-5"', description: "Icon size class" },
-        { name: "buttonSize", type: "string", default: '"w-10 h-10"', description: "Button size class" },
-        { name: "gap", type: "string", default: '"gap-1"', description: "Gap between buttons" },
-        { name: "padding", type: "string", default: '"px-3 py-2"', description: "Padding of main bar" },
-      ]}
-
-      prevComponent={{ slug: "glowing-light", name: "Glowing Light" }}
+      previewUrl={component.previewUrl}
+      previewHeight={component.previewHeight}
+      codeSnippet={component.snippet}
+      props={component.props}
+      prevComponent={component.prevComponent}
+      nextComponent={component.nextComponent}
+      peerDependencies={component.peerDependencies}
     />
   );
 }

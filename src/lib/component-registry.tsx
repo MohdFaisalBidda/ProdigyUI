@@ -38,6 +38,7 @@ export type ComponentRegistryItem = {
   prevComponent?: { slug: string; name: string };
   nextComponent?: { slug: string; name: string };
   peerDependencies?: string[];
+  keywords?: string[];
 };
 
 const STROKE_CARDS_PREVIEW = [

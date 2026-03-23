@@ -1,9 +1,49 @@
-"use client";
-
-import React from "react";
+import type { Metadata } from "next";
 import TeamSection from "@/components/UIElement/TeamSection/TeamSection";
 import ComponentPageLayout from "@/components/layout/ComponentPageLayout";
+import { getComponentBySlug } from "@/lib/component-registry";
 import { getImageSrc } from "@/lib/images";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const component = getComponentBySlug("team-section");
+
+  if (!component) {
+    return { title: "Team Section | Prodigy UI" };
+  }
+
+  return {
+    title: component.name,
+    description: component.description,
+    keywords: [
+      component.name,
+      component.tag,
+      "react component",
+      "animation",
+      "gsap",
+      "team showcase",
+      "hover animation",
+      "prodigy ui",
+    ],
+    openGraph: {
+      title: `${component.name} | Prodigy UI`,
+      description: component.description,
+      images: [
+        {
+          url: `/og-${component.slug}.png`,
+          width: 1200,
+          height: 630,
+          alt: `${component.name} Component Preview`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${component.name} | Prodigy UI`,
+      description: component.description,
+      images: [`/og-${component.slug}.png`],
+    },
+  };
+}
 
 const TEAM_MEMBERS = [
   { image: getImageSrc("/img4.avif", 1), name: "Jack" },
@@ -15,48 +55,34 @@ const TEAM_MEMBERS = [
 ];
 
 export default function TeamSectionPage() {
+  const component = getComponentBySlug("team-section");
+
+  if (!component) return null;
+
   return (
     <ComponentPageLayout
-      index="02"
-      name="Team Section"
-      tag="Interactive"
-      tagColor="#7B6BFF"
-      slug="team-section"
-      description="Interactive team member showcase with GSAP-powered hover animations. Names animate in on profile hover."
-
+      index={component.index}
+      name={component.name}
+      tag={component.tag}
+      tagColor={component.tagColor}
+      slug={component.slug}
+      description={component.description}
       preview={
-        <TeamSection defaultName="Our Squad" members={TEAM_MEMBERS} />
+        <TeamSection
+          defaultName="Our Squad"
+          members={TEAM_MEMBERS}
+          backgroundColor="#070707"
+          textColor="#e3e3db"
+          accentColor="#FF3B3B"
+        />
       }
-
-      codeSnippet={`import TeamSection from "@/components/UIElement/TeamSection/TeamSection";
-
-const members = [
-  { image: "https://picsum.photos/seed/1/200/200", name: "Jack" },
-  { image: "https://picsum.photos/seed/2/200/200", name: "Jane" },
-  { image: "https://picsum.photos/seed/3/200/200", name: "Bob" },
-];
-
-export default function Example() {
-  return (
-    <TeamSection defaultName="Our Squad" members={members} />
-  );
-}`}
-
-      props={[
-        { name: "defaultName", type: "string", default: '"Our Squad"', description: "Text displayed when no member is hovered" },
-        { name: "members", type: "TeamMember[]", required: true, description: "Array of team members" },
-        { name: "backgroundColor", type: "string", default: '"#0f0f0f"', description: "Background color of the section" },
-        { name: "textColor", type: "string", default: '"#e3e3db"', description: "Default text color" },
-        { name: "accentColor", type: "string", default: '"#f93535"', description: "Hover name color" },
-        { name: "containerClassName", type: "string", default: '""', description: "Extra class for the section container" },
-        { name: "containerStyle", type: "React.CSSProperties", default: "—", description: "Inline styles for the container" },
-        { name: "hoverScaleFactor", type: "number", default: "2", description: "Scale multiplier when a profile image is hovered" },
-        { name: "animDuration", type: "number", default: "0.75", description: "Animation duration in seconds" },
-        { name: "charStagger", type: "number", default: "0.025", description: "Stagger each char by this amount" },
-      ]}
-
-      prevComponent={{ slug: "stroke-cards", name: "Stroke Cards" }}
-      nextComponent={{ slug: "spring-back-card", name: "Spring Back Card" }}
+      previewUrl={component.previewUrl}
+      previewHeight={component.previewHeight}
+      codeSnippet={component.snippet}
+      props={component.props}
+      prevComponent={component.prevComponent}
+      nextComponent={component.nextComponent}
+      peerDependencies={component.peerDependencies}
     />
   );
 }

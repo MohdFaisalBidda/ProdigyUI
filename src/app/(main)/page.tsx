@@ -57,7 +57,7 @@ const MARQUEE_ITEMS = [
 
 /* ─── Command tabs ──────────────────────────────────────────────── */
 
-const INSTALL_CMD = "npx prodigy-ui add <component>";
+const INSTALL_CMD = "npx prodigy-ui list";
 
 function CommandWidget() {
   const [copied, setCopied] = useState(false);
