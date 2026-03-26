@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import StrokeCards from "@/components/UIElement/StrokeCards/StrokeCards";
 import TeamSection from "@/components/UIElement/TeamSection/TeamSection";
 import GooeyStatusBar from "@/components/UIElement/GooeyBar/GoeeyBar";
+import PixelImage from "@/components/UIElement/PixelImage/PixelImage";
 
 export type ComponentData = {
   slug: string;
@@ -64,7 +65,7 @@ export const componentRegistry: ComponentRegistryItem[] = [
     tag: "Interactive",
     tagColor: "#C8FF00",
     description: "SVG path-drawing animation with masked image hover reveals. Each card traces its border on hover.",
-    snippet: `import StrokeCards from "@/components/UIElement/StrokeCards/StrokeCards";
+    snippet: `import StrokeCards from "@/components/ui/stroke-cards/StrokeCards";
 
 const cards = [
   { id: "1", imgSrc: "/img1.avif", title: "Motion Design", strokeColor1: "#C8FF00", strokeColor2: "#FF3B3B" },
@@ -94,7 +95,7 @@ const cards = [
     tag: "GSAP",
     tagColor: "#FF3B3B",
     description: "Interactive team member showcase with GSAP-powered hover animations. Names animate in on profile hover.",
-    snippet: `import TeamSection from "@/components/UIElement/TeamSection/TeamSection";
+    snippet: `import TeamSection from "@/components/ui/team-section/TeamSection";
 
 const members = [
   { image: "/img4.avif", name: "Jack" },
@@ -142,7 +143,7 @@ const members = [
     tag: "Interactive",
     tagColor: "#FF3B3B",
     description: "3D spring physics card that follows cursor movement with smooth lerp interpolation and rotation effects.",
-    snippet: `import SpringBackCard from "@/components/UIElement/SpringBackCard/SpringBackCard";
+    snippet: `import SpringBackCard from "@/components/ui/spring-back-card/SpringBackCard";
 
 <SpringBackCard
   imgSrc="/image.jpg"
@@ -183,7 +184,7 @@ const members = [
     tag: "Scroll",
     tagColor: "#C8FF00",
     description: "Smooth scrolling effect using Lenis with horizontal project showcase. Scroll vertically to move through horizontal content.",
-    snippet: `import MoreSpaceScroll from "@/components/UIElement/MoreSpaceScroll/MoreSpaceProjects";
+    snippet: `import MoreSpaceScroll from "@/components/ui/more-space-scroll/MoreSpaceScroll";
 
 const projects = [
   { name: "Project 1", img: "/project1.jpg", year: "2024" },
@@ -209,7 +210,7 @@ const projects = [
     tag: "Scroll",
     tagColor: "#7B6BFF",
     description: "Scroll-triggered infinite contact section with GSAP animations. Contact info animates infinitely as you scroll.",
-    snippet: `import InfiniteContact from "@/components/UIElement/InfiniteContact/page";
+    snippet: `import InfiniteContact from "@/components/ui/infinite-contact/InfiniteContact";
 
 const contacts = [
   { label: "Alex Morgan", value: "Founder & CEO" },
@@ -236,7 +237,7 @@ const images = ["/avatar1.jpg", "/avatar2.jpg"];
     tag: "Interactive",
     tagColor: "#FF3B3B",
     description: "Arc-shaped infinite image slider with GSAP scroll-triggered animations. Images arranged in a 3D arc perspective.",
-    snippet: `import InfiniteSlider from "@/components/UIElement/InfiniteSlider/page";
+    snippet: `import InfiniteSlider from "@/components/ui/infinite-slider/InfiniteSlider";
 
 const images = ["/slide1.jpg", "/slide2.jpg", "/slide3.jpg"];
 const titles = ["First Slide", "Second Slide", "Third Slide"];
@@ -260,7 +261,7 @@ const titles = ["First Slide", "Second Slide", "Third Slide"];
     tag: "Interactive",
     tagColor: "#C8FF00",
     description: "Lottie-powered glowing light effect that tracks cursor movement with spotlight and mask animations.",
-    snippet: `import GlowingLight from "@/components/UIElement/GlowingLight/page";
+    snippet: `import GlowingLight from "@/components/ui/glowing-light/GlowingLight";
 
 <GlowingLight lottiePath="./fire.json" />`,
     previewUrl: "/preview/glowing-light",
@@ -279,7 +280,7 @@ const titles = ["First Slide", "Second Slide", "Third Slide"];
     tag: "Motion",
     tagColor: "#7B6BFF",
     description: "Animated status bar with gooey SVG filter effects. Hover over items to see fluid morphing animations with tooltips.",
-    snippet: `import GooeyStatusBar from "@/components/UIElement/GooeyBar/GoeeyBar";
+    snippet: `import GooeyStatusBar from "@/components/ui/gooey-bar/GooeyStatusBar";
 
 <GooeyStatusBar />`,
     preview: (
@@ -302,8 +303,64 @@ const titles = ["First Slide", "Second Slide", "Third Slide"];
       { name: "padding", type: "string", default: '"px-3"', description: "CSS padding for the main bar" },
     ],
     prevComponent: { slug: "glowing-light", name: "Glowing Light" },
-    nextComponent: undefined,
+    nextComponent: { slug: "pixel-image", name: "Pixel Image" },
     peerDependencies: ["motion"],
+  },
+  {
+    slug: "pixel-image",
+    index: "09",
+    name: "Pixel Image",
+    tag: "Animation",
+    tagColor: "#C8FF00",
+    description: "Pixelated image reveal animation. Image dissolves from coarse pixels to clear after certain delay.",
+    snippet: `import PixelImage from "@/components/ui/pixel-image/PixelImage";
+
+function Page() {
+  return (
+    <div className="p-8">
+      <PixelImage
+        className="h-[400px] w-full mt-8"
+        loop
+        loopTimes={Infinity}
+        speed={1.5}
+        loopDelay={3}
+      >
+        <img src="/img4.avif" className="w-full h-full" />
+      </PixelImage>
+    </div>
+  )
+}`,
+    preview: (
+      <div className="p-8">
+        <PixelImage
+          className="h-[400px] w-full mt-8"
+          loop
+          loopTimes={Infinity}
+          speed={1.5}
+          loopDelay={3}
+          pxSteps={[40, 20, 10, 6, 4, 2, 1]}
+          triggerStart="top+=20% bottom"
+        >
+          <img src="/img4.avif" className="w-full h-full" />
+        </PixelImage>
+      </div>
+    ),
+    previewHeight: 600,
+    props: [
+      { name: "children", type: "ReactNode", default: "undefined", description: "Image element(s) to pixelate" },
+      { name: "pxSteps", type: "number[]", default: "[40, 20, 10, 6, 4, 2, 1]", description: "Pixelation steps array" },
+      { name: "triggerStart", type: "string", default: '"top+=20% bottom"', description: "Scroll trigger start position" },
+      { name: "speed", type: "number", default: "1.5", description: "Animation duration in seconds" },
+      { name: "intialDelay", type: "number", default: "0.5", description: "Initial delay before animation" },
+      { name: "className", type: "string", default: '""', description: "Additional CSS classes" },
+      { name: "style", type: "CSSProperties", default: "{}", description: "Inline styles" },
+      { name: "loop", type: "boolean", default: "true", description: "Whether animation repeats" },
+      { name: "loopTimes", type: "number", default: "Infinity", description: "Number of loop iterations" },
+      { name: "loopDelay", type: "number", default: "3", description: "Delay between loop iterations" },
+    ],
+    prevComponent: { slug: "gooey-bar", name: "Gooey Bar" },
+    nextComponent: undefined,
+    peerDependencies: ["gsap"],
   },
 ];
 

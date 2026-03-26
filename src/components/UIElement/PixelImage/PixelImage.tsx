@@ -14,13 +14,13 @@ const PixelImage = ({
   children,
   pxSteps = DEFAULT_PX_STEPS,
   triggerStart = "top+=20% bottom",
-  speed = 1,
+  speed = 1.5,
   intialDelay = 0.5,
   className = "",
   style = {},
   loop = true,
   loopTimes = Infinity,
-  loopDelay = 1,
+  loopDelay = 3,
 }: {
   children: React.ReactNode
   pxSteps?: number[]
@@ -56,15 +56,16 @@ const PixelImage = ({
       hiddenImage.getAttribute("data-pixel-src") || hiddenImage.src
 
     const render = (pixelSize: number) => {
-      if (!img) return
+      if (!img || !img.complete || img.naturalWidth === 0 || img.naturalHeight === 0) return
 
       const cw = container.offsetWidth
       const ch = container.offsetHeight
 
+      if (cw === 0 || ch === 0) return
+
       canvas.width = cw
       canvas.height = ch
 
-      // CONTAIN (no crop, no zoom)
       let drawW = cw
       let drawH = ch
       let dx = 0
@@ -86,6 +87,8 @@ const PixelImage = ({
       const size = Math.max(1, pixelSize)
       const smallW = Math.ceil(cw / size)
       const smallH = Math.ceil(ch / size)
+
+      if (smallW === 0 || smallH === 0) return
 
       const offscreen = document.createElement("canvas")
       offscreen.width = smallW
@@ -203,19 +206,4 @@ const PixelImage = ({
   )
 }
 
-function Page() {
-  return (
-    <div className="p-8">
-      <PixelImage
-        className="h-[400px] w-full mt-8"
-        loop
-        loopTimes={Infinity}
-        loopDelay={3} // ⚠️ seconds, not ms
-      >
-        <img src="/img4.avif" className="w-full h-full" />
-      </PixelImage>
-    </div>
-  )
-}
-
-export default Page
+export default PixelImage
