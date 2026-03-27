@@ -29,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: component.description,
       images: [
         {
-          url: `/og-${component.slug}.png`,
+          url: `/og/og-${component.slug}.webp`,
           width: 1200,
           height: 630,
           alt: `${component.name} Component Preview`,
@@ -40,7 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title: `${component.name} | Prodigy UI`,
       description: component.description,
-      images: [`/og-${component.slug}.png`],
+      images: [`/og/og-${component.slug}.webp`],
     },
   };
 }

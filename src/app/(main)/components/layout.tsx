@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
         "Browse and explore our collection of production-ready animated components. Each component is a copy-paste starting point with GSAP and Lenis animations.",
       images: [
         {
-          url: "/og-components.png",
+          url: "/og/og-components.webp",
           width: 1200,
           height: 630,
           alt: "Prodigy UI Components",
@@ -36,7 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "Components | Prodigy UI",
       description:
         "Browse and explore our collection of production-ready animated components.",
-      images: ["/og-components.png"],
+      images: ["/og/og-components.webp"],
     },
   };
 }

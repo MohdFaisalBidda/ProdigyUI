@@ -30,7 +30,7 @@ export const metadata: Metadata = {
       "Production-ready animated components built with GSAP and Lenis. Copy the source, drop it in your project, and customize every detail.",
     images: [
       {
-        url: "/og-home.png",
+        url: "/og/og-home.webp",
         width: 1200,
         height: 630,
         alt: "Prodigy UI - Animated Component Library",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     title: "Prodigy UI | Animated Component Library",
     description:
       "Production-ready animated components built with GSAP and Lenis. Copy the source, drop it in your project, and customize every detail.",
-    images: ["/og-home.png"],
+    images: ["/og-home.webp"],
   },
   robots: {
     index: true,

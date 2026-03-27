@@ -1,6 +1,5 @@
 import { APP_NAME } from '@/constants'
 import Link from 'next/link'
-import React from 'react'
 
 function ComponentsIcon() {
     return (
@@ -20,18 +19,16 @@ function GithubIcon() {
 
 function NpmIcon() {
     return (
-        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M0 7.334v8h6v1.333h1.336V7.334H0zm6 6.665H1.336v-5.33H6v5.33zm1.336 0v-8H12v8h-4.668zm6-6.665H12v1.332h1.336v5.332H8.668v1.336H12v5.331h-4.668v-5.331H6V8.668H1.336v5.33H6v1.336H0v6.667h6v-5.331h1.336v5.331h4.668V8.668H8.668V7.334h4.668v-1.336H12V0h6v14.001h-6z" />
-        </svg>
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.001 3C20.5533 3 21.001 3.44772 21.001 4V20C21.001 20.5523 20.5533 21 20.001 21H4.00098C3.44869 21 3.00098 20.5523 3.00098 20V4C3.00098 3.44772 3.44869 3 4.00098 3H20.001ZM17.001 7H7.00098V17H12.001V9.5H14.501V17H17.001V7Z"></path></svg>
     )
 }
 
 function Header() {
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-4 shadow-sm bg-[#070707]/[0.5] backdrop-blur-sm"
-        style={{
-            padding:"1.5rem 1rem"
-        }}
+            style={{
+                padding: "1.5rem 1rem"
+            }}
         >
             <Link href="/" className="flex items-center gap-2.5 group">
                 <span className="text-sm tracking-widest uppercase text-white/50 group-hover:text-white transition-colors" style={{ fontFamily: "'JetBrains Mono', monospace" }}>

@@ -27,7 +27,7 @@ This document outlines the SEO implementation for Prodigy UI, including metadata
 - **`/src/app/(main)/components/[slug]/page.tsx`**
   - `generateMetadata()` for dynamic SEO based on component slug
   - Keywords include component name, tag, and common terms
-  - OG image path: `/og-{slug}.png`
+   - OG image path: `/og/og-{slug}.webp`
   - Twitter Card support
 
 ### 2. Component Pages with Metadata
@@ -67,24 +67,24 @@ The metadata structure supports OG images for all pages with the following namin
 
 ### 1. OG Images Required
 
-The following OG images need to be created and placed in the `/public` folder:
+The following OG images need to be created and placed in the `/public/og` folder:
 
 | Image Name | For Page |
 |------------|----------|
-| `og-home.png` | Homepage |
-| `og-components.png` | Components listing |
-| `og-stroke-cards.png` | Stroke Cards |
-| `og-team-section.png` | Team Section |
-| `og-spring-back-card.png` | Spring Back Card |
-| `og-more-space-scroll.png` | More Space Scroll |
-| `og-infinite-contact.png` | Infinite Contact |
-| `og-infinite-slider.png` | Infinite Slider |
-| `og-glowing-light.png` | Glowing Light |
-| `og-gooey-bar.png` | Gooey Bar |
+| `og-home.webp` | Homepage |
+| `og-components.webp` | Components listing |
+| `og-stroke-cards.webp` | Stroke Cards |
+| `og-team-section.webp` | Team Section |
+| `og-spring-back-card.webp` | Spring Back Card |
+| `og-more-space-scroll.webp` | More Space Scroll |
+| `og-infinite-contact.webp` | Infinite Contact |
+| `og-infinite-slider.webp` | Infinite Slider |
+| `og-glowing-light.webp` | Glowing Light |
+| `og-gooey-bar.webp` | Gooey Bar |
 
 **Recommended OG Image Specs:**
 - Dimensions: 1200x630 pixels
-- Format: PNG (or JPEG)
+- Format: WebP (recommended for better compression)
 - File size: < 500KB for fast loading
 - Include component preview or branding
 
@@ -114,16 +114,17 @@ Consider adding canonical URLs to prevent duplicate content issues.
 
 ```
 /public
-├── og-home.png              # TODO: Create
-├── og-components.png        # TODO: Create
-├── og-stroke-cards.png      # TODO: Create
-├── og-team-section.png      # TODO: Create
-├── og-spring-back-card.png  # TODO: Create
-├── og-more-space-scroll.png # TODO: Create
-├── og-infinite-contact.png  # TODO: Create
-├── og-infinite-slider.png   # TODO: Create
-├── og-glowing-light.png     # TODO: Create
-└── og-gooey-bar.png         # TODO: Create
+/og
+├── og-home.webp              # TODO: Create
+├── og-components.webp        # TODO: Create
+├── og-stroke-cards.webp      # TODO: Create
+├── og-team-section.webp      # TODO: Create
+├── og-spring-back-card.webp  # TODO: Create
+├── og-more-space-scroll.webp # TODO: Create
+├── og-infinite-contact.webp  # TODO: Create
+├── og-infinite-slider.webp   # TODO: Create
+├── og-glowing-light.webp     # TODO: Create
+└── og-gooey-bar.webp         # TODO: Create
 
 /src/app
 ├── (main)
@@ -201,5 +202,5 @@ When adding a new component:
 2. Create the component page in `/src/app/(main)/components/{component-slug}/page.tsx`
 3. Create a preview page in `/src/app/preview/{component-slug}/page.tsx` (optional)
 4. Add metadata with `generateMetadata()`
-5. Create OG image: `/public/og-{component-slug}.png`
+5. Create OG image: `/public/og/og-{component-slug}.webp`
 
