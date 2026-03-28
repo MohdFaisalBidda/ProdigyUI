@@ -7,57 +7,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 
+import { getStatsData, FEATURES, STACK, getMarqueeItems, INSTALL_CMD } from "@/data/homepageData";
+
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
-/* ─── Static data ───────────────────────────────────────────────── */
-
-const STATS = [
-  { value: "8+", label: "Components" },
-  { value: "MIT", label: "License" },
-  { value: "TS", label: "Typed" },
-  { value: "0", label: "Dependencies" },
-];
-
-const FEATURES = [
-  {
-    icon: "⌥",
-    title: "Copy. Paste. Done.",
-    body: "Every component ships as a single self-contained file. No wrappers, no providers, no runtime package to version-lock yourself into.",
-  },
-  {
-    icon: "⬡",
-    title: "Motion-first",
-    body: "GSAP, Lenis, and spring physics baked in. Real scroll-driven animations — not CSS transitions pretending to be something more.",
-  },
-  {
-    icon: "◈",
-    title: "Full source control",
-    body: "You own the file. Tweak easing curves, swap colors, rewrite the whole thing. No black box, no abstraction tax.",
-  },
-  {
-    icon: "⌘",
-    title: "Zero opinion on stack",
-    body: "Works in any Next.js or React project using Tailwind CSS, Just drop the file in and install the listed peer deps.",
-  },
-];
-
-const STACK = [
-  { name: "GSAP", color: "#88CE02" },
-  { name: "Lenis", color: "#C8FF00" },
-  { name: "React", color: "#61DAFB" },
-  { name: "TypeScript", color: "#3178C6" },
-  { name: "Tailwind", color: "#38BDF8" },
-];
-
-const MARQUEE_ITEMS = [
-  "Stroke Cards", "Team Section", "Gooey Bar",
-  "Arc Slider", "More Space", "Spring Back",
-  "Spotlight", "Infinite Contact",
-];
-
-/* ─── Command tabs ──────────────────────────────────────────────── */
-
-const INSTALL_CMD = "npx prodigy-ui list";
+const STATS = getStatsData();
 
 function CommandWidget() {
   const [copied, setCopied] = useState(false);
@@ -97,7 +51,7 @@ function CommandWidget() {
 /* ─── Marquee ───────────────────────────────────────────────────── */
 
 function Marquee() {
-  const items = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
+  const items = [...getMarqueeItems(), ...getMarqueeItems()];
   return (
     <div className="relative overflow-hidden border-y border-white/5 py-3.5 select-none">
       <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
@@ -259,13 +213,20 @@ export default function HomePage() {
           {/* CTA button */}
           <Link
             href="/components"
-            className="hero-cta inline-flex items-center gap-3 rounded-full text-black text-sm font-bold tracking-wide hover:scale-[1.03] active:scale-[0.98] transition-transform"
+            className="hero-cta group relative inline-flex items-center gap-3 rounded-full text-black text-sm font-bold tracking-wide overflow-hidden"
             style={{ background: "#C8FF00", fontFamily: "'JetBrains Mono', monospace", padding: "0.75rem 2rem" }}
           >
-            Browse components
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
+            <span className="relative z-10 flex items-center gap-3">
+              Browse components
+              <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </span>
+            <div className="absolute inset-0 bg-white opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            <div
+              className="absolute inset-0 rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-40"
+              style={{ background: "radial-gradient(circle at center, #C8FF00 0%, transparent 70%)", filter: "blur(20px)" }}
+            />
           </Link>
 
         </div>
@@ -323,24 +284,33 @@ export default function HomePage() {
       </section>
 
       {/* ══ STACK STRIP ═══════════════════════════════════════════ */}
-      <section className="reveal-up border-y border-white/[0.05] py-8 px-5 md:px-10">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-6">
-          <span className="font-mono-jetbrains text-[10px] text-white/20 tracking-[0.18em] uppercase shrink-0">
-            Peer deps
-          </span>
-          <div className="flex flex-wrap gap-3">
-            {STACK.map(({ name, color }) => (
-              <span
+      <section className="reveal-up py-12 px-5 md:px-10">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="font-mono-jetbrains text-[10px] text-white/20 tracking-[0.18em] uppercase">
+              Built with
+            </span>
+            <div className="h-px flex-1 bg-gradient-to-r from-white/[0.08] to-transparent" />
+          </div>
+          <div className="flex flex-wrap gap-4">
+            {STACK.map(({ name, color }, i) => (
+              <div
                 key={name}
-                className="font-mono-jetbrains text-[11px] rounded-full px-3.5 py-1.5 border tracking-wide"
-                style={{
-                  color,
-                  background: `${color}10`,
-                  borderColor: `${color}25`,
-                }}
+                className="group relative flex items-center gap-2.5 px-4 py-2.5 rounded-lg border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300"
               >
-                {name}
-              </span>
+                <div
+                  className="w-1.5 h-1.5 rounded-full transition-transform duration-300 group-hover:scale-125"
+                  style={{ background: color, boxShadow: `0 0 8px ${color}60` }}
+                />
+                <span
+                  className="font-mono-jetbrains text-[11px] tracking-wide text-white/50 group-hover:text-white/80 transition-colors duration-300"
+                >
+                  {name}
+                </span>
+                {i < STACK.length - 1 && (
+                  <div className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-px h-3 bg-white/[0.06]" />
+                )}
+              </div>
             ))}
           </div>
         </div>
