@@ -3,6 +3,7 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import React, { useEffect, useRef } from 'react'
+import { getLocalImage } from '@/lib/images'
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,12 +25,12 @@ function MoreSpaceProjects({
     totalRows = 10,
 }: MoreSpaceProjectsProps) {
     const defaultProjects: Project[] = [
-        { name: 'Project 1', img: 'https://picsum.photos/seed/1/800/600', year: '2022' },
-        { name: 'Project 2', img: 'https://picsum.photos/seed/2/800/600', year: '2023' },
-        { name: 'Project 3', img: 'https://picsum.photos/seed/3/800/600', year: '2024' },
-        { name: 'Project 4', img: 'https://picsum.photos/seed/4/800/600', year: '2025' },
-        { name: 'Project 5', img: 'https://picsum.photos/seed/5/800/600', year: '2026' },
-        { name: 'Project 6', img: 'https://picsum.photos/seed/6/800/600', year: '2027' },
+        { name: 'Project 1', img: getLocalImage(0, 1), year: '2022' },
+        { name: 'Project 2', img: getLocalImage(1, 2), year: '2023' },
+        { name: 'Project 3', img: getLocalImage(2, 3), year: '2024' },
+        { name: 'Project 4', img: getLocalImage(3, 4), year: '2025' },
+        { name: 'Project 5', img: getLocalImage(4, 5), year: '2026' },
+        { name: 'Project 6', img: getLocalImage(5, 6), year: '2027' },
     ];
 
     const projectsToUse = projects && projects.length > 0 ? projects : defaultProjects;

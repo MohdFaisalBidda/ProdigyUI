@@ -2,12 +2,13 @@
 
 import React from 'react'
 import SpringBackCard from './SpringBackCard'
+import { getLocalImage } from '@/lib/images'
 
 const defaultImages = [
-  { src: 'https://picsum.photos/seed/1/400/500', alt: 'card1' },
-  { src: 'https://picsum.photos/seed/2/400/500', alt: 'card2' },
-  { src: 'https://picsum.photos/seed/3/400/500', alt: 'card3' },
-  { src: 'https://picsum.photos/seed/4/400/500', alt: 'card4' },
+  { src: getLocalImage(0, 1), alt: 'card1' },
+  { src: getLocalImage(1, 2), alt: 'card2' },
+  { src: getLocalImage(2, 3), alt: 'card3' },
+  { src: getLocalImage(3, 4), alt: 'card4' },
 ]
 
 const defaultLabels = [

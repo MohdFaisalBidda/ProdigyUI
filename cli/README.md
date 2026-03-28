@@ -70,6 +70,7 @@ npx prodigy-ui list
 | `infinite-slider` | Arc-shaped infinite image slider |
 | `glowing-light` | Lottie-powered cursor tracking spotlight effect |
 | `gooey-bar` | Animated status bar with gooey SVG filter effects |
+| `pixel-image` | Pixelated image reveal animation with GSAP scroll triggers |
 
 ## Peer Dependencies
 
@@ -81,7 +82,7 @@ npm install gsap lenis lottie-web motion
 
 | Package | Used By |
 |---------|---------|
-| gsap | Stroke Cards, Team Section, Infinite Contact, Infinite Slider |
+| gsap | Stroke Cards, Team Section, Infinite Contact, Infinite Slider, Pixel Image |
 | lenis | More Space Scroll, Infinite Contact, Infinite Slider, Glowing Light |
 | lottie-web | Glowing Light |
 | motion | Gooey Bar |
