@@ -81,6 +81,7 @@ The following OG images need to be created and placed in the `/public/og` folder
 | `og-infinite-slider.webp` | Infinite Slider |
 | `og-glowing-light.webp` | Glowing Light |
 | `og-gooey-bar.webp` | Gooey Bar |
+| `og-pixel-image.webp` | Pixel Image |
 
 **Recommended OG Image Specs:**
 - Dimensions: 1200x630 pixels

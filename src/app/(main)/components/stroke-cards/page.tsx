@@ -5,9 +5,9 @@ import { getComponentBySlug } from "@/lib/component-registry";
 import { getLocalImage } from "@/lib/images";
 
 const PREVIEW_CARDS = [
-  { id: "1", imgSrc: getLocalImage(0, 1), title: "Motion Design", strokeColor1: "#C8FF00", strokeColor2: "#FF3B3B" },
-  { id: "2", imgSrc: getLocalImage(1, 2), title: "Typography", strokeColor1: "#7B6BFF", strokeColor2: "#C8FF00" },
-  { id: "3", imgSrc: getLocalImage(2, 3), title: "Color Systems", strokeColor1: "#FF3B3B", strokeColor2: "#7B6BFF" },
+  { id: "1", imgSrc: getLocalImage(0, 1), title: "Motion Design", strokeColor1: "#252627", strokeColor2: "#767677" },
+  { id: "2", imgSrc: getLocalImage(1, 2), title: "Typography", strokeColor1: "#9BA6F8", strokeColor2: "#071E4A" },
+  { id: "3", imgSrc: getLocalImage(2, 3), title: "Color Systems", strokeColor1: "#B6A383", strokeColor2: "#414141" },
 ];
 
 export async function generateMetadata(): Promise<Metadata> {

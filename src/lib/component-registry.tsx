@@ -43,16 +43,16 @@ export type ComponentRegistryItem = {
 };
 
 const STROKE_CARDS_PREVIEW = [
-  { id: "1", imgSrc: "/img1.avif", title: "Motion Design", strokeColor1: "#C8FF00", strokeColor2: "#FF3B3B" },
-  { id: "2", imgSrc: "/img2.avif", title: "Typography", strokeColor1: "#7B6BFF", strokeColor2: "#C8FF00" },
-  { id: "3", imgSrc: "/img3.avif", title: "Color Systems", strokeColor1: "#FF3B3B", strokeColor2: "#7B6BFF" },
+  { id: "1", imgSrc: "/img1.png", title: "Motion Design", strokeColor1: "#252627", strokeColor2: "#767677" },
+  { id: "2", imgSrc: "/img2.avif", title: "Typography", strokeColor1: "#9BA6F8", strokeColor2: "#071E4A" },
+  { id: "3", imgSrc: "/img3.avif", title: "Color Systems", strokeColor1: "#B6A383", strokeColor2: "#414141" },
 ];
 
 const TEAM_MEMBERS_PREVIEW = [
   { image: "/img4.avif", name: "Jack" },
   { image: "/img2.avif", name: "Jane" },
   { image: "/img3.avif", name: "Bob" },
-  { image: "/img1.avif", name: "John" },
+  { image: "/img1.png", name: "John" },
   { image: "/img5.avif", name: "Lisa" },
   { image: "/img6.avif", name: "Harry" },
 ];
@@ -68,7 +68,7 @@ export const componentRegistry: ComponentRegistryItem[] = [
     snippet: `import StrokeCards from "@/components/ui/stroke-cards/StrokeCards";
 
 const cards = [
-  { id: "1", imgSrc: "/img1.avif", title: "Motion Design", strokeColor1: "#C8FF00", strokeColor2: "#FF3B3B" },
+  { id: "1", imgSrc: "/img1.png", title: "Motion Design", strokeColor1: "#C8FF00", strokeColor2: "#FF3B3B" },
 ];
 
 <StrokeCards cards={cards} columns={3} gap="1rem" />`,
@@ -322,10 +322,8 @@ function Page() {
         className="h-[400px] w-full mt-8"
         loop
         loopTimes={Infinity}
-        speed={1.5}
-        loopDelay={3}
       >
-        <img src="/img4.avif" className="w-full h-full" />
+        <img src="/img1.png" className="w-full h-full" />
       </PixelImage>
     </div>
   )
@@ -336,12 +334,9 @@ function Page() {
           className="h-[400px] w-full mt-8"
           loop
           loopTimes={Infinity}
-          speed={1.5}
-          loopDelay={3}
-          pxSteps={[40, 20, 10, 6, 4, 2, 1]}
           triggerStart="top+=20% bottom"
         >
-          <img src="/img4.avif" className="w-full h-full" />
+          <img src="/img1.png" className="w-full h-full" />
         </PixelImage>
       </div>
     ),

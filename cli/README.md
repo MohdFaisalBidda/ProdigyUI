@@ -112,7 +112,7 @@ Then import and use in your code:
 import StrokeCards from "@/components/UIElement/StrokeCards/StrokeCards";
 
 const cards = [
-  { id: "1", imgSrc: "/img1.avif", title: "Motion Design", strokeColor1: "#C8FF00", strokeColor2: "#FF3B3B" },
+  { id: "1", imgSrc: "/img1.png", title: "Motion Design", strokeColor1: "#C8FF00", strokeColor2: "#FF3B3B" },
 ];
 
 export default function Page() {

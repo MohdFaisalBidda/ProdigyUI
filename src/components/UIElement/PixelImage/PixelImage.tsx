@@ -6,7 +6,7 @@ import React, { isValidElement, useEffect, useRef } from "react"
 
 gsap.registerPlugin(ScrollTrigger)
 
-const DEFAULT_PX_STEPS = [40, 20, 10, 6, 4, 2, 1]
+const DEFAULT_PX_STEPS = [120, 80, 50, 32, 20, 12, 8, 5, 3, 2, 1]
 
 type ImgChild = React.ReactElement<React.ImgHTMLAttributes<HTMLImageElement>>
 
@@ -14,13 +14,13 @@ const PixelImage = ({
   children,
   pxSteps = DEFAULT_PX_STEPS,
   triggerStart = "top+=20% bottom",
-  speed = 1.5,
-  intialDelay = 0.5,
+  speed = 1.2,
+  intialDelay = 0,
   className = "",
   style = {},
   loop = true,
   loopTimes = Infinity,
-  loopDelay = 3,
+  loopDelay = 2,
 }: {
   children: React.ReactNode
   pxSteps?: number[]
@@ -35,6 +35,7 @@ const PixelImage = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const tlRef = useRef<gsap.core.Timeline | null>(null)
 
   useEffect(() => {
     const container = containerRef.current
@@ -116,6 +117,12 @@ const PixelImage = ({
     }
 
     const startLoop = () => {
+      if (tlRef.current) {
+        tlRef.current.kill()
+      }
+
+      render(pxSteps[0])
+
       const obj = { value: pxSteps[0] }
 
       const tl = gsap.timeline({
@@ -128,24 +135,25 @@ const PixelImage = ({
         delay: intialDelay,
       })
 
-      tl.fromTo(
-        obj,
-        { value: pxSteps[0] },
-        {
-          value: 1,
-          duration: speed,
-          ease: "power3.out",
-          onUpdate: () => {
-            render(obj.value)
-          },
-        }
-      )
+      tl.to(obj, {
+        value: 1,
+        duration: speed,
+        ease: "power3.inOut",
+        onUpdate: () => {
+          render(obj.value)
+        },
+      })
+
+      tlRef.current = tl
     }
 
     img.onload = () => {
-      render(1)
+      gsap.set(container, { opacity: 1 })
 
-      const resizeHandler = () => render(1)
+      const resizeHandler = () => {
+        if (tlRef.current && tlRef.current.isActive()) return
+        render(1)
+      }
       window.addEventListener("resize", resizeHandler)
 
       ScrollTrigger.create({
@@ -157,14 +165,15 @@ const PixelImage = ({
         once: true,
       })
 
-      gsap.set(container, { opacity: 1 })
-
       return () => {
         window.removeEventListener("resize", resizeHandler)
       }
     }
 
     return () => {
+      if (tlRef.current) {
+        tlRef.current.kill()
+      }
       ScrollTrigger.getAll().forEach((t) => t.kill())
     }
   }, [pxSteps, triggerStart, speed, intialDelay, loop, loopTimes, loopDelay])

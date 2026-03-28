@@ -8,7 +8,7 @@ export const getImageSrc = (localPath: string, seed: number) => {
 };
 
 export const localImages = [
-  "/img1.avif",
+  "/img1.png",
   "/img2.avif",
   "/img3.avif",
   "/img4.avif",

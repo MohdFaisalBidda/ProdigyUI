@@ -63,12 +63,9 @@ export default function PixelImagePage() {
             className="h-[400px] w-full mt-8"
             loop
             loopTimes={Infinity}
-            speed={2}
-            loopDelay={3}
-            pxSteps={[40, 20, 10, 6, 4, 2, 1]}
             triggerStart="top+=20% bottom"
           >
-            <img src="/img4.avif" className="w-full h-full" />
+            <img src="/img1.png" className="w-full h-full" />
           </PixelImage>
         </div>
       }

@@ -49,7 +49,7 @@ const TEAM_MEMBERS = [
   { image: getImageSrc("/img4.avif", 1), name: "Jack" },
   { image: getImageSrc("/img2.avif", 2), name: "Jane" },
   { image: getImageSrc("/img3.avif", 3), name: "Bob" },
-  { image: getImageSrc("/img1.avif", 4), name: "John" },
+  { image: getImageSrc("/img1.png", 4), name: "John" },
   { image: getImageSrc("/img5.avif", 5), name: "Lisa" },
   { image: getImageSrc("/img6.avif", 6), name: "Harry" },
 ];

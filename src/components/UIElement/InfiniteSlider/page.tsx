@@ -28,13 +28,13 @@ const getDefaultSlideSources = (count: number) =>
     Array.from({ length: count }, (_, i) => `https://picsum.photos/seed/${i + 1}/800/600`);
 
 const getDefaultSlideTitles = () => [
-    "The Enchanted Forest",
-    "Mystic Mountains",
-    "Serene Lakeside",
-    "Sunset Overdrive",
-    "Whispering Meadows",
-    "Hidden Caves",
-    "Starlit Skies"
+    "Founder & CEO",
+    "Creative Director",
+    "Lead Developer",
+    "Marketing Strategist",
+    "UX Designer",
+    "Product Manager",
+    "Graphic Designer",
 ];
 
 function createSlides(container: HTMLDivElement, sources: string[], slideWidth: number, slideHeight: number) {
