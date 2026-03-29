@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://prodigy-ui.dev",
+    url: "https://prodigy-ui.vercel.app/",
     siteName: "Prodigy UI",
     title: "Prodigy UI | Animated Component Library",
     description:
