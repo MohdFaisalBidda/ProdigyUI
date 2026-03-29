@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     title: "Prodigy UI | Animated Component Library",
     description:
       "Production-ready animated components built with GSAP and Lenis. Copy the source, drop it in your project, and customize every detail.",
-    images: ["/og/og-home.webp"],
+    images: ["https://prodigy-ui.vercel.app/og/og-home.webp"],
   },
   robots: {
     index: true,
