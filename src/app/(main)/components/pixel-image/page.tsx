@@ -60,13 +60,12 @@ export default function PixelImagePage() {
       preview={
         <div className="p-8">
           <PixelImage
+            src="/img1.png"
             className="h-[400px] w-full mt-8"
             loop
             loopTimes={Infinity}
             triggerStart="top+=20% bottom"
-          >
-            <img src="/img1.png" className="w-full h-full" />
-          </PixelImage>
+          />
         </div>
       }
       previewUrl={component.previewUrl}

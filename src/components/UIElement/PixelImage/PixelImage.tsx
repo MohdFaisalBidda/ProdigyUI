@@ -12,6 +12,7 @@ type ImgChild = React.ReactElement<React.ImgHTMLAttributes<HTMLImageElement>>
 
 const PixelImage = ({
   children,
+  src,
   pxSteps = DEFAULT_PX_STEPS,
   triggerStart = "top+=20% bottom",
   speed = 1.2,
@@ -22,7 +23,8 @@ const PixelImage = ({
   loopTimes = Infinity,
   loopDelay = 2,
 }: {
-  children: React.ReactNode
+  children?: React.ReactNode
+  src?: string
   pxSteps?: number[]
   triggerStart?: string
   speed?: number
@@ -49,12 +51,14 @@ const PixelImage = ({
       "img[data-pixel-src]"
     ) as HTMLImageElement | null
 
-    if (!hiddenImage) return
+    let imageSrc = src || "https://picsum.photos/800/600"
+    if (hiddenImage) {
+      imageSrc = hiddenImage.getAttribute("data-pixel-src") || hiddenImage.src
+    }
 
     const img = new Image()
     img.crossOrigin = "anonymous"
-    img.src =
-      hiddenImage.getAttribute("data-pixel-src") || hiddenImage.src
+    img.src = imageSrc
 
     const render = (pixelSize: number) => {
       if (!img || !img.complete || img.naturalWidth === 0 || img.naturalHeight === 0) return
@@ -176,7 +180,7 @@ const PixelImage = ({
       }
       ScrollTrigger.getAll().forEach((t) => t.kill())
     }
-  }, [pxSteps, triggerStart, speed, intialDelay, loop, loopTimes, loopDelay])
+  }, [pxSteps, triggerStart, speed, intialDelay, loop, loopTimes, loopDelay, src])
 
   const wrappedChildren = React.Children.map(children, (child) => {
     if (

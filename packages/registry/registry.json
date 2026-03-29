@@ -192,6 +192,32 @@
       ]
     },
     {
+      "name": "pixel-image",
+      "title": "Pixel Image",
+      "description": "Pixelated image reveal animation. Image dissolves from coarse pixels to clear after certain delay.",
+      "tag": "Animation",
+      "files": [
+        {
+          "path": "pixel-image/PixelImage.tsx",
+          "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/PixelImage/PixelImage.tsx"
+        }
+      ],
+      "dependencies": ["clsx", "tailwind-merge"],
+      "peerDependencies": ["gsap"],
+      "installSteps": [
+        {
+          "title": "Install GSAP",
+          "description": "Install gsap package for animations",
+          "code": "npm install gsap"
+        },
+        {
+          "title": "Register GSAP Plugin",
+          "description": "Add GSAP ScrollTrigger registration",
+          "code": "import { ScrollTrigger } from 'gsap/ScrollTrigger'\ngsap.registerPlugin(ScrollTrigger)"
+        }
+      ]
+    },
+    {
       "name": "glowing-light",
       "title": "Glowing Light",
       "description": "Lottie-powered glowing light effect that tracks cursor movement with spotlight and mask animations.",

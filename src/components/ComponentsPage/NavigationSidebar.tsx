@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import { components } from "@/lib/component-registry";
 
@@ -10,7 +9,7 @@ interface NavigationSidebarProps {
 
 export default function NavigationSidebar({ activeSlug }: NavigationSidebarProps) {
   return (
-    <aside className="hidden lg:flex flex-col fixed top-0 right-0 w-[280px] h-screen bg-[rgba(7,7,7,0.95)] border-l border-white/[0.06] overflow-y-auto z-50">
+    <aside className="hidden lg:flex flex-col fixed top-16 right-0 w-[280px] h-auto bg-[rgba(7,7,7,0.95)] border-l border-white/[0.06] overflow-y-auto z-50">
 
       {/* Header */}
       <div className="px-4 py-6 shrink-0">
@@ -66,7 +65,7 @@ export default function NavigationSidebar({ activeSlug }: NavigationSidebarProps
       </nav>
 
       {/* Back to home */}
-      <div className="shrink-0 mt-auto px-2 pb-4 pt-4 border-t border-white/[0.06]">
+      <div className="shrink-0 mt-auto px-2 pb-4 pt-4 border-t border-b border-white/[0.06]">
         <Link
           href="/"
           className="flex items-center gap-2 px-3 py-2.5 rounded-lg font-mono-jetbrains text-[11px] text-white/40 no-underline transition-colors duration-200 hover:text-white"

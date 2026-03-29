@@ -1,6 +1,6 @@
 {
   "name": "prodigy-ui",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Add animated components to your project",
   "main": "./dist/index.js",
   "bin": {

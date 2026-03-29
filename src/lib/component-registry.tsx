@@ -322,27 +322,24 @@ function Page() {
         className="h-[400px] w-full mt-8"
         loop
         loopTimes={Infinity}
-      >
-        <img src="/img1.png" className="w-full h-full" />
-      </PixelImage>
+      />
     </div>
   )
 }`,
     preview: (
       <div className="p-8">
         <PixelImage
+          src="/img1.png"
           className="h-[400px] w-full mt-8"
           loop
           loopTimes={Infinity}
           triggerStart="top+=20% bottom"
-        >
-          <img src="/img1.png" className="w-full h-full" />
-        </PixelImage>
+        />
       </div>
     ),
     previewHeight: 600,
     props: [
-      { name: "children", type: "ReactNode", default: "undefined", description: "Image element(s) to pixelate" },
+      { name: "src", type: "string", default: "https://picsum.photos/800/600", description: "Image source URL" },
       { name: "pxSteps", type: "number[]", default: "[40, 20, 10, 6, 4, 2, 1]", description: "Pixelation steps array" },
       { name: "triggerStart", type: "string", default: '"top+=20% bottom"', description: "Scroll trigger start position" },
       { name: "speed", type: "number", default: "1.5", description: "Animation duration in seconds" },
