@@ -12,15 +12,24 @@ const defaultImages = [
 ]
 
 const defaultLabels = [
-  { text: 'This card looks like a spring back', bgColor: 'bg-pink-300' },
-  { text: 'Catch me if you can', bgColor: 'bg-red-500' },
-  { text: "I'm a spring back card", bgColor: 'bg-amber-100' },
+  {
+    text: 'Follows you ✨',
+    bgColor: 'bg-purple-500/20 text-purple-300 border border-purple-500/30 backdrop-blur-sm',
+  },
+  {
+    text: 'Catch me 👀',
+    bgColor: 'bg-amber-400/20 text-amber-200 border border-amber-400/30 backdrop-blur-sm',
+  },
+  {
+    text: 'Smooth bounce',
+    bgColor: 'bg-red-500/20 text-red-300 border border-red-500/30 backdrop-blur-sm',
+  },
 ]
 
-export default function SpringBackCards({ 
-  images = defaultImages, 
+export default function SpringBackCards({
+  images = defaultImages,
   labels = defaultLabels,
-  className = '' 
+  className = ''
 }: {
   images?: { src: string; alt: string }[]
   labels?: { text: string; bgColor: string }[]
@@ -67,7 +76,7 @@ export default function SpringBackCards({
           widthClass="auto"
           heightClass="auto"
         >
-          <p 
+          <p
             className={`rounded-full rounded-bl-none pointer-events-none whitespace-nowrap text-xs sm:text-sm text-black ${label.bgColor}`}
             style={{ padding: '0.5rem 1rem' }}
           >

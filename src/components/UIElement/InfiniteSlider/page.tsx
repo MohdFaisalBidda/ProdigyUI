@@ -166,11 +166,7 @@ function InfiniteSlider({
     const slideSources = images && images.length > 0 ? images : getDefaultSlideSources(slideCount);
     const slideTitles = titles && titles.length > 0 ? titles : getDefaultSlideTitles();
 
-    const slideWidth = isMobile ? MOBILE_SLIDE_WIDTH : SLIDE_WIDTH;
-    const slideHeight = isMobile ? MOBILE_SLIDE_HEIGHT : SLIDE_HEIGHT;
     const slideGap = isMobile ? MOBILE_SLIDE_GAP : SLIDE_GAP;
-    const arcDepth = isMobile ? MOBILE_ARC_DEPTH : ARC_DEPTH;
-    const centerLift = isMobile ? MOBILE_CENTER_LIFT : CENTER_LIFT;
     const scrollLerp = isMobile ? MOBILE_SCROLL_LERP : SCROLL_LERP;
 
     useEffect(() => {
@@ -280,7 +276,7 @@ function InfiniteSlider({
             <p
                 ref={titleDisplay}
                 id="slide-title"
-                className={`absolute left-1/2 -translate-x-1/2 font-medium text-[#e8e8e2] pointer-events-none font-barlow ${isMobile ? "bottom-28 text-base sm:text-lg" : "bottom-32 text-xl sm:text-2xl"}`}
+                className={`absolute left-1/2 -translate-x-1/2 font-medium text-[#e8e8e2] pointer-events-none font-barlow ${isMobile ? "bottom-28 text-base sm:text-lg" : "bottom-72 text-xl sm:text-2xl"}`}
                 style={{
                     textShadow: '0 2px 12px rgba(0,0,0,0.7)',
                     zIndex: 9999,
