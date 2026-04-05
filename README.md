@@ -12,6 +12,7 @@ Prodigy UI provides a collection of beautifully crafted, copy-paste-ready animat
 - **Tailwind CSS** - Fully styled with Tailwind CSS utilities
 - **TypeScript** - Full TypeScript support with typed props
 - **Responsive** - Mobile-first design with responsive breakpoints
+- **MCP Server** - AI-assisted development with Model Context Protocol
 
 ## Components
 
@@ -80,6 +81,34 @@ npm install gsap lenis lottie-web motion
 - **GSAP** (animations)
 - **Lenis** (smooth scrolling)
 - **Motion** (Framer Motion fork)
+
+## MCP Server
+
+Connect ProdigyUI to your AI editor for intelligent component discovery and installation.
+
+### Setup (Cursor)
+
+```json
+{
+  "mcpServers": {
+    "prodigy-ui": {
+      "command": "npx",
+      "args": ["-y", "@prodigyui/mcp"]
+    }
+  }
+}
+```
+
+### Available Tools
+
+| Tool | Description |
+|------|-------------|
+| `list_components` | List all available components |
+| `search_components` | Search by name, description, or tag |
+| `get_component` | Get detailed component documentation |
+| `get_install_command` | Get installation commands |
+
+See [docs/MCP.md](docs/MCP.md) for full setup instructions.
 
 ## License
 
