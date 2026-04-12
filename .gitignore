@@ -40,6 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-
 #packages
 /packages/mcp/node_modules
