@@ -142,19 +142,19 @@ npm publish --access public
 ### Install
 
 ```bash
-npx prodigy-ui-cli add stroke-cards
+npx prodigy@latest add stroke-cards
 ```
 
 ### List Components
 
 ```bash
-npx prodigy-ui-cli list
+npx prodigy@latest list
 ```
 
 ### Initialize Project
 
 ```bash
-npx prodigy-ui-cli init
+npx prodigy@latest init
 ```
 
 ---

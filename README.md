@@ -22,10 +22,12 @@ Prodigy UI provides a collection of beautifully crafted, copy-paste-ready animat
 | [Team Section](/components/team-section) | GSAP | Interactive team member showcase with GSAP-powered hover animations |
 | [Spring Back Card](/components/spring-back-card) | Interactive | 3D spring physics card that follows cursor movement |
 | [More Space Scroll](/components/more-space-scroll) | Scroll | Smooth horizontal scrolling with Lenis |
-| [Infinite Contact](/components/infinte-contact) | Scroll | Scroll-triggered infinite contact section |
+| [Infinite Contact](/components/infinite-contact) | Scroll | Scroll-triggered infinite contact section |
 | [Infinite Slider](/components/infinite-slider) | Interactive | Arc-shaped infinite image slider |
 | [Glowing Light](/components/glowing-light) | Interactive | Lottie-powered cursor tracking spotlight effect |
 | [Gooey Bar](/components/gooey-bar) | Motion | Animated status bar with gooey SVG filter effects |
+| [Pixel Image](/components/pixel-image) | Animation | Pixelated image reveal animation with GSAP scroll triggers |
+| [Split Cards](/components/split-cards) | Scroll | Scroll-triggered 3D card flip animation |
 
 ## Quick Start
 
@@ -33,16 +35,16 @@ Prodigy UI provides a collection of beautifully crafted, copy-paste-ready animat
 
 ```bash
 # Initialize prodigy-ui in your project
-npx prodigy-ui init
+npx prodigy@latest init
 
 # Add a specific component
-npx prodigy-ui add stroke-cards
+npx prodigy@latest add stroke-cards
 
 # Add all components
-npx prodigy-ui add-all
+npx prodigy@latest add --all
 
 # List all available components
-npx prodigy-ui list
+npx prodigy@latest list
 ```
 
 ### Option 2: Copy-Paste
@@ -67,9 +69,9 @@ npm install gsap lenis lottie-web motion
 ```
 
 | Package | Used By |
-|---------|---------|
-| gsap | Stroke Cards, Team Section, Infinite Contact, Infinite Slider |
-| lenis | More Space Scroll, Infinite Contact, Infinite Slider, Glowing Light |
+|---------|--------|
+| gsap | Stroke Cards, Team Section, Infinite Contact, Infinite Slider, Pixel Image, Split Cards |
+| lenis | More Space Scroll, Infinite Contact, Infinite Slider, Glowing Light, Split Cards |
 | lottie-web | Glowing Light |
 | motion | Gooey Bar |
 

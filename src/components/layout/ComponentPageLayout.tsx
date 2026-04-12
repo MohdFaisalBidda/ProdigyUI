@@ -364,7 +364,7 @@ export default function ComponentPageLayout({
                 }}>
                   Run this command in your project root to add the component:
                 </p>
-                <CodeBlock code={`npx prodigy-ui add ${slug}`} />
+                <CodeBlock code={`npx prodigy@latest add ${slug}`} />
               </div>
 
               {peerDependencies && peerDependencies.length > 0 && (

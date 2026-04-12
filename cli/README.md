@@ -11,7 +11,7 @@ npm install -g prodigy-ui
 Or use npx to run without installing:
 
 ```bash
-npx prodigy-ui add stroke-cards
+npx prodigy@latest add stroke-cards
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ npx prodigy-ui add stroke-cards
 Before adding components, initialize prodigy-ui in your project:
 
 ```bash
-npx prodigy-ui init
+npx prodigy@latest init
 ```
 
 This sets up the necessary configuration for component installation.
@@ -32,30 +32,30 @@ Add one or more components to your project:
 
 ```bash
 # Add a single component
-npx prodigy-ui add stroke-cards
+npx prodigy@latest add stroke-cards
 
 # Add multiple components
-npx prodigy-ui add stroke-cards team-section
+npx prodigy@latest add stroke-cards team-section
 
 # Add all components
-npx prodigy-ui add-all
+npx prodigy@latest add --all
 ```
 
 ### Available Commands
 
 | Command | Description |
 |---------|-------------|
-| `npx prodigy-ui init` | Initialize prodigy-ui in your project |
-| `npx prodigy-ui add <component>` | Add one or more components |
-| `npx prodigy-ui add-all` | Add all available components |
-| `npx prodigy-ui list` | List all available components |
+| `npx prodigy@latest init` | Initialize prodigy-ui in your project |
+| `npx prodigy@latest add <component>` | Add one or more components |
+| `npx prodigy@latest add --all` | Add all available components |
+| `npx prodigy@latest list` | List all available components |
 
 ### List Components
 
 View all available components:
 
 ```bash
-npx prodigy-ui list
+npx prodigy@latest list
 ```
 
 ## Available Components
@@ -71,6 +71,7 @@ npx prodigy-ui list
 | `glowing-light` | Lottie-powered cursor tracking spotlight effect |
 | `gooey-bar` | Animated status bar with gooey SVG filter effects |
 | `pixel-image` | Pixelated image reveal animation with GSAP scroll triggers |
+| `split-cards` | Scroll-triggered 3D card flip animation with gap and width transitions |
 
 ## Peer Dependencies
 
@@ -81,9 +82,9 @@ npm install gsap lenis lottie-web motion
 ```
 
 | Package | Used By |
-|---------|---------|
-| gsap | Stroke Cards, Team Section, Infinite Contact, Infinite Slider, Pixel Image |
-| lenis | More Space Scroll, Infinite Contact, Infinite Slider, Glowing Light |
+|---------|--------|
+| gsap | Stroke Cards, Team Section, Infinite Contact, Infinite Slider, Pixel Image, Split Cards |
+| lenis | More Space Scroll, Infinite Contact, Infinite Slider, Glowing Light, Split Cards |
 | lottie-web | Glowing Light |
 | motion | Gooey Bar |
 
@@ -97,10 +98,10 @@ npm install gsap lenis lottie-web motion
 
 ```bash
 # Initialize
-npx prodigy-ui init
+npx prodigy@latest init
 
 # Add a component
-npx prodigy-ui add stroke-cards
+npx prodigy@latest add stroke-cards
 
 # Install dependencies
 npm install gsap

@@ -4098,7 +4098,8 @@ server.tool(
         description: c.description,
         tag: c.tag,
         dependencies: c.dependencies,
-        peerDependencies: c.peerDependencies
+        peerDependencies: c.peerDependencies,
+        props: c.props
       }));
       return {
         content: [
@@ -4147,7 +4148,8 @@ server.tool(
         description: c.description,
         tag: c.tag,
         dependencies: c.dependencies,
-        peerDependencies: c.peerDependencies
+        peerDependencies: c.peerDependencies,
+        props: c.props
       }));
       return {
         content: [
@@ -4327,7 +4329,7 @@ server.tool(
             text: JSON.stringify(
               {
                 component: component.title,
-                addCommand: `npx prodigy-ui add ${component.name}`,
+                addCommand: `npx prodigy@latest add ${component.name}`,
                 dependencies: {
                   required: component.dependencies,
                   peer: component.peerDependencies
@@ -4370,7 +4372,8 @@ server.tool(
         name: c.name,
         title: c.title,
         description: c.description,
-        tag: c.tag
+        tag: c.tag,
+        props: c.props
       }));
       return {
         content: [

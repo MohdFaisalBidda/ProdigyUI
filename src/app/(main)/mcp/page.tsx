@@ -347,7 +347,7 @@ export default function MCPPage() {
             </div>
           </div>
 
-          <CodeBlock code="npx prodigy-ui setup-mcp" />
+          <CodeBlock code="npx prodigy@latest setup-mcp" />
 
           <div className="mt-6 space-y-2">
             <p className="text-white/80 font-semibold">What this command does:</p>

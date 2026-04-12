@@ -256,7 +256,7 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/[0.06] rounded-2xl overflow-hidden">
           {[
             { step: "01", action: "Browse", detail: "Pick a component from the library. Preview it live, read the docs." },
-            { step: "02", action: "Install", detail: "Run npx prodigy-ui add <name>. The file lands in your project." },
+            { step: "02", action: "Install", detail: "Run npx prodigy@latest add <name>. The file lands in your project." },
             { step: "03", action: "Ship", detail: "Own the source. Tweak it, extend it, delete it. No upstream breakage." },
           ].map(({ step, action, detail }) => (
             <div key={step} className="flex flex-col gap-5 p-7 md:p-8 bg-[#070707] hover:bg-white/[0.02] transition-colors duration-200">

@@ -13,6 +13,14 @@ interface InstallStep {
   code: string;
 }
 
+interface PropField {
+  name: string;
+  type: string;
+  default?: string;
+  required?: boolean;
+  description: string;
+}
+
 interface RegistryComponent {
   name: string;
   title: string;
@@ -22,6 +30,7 @@ interface RegistryComponent {
   dependencies: string[];
   peerDependencies: string[];
   installSteps: InstallStep[];
+  props?: PropField[];
 }
 
 interface Registry {
@@ -75,6 +84,7 @@ server.tool(
         tag: c.tag,
         dependencies: c.dependencies,
         peerDependencies: c.peerDependencies,
+        props: c.props,
       }));
 
       return {
@@ -132,6 +142,7 @@ server.tool(
         tag: c.tag,
         dependencies: c.dependencies,
         peerDependencies: c.peerDependencies,
+        props: c.props,
       }));
 
       return {
@@ -325,7 +336,7 @@ server.tool(
             text: JSON.stringify(
               {
                 component: component.title,
-                addCommand: `npx prodigy-ui add ${component.name}`,
+                addCommand: `npx prodigy@latest add ${component.name}`,
                 dependencies: {
                   required: component.dependencies,
                   peer: component.peerDependencies,
@@ -372,6 +383,7 @@ server.tool(
         title: c.title,
         description: c.description,
         tag: c.tag,
+        props: c.props,
       }));
 
       return {

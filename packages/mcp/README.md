@@ -19,7 +19,7 @@ npx @prodigyui/mcp
 ### Via CLI
 
 ```bash
-npx prodigy-ui mcp
+npx prodigy@latest mcp
 ```
 
 ## AI Editor Configuration

@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { components } from "@/data/componentData";
+import { SITE_URL } from "@/lib/site-url";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://prodigy-ui.in/sitemap.xml",
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

@@ -162,6 +162,7 @@ program
   .command("add [components...]")
   .description("Add one or more components to your project")
   .option("-y, --yes", "skip confirmation prompts")
+  .option("--all", "Add all available components")
   .option(
     "--path <path>",
     "destination folder relative to project root (auto-detected if not specified)"
@@ -182,7 +183,10 @@ program
     }
 
     let targets: string[] = components;
-    if (!targets.length) {
+
+    if (opts.all) {
+      targets = registry.components.map((c: any) => c.name);
+    } else if (!targets.length) {
       const { chosen } = await prompts({
         type: "multiselect",
         name: "chosen",
@@ -339,118 +343,7 @@ program
     );
 
     spinner.succeed("prodigy-ui initialized!");
-    console.log(chalk.dim("\n  Run 'prodigy add <component>' to add components.\n"));
-  });
-
-program
-  .command("add-all")
-  .description("Add all components to your project")
-  .option("-y, --yes", "skip confirmation prompts")
-  .option(
-    "--path <path>",
-    "destination folder relative to project root (auto-detected if not specified)"
-  )
-  .action(async (opts) => {
-    const defaultPath = getDefaultComponentsPath();
-    const componentsPath = opts.path || defaultPath;
-    
-    const spinner = ora("Fetching registry…").start();
-
-    let registry: any;
-    try {
-      registry = await fetchJSON(REGISTRY_URL);
-      spinner.succeed("Registry loaded");
-    } catch (e) {
-      spinner.fail("Could not reach registry");
-      process.exit(1);
-    }
-
-    const targets = registry.components.map((c: any) => c.name);
-    const pm = detectPackageManager();
-
-    console.log(chalk.bold(`\n${chalk.cyan("►")} Adding all ${targets.length} components…\n`));
-
-    if (registry.globals) {
-      await appendGlobals(registry.globals.source);
-    }
-
-    for (const name of targets) {
-      const component = registry.components.find((c: any) => c.name === name);
-      if (!component) continue;
-
-      console.log(chalk.dim(`\n  Adding ${component.title}…`));
-
-      for (const file of component.files) {
-        const destPath = path.join(
-          process.cwd(),
-          componentsPath,
-          file.path
-        );
-        await fs.ensureDir(path.dirname(destPath));
-
-        const fileSpinner = ora(`  Downloading ${path.basename(file.path)}`).start();
-        try {
-          const source = await fetchText(file.source);
-          await fs.writeFile(destPath, source, "utf-8");
-          fileSpinner.succeed(`  ${chalk.green("✓")} ${destPath}`);
-        } catch {
-          fileSpinner.fail(`  Failed to download ${file.path}`);
-        }
-      }
-    }
-
-    const allDeps = new Set<string>();
-    const allPeerDeps = new Set<string>();
-    
-    registry.components.forEach((c: any) => {
-      (c.dependencies || []).forEach((d: string) => allDeps.add(d));
-      (c.peerDependencies || []).forEach((d: string) => allPeerDeps.add(d));
-    });
-
-    if (allDeps.size > 0) {
-      console.log(chalk.dim(`\n  Installing dependencies…`));
-      const depSpinner = ora("  Installing dependencies").start();
-      try {
-        const depCmd = installCommand(pm, Array.from(allDeps));
-        console.log(chalk.dim(`  Running: ${depCmd}`));
-        await execShellCommand(depCmd);
-        depSpinner.succeed("  Dependencies installed");
-      } catch (err: any) {
-        depSpinner.fail("  Failed to install dependencies");
-        console.log(chalk.dim(`  Run manually: ${installCommand(pm, Array.from(allDeps))}`));
-      }
-    }
-
-    if (allPeerDeps.size > 0) {
-      console.log(chalk.yellow(`\n  Peer dependencies required:`));
-      console.log(
-        chalk.dim(`  ${installCommand(pm, Array.from(allPeerDeps))}\n`)
-      );
-    }
-
-    console.log(chalk.green.bold("\n✓ All components added!\n"));
-
-    const uniqueSteps = new Map<string, any>();
-    registry.components.forEach((c: any) => {
-      if (c.installSteps) {
-        c.installSteps.forEach((step: any) => {
-          uniqueSteps.set(step.title, step);
-        });
-      }
-    });
-
-    if (uniqueSteps.size > 0) {
-      console.log(chalk.bold(`${chalk.cyan("Important Setup Steps:")}\n`));
-      uniqueSteps.forEach((step, title) => {
-        console.log(`  ${chalk.green("•")} ${chalk.bold(step.title)}`);
-        console.log(chalk.dim(`    ${step.description}`));
-        console.log();
-      });
-    }
-
-    console.log(
-      chalk.dim(`  Import and use the components in your project.\n`)
-    );
+    console.log(chalk.dim("\n  Run 'npx prodigy@latest add <component>' to add components.\n"));
   });
 
 program
