@@ -244,25 +244,27 @@ export default function ComponentPageLayout({
                 "pixel-image": "PixelImage.tsx",
                 "split-cards": "SplitCards.tsx",
               };
+
               const mainFile = mainFiles[slug];
               if (!mainFile) return null;
-              const folder = slug.replace(/-([a-z])/g, (_, c) => c.toUpperCase()).replace(/^[a-z]/, c => c.toUpperCase());
-              const rawUrl = `https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/${folder}/${mainFile}`;
+
+              // ✅ Points to YOUR Vercel API (not raw GitHub)
+              const apiUrl = `https://prodigy-ui.vercel.app/api/component/${slug}/${mainFile}`;
+              const v0Url = `https://v0.dev/chat/api/open?url=${encodeURIComponent(apiUrl)}`;
+
               return (
-<a
-                  href={`https://v0.dev/chat/api/open?url=${encodeURIComponent(rawUrl)}`}
+                <a
+                  href={v0Url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-lg bg-white text-black border border-white hover:bg-neutral-400 hover:border-neutral-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-lg bg-white text-black border border-white hover:bg-neutral-400 hover:border-neutral-400 focus:outline-none transition-colors"
                 >
-                  <div className="flex items-center justify-center gap-2 transition-opacity">
-                    <div className="flex w-full items-center justify-center gap-1">
-                      Open in{" "}
-                      <svg fill="currentColor" viewBox="0 0 147 70" xmlns="http://www.w3.org/2000/svg" className="w-5">
-                        <path d="M56 50.2031V14H70V60.1562C70 65.5928 65.5928 70 60.1562 70C57.5605 70 54.9982 68.9992 53.1562 67.1573L0 14H19.7969L56 50.2031Z"></path>
-                        <path d="M147 56H133V23.9531L100.953 56H133V70H96.6875C85.8144 70 77 61.1856 77 50.3125V14H91V46.1562L123.156 14H91V0H127.312C138.186 0 147 8.81439 147 19.6875V56Z"></path>
-                      </svg>
-                    </div>
+                  <div className="flex items-center justify-center gap-1">
+                    Open in{" "}
+                    <svg fill="currentColor" viewBox="0 0 147 70" xmlns="http://www.w3.org/2000/svg" className="w-5">
+                      <path d="M56 50.2031V14H70V60.1562C70 65.5928 65.5928 70 60.1562 70C57.5605 70 54.9982 68.9992 53.1562 67.1573L0 14H19.7969L56 50.2031Z"></path>
+                      <path d="M147 56H133V23.9531L100.953 56H133V70H96.6875C85.8144 70 77 61.1856 77 50.3125V14H91V46.1562L123.156 14H91V0H127.312C138.186 0 147 8.81439 147 19.6875V56Z"></path>
+                    </svg>
                   </div>
                 </a>
               );

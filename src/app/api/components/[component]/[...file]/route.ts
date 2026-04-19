@@ -4,10 +4,26 @@ import path from "path";
 
 const UIElement_DIR = path.join(process.cwd(), "src/components/UIElement");
 
+function getDependencies(component: string): string[] {
+  const deps: Record<string, string[]> = {
+    "pixel-image": ["gsap", "gsap/ScrollTrigger"],
+    "team-section": ["gsap"],
+    "stroke-cards": [],
+    "spring-back-card": [],
+    "more-space-scroll": ["gsap", "@studio-freight/lenis"],
+    "infinite-contact": ["gsap"],
+    "infinite-slider": ["gsap"],
+    "glowing-light": ["lottie-react"],
+    "gooey-bar": ["gsap"],
+    "split-cards": [],
+  };
+  return deps[component] ?? [];
+}
+
 function getComponentFolders(): Record<string, string> {
   const folders: Record<string, string> = {};
   if (!fs.existsSync(UIElement_DIR)) return folders;
-  
+
   const entries = fs.readdirSync(UIElement_DIR, { withFileTypes: true });
   for (const entry of entries) {
     if (entry.isDirectory()) {
@@ -25,7 +41,7 @@ export async function GET(
 ) {
   const { component, file } = await params;
   const fileName = file[file.length - 1];
-  
+
   // Dynamic folder lookup
   const folders = getComponentFolders();
   const folder = folders[component];
@@ -47,7 +63,7 @@ export async function GET(
     // Move "use client" to after header if present
     content = content.replace(/^"use client"/, '');
     content = content.replace(/^'use client'/, '');
-    
+
     const header = `// @ts-nocheck
 /* eslint-disable */
 "use client";
@@ -75,10 +91,17 @@ export async function GET(
     content = content.replace(/height=\{(\d+)\}/g, 'height="$1"');
     content = content.replace(/(<img[^>]*[^/])>/g, '$1 />');
   }
-  
-  return new NextResponse(content, {
-    headers: {
-      "Content-Type": "text/plain",
-    },
+
+  return NextResponse.json({
+    name: component,
+    type: "registry:ui",
+    dependencies: getDependencies(component), // see below
+    files: [
+      {
+        path: `components/${folder}/${fileName}`,
+        content: content,
+        type: "registry:ui",
+      },
+    ],
   });
 }
