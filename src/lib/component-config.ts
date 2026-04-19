@@ -60,4 +60,16 @@ export const COMPONENT_MAP: Record<string, ComponentConfig> = {
       "page.tsx": { source: "page.tsx", exportName: "GlowingLight" } 
     } 
   },
+  "pixel-image": { 
+    folder: "PixelImage", 
+    files: { 
+      "PixelImage.tsx": { source: "PixelImage.tsx" } 
+    } 
+  },
+  "split-cards": { 
+    folder: "SplitCards", 
+    files: { 
+      "SplitCards.tsx": { source: "SplitCards.tsx" } 
+    } 
+  },
 };
