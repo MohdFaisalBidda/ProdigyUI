@@ -176,22 +176,22 @@ export async function GET(
     let content = fs.readFileSync(filePath, "utf-8");
 
     if (!content.includes('declare global') && !content.includes('/// <reference')) {
-  content = content
-    .replace(/^"use client"/, "")
-    .replace(/^'use client'/, "")
-    .trim();
+      content = content
+        .replace(/^"use client"/, "")
+        .replace(/^'use client'/, "")
+        .trim();
 
-  const hasReactImport =
-    content.includes('from "react"') || content.includes("from 'react'");
+      const hasReactImport =
+        content.includes('from "react"') || content.includes("from 'react'");
 
-  content = `// @ts-nocheck
+      content = `// @ts-nocheck
 /* eslint-disable */
 "use client";
 ${hasReactImport ? "" : 'import * as React from "react";'}
 
 ${content}
 `;
-}
+    }
 
     const exportName = file.source.replace(/[^a-zA-Z]/g, "");
     if (content.includes("function page()")) {
@@ -245,6 +245,41 @@ export default function Page() {
       }
     }, null, 2),
     type: "registry:file"
+  });
+
+  files.push({
+    path: "tsconfig.json",
+    content: JSON.stringify({
+      compilerOptions: {
+        target: "ES6",
+        lib: ["dom", "dom.iterable", "esnext"],
+        allowJs: true,
+        skipLibCheck: true,
+        strict: false,
+        noEmit: true,
+        esModuleInterop: true,
+        module: "esnext",
+        moduleResolution: "bundler",
+        resolveJsonModule: true,
+        isolatedModules: true,
+        jsx: "react-jsx",
+        incremental: true,
+        paths: {
+          "@/*": ["./*"]
+        }
+      },
+      include: ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+      exclude: ["node_modules"]
+    }, null, 2),
+    type: "registry:file",
+  });
+
+  files.push({
+    path: "next-env.d.ts",
+    content: `/// <reference types="next" />
+/// <reference types="next/image-types/global" />
+`,
+    type: "registry:file",
   });
 
   return NextResponse.json({
