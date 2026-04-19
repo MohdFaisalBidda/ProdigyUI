@@ -27,7 +27,6 @@ function getComponentFolders(): Record<string, string> {
   const entries = fs.readdirSync(UIElement_DIR, { withFileTypes: true });
   for (const entry of entries) {
     if (entry.isDirectory()) {
-      // Convert folder name to slug: "StrokeCards" -> "stroke-cards"
       const slug = entry.name.replace(/([A-Z])/g, "-$1").toLowerCase().replace(/^-/, "");
       folders[slug] = entry.name;
     }
@@ -42,7 +41,6 @@ export async function GET(
   const { component, file } = await params;
   const fileName = file[file.length - 1];
 
-  // Dynamic folder lookup
   const folders = getComponentFolders();
   const folder = folders[component];
   if (!folder) {
@@ -50,30 +48,18 @@ export async function GET(
   }
 
   const filePath = path.join(UIElement_DIR, folder, fileName);
-
   if (!fs.existsSync(filePath)) {
     return new NextResponse("File not found: " + filePath, { status: 404 });
   }
 
   let content = fs.readFileSync(filePath, "utf-8");
 
-  // Add type declarations for browser globals if not already present
-  let headerAdded = false;
   if (!content.includes('declare global') && !content.includes('/// <reference')) {
-    // Move "use client" to after header if present
     content = content.replace(/^"use client"/, '');
     content = content.replace(/^'use client'/, '');
-
-    const header = `// @ts-nocheck
-/* eslint-disable */
-"use client";
-
-`;
-    content = header + content.trim();
-    headerAdded = true;
+    content = `// @ts-nocheck\n/* eslint-disable */\n"use client";\n\n` + content.trim();
   }
 
-  // Fix export name: function page() -> function FolderName()
   const exportName = folder.replace(/[^a-zA-Z]/g, "");
   if (content.includes("function page()")) {
     content = content.replace(/function page\(\)/g, `function ${exportName}()`);
@@ -82,7 +68,6 @@ export async function GET(
     content = content.replace(/export default page/g, `export default ${exportName}`);
   }
 
-  // Replace next/image with regular img for non-Next.js projects
   const nextImageComponents = ["team-section", "spring-back-card", "more-space-scroll", "infinite-slider"];
   if (nextImageComponents.includes(component)) {
     content = content.replace(/import Image from ["']next\/image["']/g, '');
@@ -92,15 +77,31 @@ export async function GET(
     content = content.replace(/(<img[^>]*[^/])>/g, '$1 />');
   }
 
+  // ✅ Page wrapper so v0 has an entry point to render at "/"
+  const pageContent = `import ${exportName} from "@/components/${folder}/${fileName.replace('.tsx', '')}";
+
+export default function Page() {
+  return (
+    <div className="min-h-screen bg-black">
+      <${exportName} />
+    </div>
+  );
+}`;
+
   return NextResponse.json({
     name: component,
-    type: "registry:ui",
-    dependencies: getDependencies(component), // see below
+    type: "registry:block",
+    dependencies: getDependencies(component),
     files: [
       {
         path: `components/${folder}/${fileName}`,
         content: content,
-        type: "registry:ui",
+        type: "registry:component",  // ← component file
+      },
+      {
+        path: "app/page.tsx",
+        content: pageContent,
+        type: "registry:page",       // ← entry point v0 renders
       },
     ],
   });
