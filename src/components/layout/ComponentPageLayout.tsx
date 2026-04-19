@@ -248,8 +248,7 @@ export default function ComponentPageLayout({
               const mainFile = mainFiles[slug];
               if (!mainFile) return null;
 
-              // ✅ Points to YOUR Vercel API (not raw GitHub)
-              const apiUrl = `https://prodigy-ui.vercel.app/api/component/${slug}/${mainFile}`;
+              const apiUrl = `https://prodigy-ui.vercel.app/api/components/${slug}/${mainFile}`;
               const v0Url = `https://v0.dev/chat/api/open?url=${encodeURIComponent(apiUrl)}`;
 
               return (
