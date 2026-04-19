@@ -168,17 +168,30 @@ export async function GET(
 
   const files = metadata.files.map((file, index) => {
     const filePath = path.join(UIElement_DIR, folder, file.path.split("/").pop()!);
-    
+
     if (!fs.existsSync(filePath)) {
       throw new Error(`File not found: ${filePath}`);
     }
 
     let content = fs.readFileSync(filePath, "utf-8");
-    
+
     if (!content.includes('declare global') && !content.includes('/// <reference')) {
-      content = content.replace(/^"use client"/, "").replace(/^'use client'/, "");
-      content = `// @ts-nocheck\n/* eslint-disable */\n"use client";\n\n${content.trim()}`;
-    }
+  content = content
+    .replace(/^"use client"/, "")
+    .replace(/^'use client'/, "")
+    .trim();
+
+  const hasReactImport =
+    content.includes('from "react"') || content.includes("from 'react'");
+
+  content = `// @ts-nocheck
+/* eslint-disable */
+"use client";
+${hasReactImport ? "" : 'import * as React from "react";'}
+
+${content}
+`;
+}
 
     const exportName = file.source.replace(/[^a-zA-Z]/g, "");
     if (content.includes("function page()")) {
@@ -223,6 +236,16 @@ export default function Page() {
     type: "registry:page",
     target: "app/page.tsx",
   } as any);
+
+  files.push({
+    path: "tsconfig.json",
+    content: JSON.stringify({
+      compilerOptions: {
+        jsx: "react-jsx"
+      }
+    }, null, 2),
+    type: "registry:file"
+  });
 
   return NextResponse.json({
     $schema: "https://ui.shadcn.com/schema/registry-item.json",
