@@ -89,19 +89,24 @@ export default function Page() {
 }`;
 
   return NextResponse.json({
+    $schema: "https://ui.shadcn.com/schema/registry-item.json",  // ← add this
     name: component,
     type: "registry:block",
+    title: folder,                          // ← add this (human readable)
+    description: `${folder} component from ProdigyUI`,  // ← add this
     dependencies: getDependencies(component),
     files: [
       {
         path: `components/${folder}/${fileName}`,
         content: content,
-        type: "registry:component",  // ← component file
+        type: "registry:component",
+        // ← no target needed for registry:component
       },
       {
         path: "app/page.tsx",
         content: pageContent,
-        type: "registry:page",       // ← entry point v0 renders
+        type: "registry:page",
+        target: "app/page.tsx",            // ← required for registry:page
       },
     ],
   });
