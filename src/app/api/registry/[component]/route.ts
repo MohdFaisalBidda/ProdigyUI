@@ -166,48 +166,48 @@ export async function GET(
     return new NextResponse("Component metadata not found", { status: 404 });
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main";
-  const rawBaseUrl = "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main";
-
-  const files = metadata.files.map((file) => {
+  const files = metadata.files.map((file, index) => {
     const filePath = path.join(UIElement_DIR, folder, file.path.split("/").pop()!);
-    let content = "";
     
-    if (fs.existsSync(filePath)) {
-      content = fs.readFileSync(filePath, "utf-8");
-      
-      if (!content.includes('declare global') && !content.includes('/// <reference')) {
-        content = content.replace(/^"use client"/, "").replace(/^'use client'/, "");
-        content = `// @ts-nocheck\n/* eslint-disable */\n"use client";\n\n${content.trim()}`;
-      }
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`File not found: ${filePath}`);
+    }
 
-      const exportName = file.source.replace(/[^a-zA-Z]/g, "");
-      if (content.includes("function page()")) {
-        content = content.replace(/function page\(\)/g, `function ${exportName}()`);
-      }
-      if (content.includes("export default page")) {
-        content = content.replace(/export default page/g, `export default ${exportName}`);
-      }
+    let content = fs.readFileSync(filePath, "utf-8");
+    
+    if (!content.includes('declare global') && !content.includes('/// <reference')) {
+      content = content.replace(/^"use client"/, "").replace(/^'use client'/, "");
+      content = `// @ts-nocheck\n/* eslint-disable */\n"use client";\n\n${content.trim()}`;
+    }
 
-      const nextImageComponents = ["team-section", "spring-back-card", "more-space-scroll", "infinite-slider"];
-      if (nextImageComponents.includes(component)) {
-        content = content.replace(/import Image from ["']next\/image["']/g, "");
-        content = content.replace(/<Image\n?/g, "<img ");
-        content = content.replace(/width=\{(\d+)\}/g, 'width="$1"');
-        content = content.replace(/height=\{(\d+)\}/g, 'height="$1"');
-        content = content.replace(/(<img[^>]*[^/])>/g, "$1 />");
-      }
+    const exportName = file.source.replace(/[^a-zA-Z]/g, "");
+    if (content.includes("function page()")) {
+      content = content.replace(/function page\(\)/g, `function ${exportName}()`);
+    }
+    if (content.includes("export default page")) {
+      content = content.replace(/export default page/g, `export default ${exportName}`);
+    }
+
+    const nextImageComponents = ["team-section", "spring-back-card", "more-space-scroll", "infinite-slider"];
+    if (nextImageComponents.includes(component)) {
+      content = content.replace(/import Image from ["']next\/image["']/g, "");
+      content = content.replace(/<Image\n?/g, "<img ");
+      content = content.replace(/width=\{(\d+)\}/g, 'width="$1"');
+      content = content.replace(/height=\{(\d+)\}/g, 'height="$1"');
+      content = content.replace(/(<img[^>]*[^/])>/g, "$1 />");
     }
 
     return {
       path: `components/${folder}/${file.path.split("/").pop()}`,
       content: content,
-      type: "registry:component",
-    };
+      type: index === 0 ? "registry:component" : "registry:file",
+    } as any;
   });
 
   const exportName = folder.replace(/[^a-zA-Z]/g, "");
-  const pageContent = `import ${exportName} from "@/components/${folder}";
+  const fileName = metadata.files[0]?.path.split("/").pop() || "page.tsx";
+  const componentFileName = fileName.replace(".tsx", "");
+  const pageContent = `import ${exportName} from "@/components/${folder}/${componentFileName}";
 
 export default function Page() {
   return (
@@ -222,7 +222,7 @@ export default function Page() {
     content: pageContent,
     type: "registry:page",
     target: "app/page.tsx",
-  });
+  } as any);
 
   return NextResponse.json({
     $schema: "https://ui.shadcn.com/schema/registry-item.json",
