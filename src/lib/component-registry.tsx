@@ -385,7 +385,7 @@ const cards = [
     previewUrl: "/preview/split-cards",
     previewHeight: 600,
     props: [
-      { name: "cards", type: "Array<{ id: string; frontImage: string; backTitle: string; backDescription: string }>", default: "default cards", description: "Array of card objects. Each card has: id (unique identifier), frontImage (URL for front side), backTitle (title shown on back flip), backDescription (description text on back flip)" },
+      { name: "cards", type: "Array<{ id: string; frontImage: string; backTitle: string; backDescription: string }>", default: "default cards", description: "Array of exactly 3 card objects. Each card has: id (unique identifier), frontImage (URL for front side - recommended aspect ratio per image is 5/7, total 15/7 for all 3), backTitle (title shown on back flip), backDescription (description text on back flip)" },
       { name: "introTitle", type: "string", default: '"Building the Future..."', description: "Title text for the intro section" },
       { name: "headerTitle", type: "string", default: '"Three Forces..."', description: "Title text for the sticky header section" },
       { name: "outroTitle", type: "string", default: '"Start Connecting..."', description: "Title text for the outro section" },

@@ -28,10 +28,10 @@ function Header() {
                         <ComponentsIcon />
                         Components
                     </Link>
-                    <Link href="/mcp" className="flex items-center gap-2 hover:text-white transition-colors">
+                    {/* <Link href="/mcp" className="flex items-center gap-2 hover:text-white transition-colors">
                         <MCPIcon />
                         MCP
-                    </Link>
+                    </Link> */}
                     <a href="https://www.npmjs.com/package/prodigy-ui" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition-colors">
                         <NpmIcon />
                         npm

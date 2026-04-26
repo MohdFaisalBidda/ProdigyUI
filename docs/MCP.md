@@ -62,7 +62,7 @@ Or add to `.claude/settings.json`:
 
 ## Available Tools
 
-The ProdigyUI MCP server exposes the following tools:
+The ProdigyUI MCP server exposes these tools:
 
 | Tool | Description |
 |------|-------------|
@@ -73,6 +73,7 @@ The ProdigyUI MCP server exposes the following tools:
 | `get_install_command` | Get installation commands and dependencies for a component |
 | `get_components_by_tag` | Filter components by tag (Interactive, GSAP, Scroll, Motion) |
 | `get_all_tags` | List all available component tags |
+| `create_landing_page` | Generate a complete landing page (saas/portfolio/startup/product/agency) using ProdigyUI components |
 
 ## Usage Examples
 
@@ -104,6 +105,12 @@ Search for components related to animations, then get the install command for th
 
 ```
 Get all GSAP-powered components from the ProdigyUI library.
+```
+
+### Create Landing Page
+
+```
+Generate a SaaS landing page for my AI startup called "FlowAI" with accent color #C8FF00.
 ```
 
 ## Security

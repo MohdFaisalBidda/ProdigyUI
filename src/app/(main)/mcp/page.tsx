@@ -7,10 +7,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const BASIC_TOOLS = [
+const MCP_TOOLS = [
   {
     name: "list_components",
-    description: "List all available ProdigyUI components",
+    description: "List all available ProdigyUI components with names, descriptions, tags, and props",
     parameters: [],
     example: "list_components"
   },
@@ -22,7 +22,7 @@ const BASIC_TOOLS = [
   },
   {
     name: "get_component",
-    description: "Get detailed information about a specific ProdigyUI component",
+    description: "Get detailed information about a specific component including props, files, and dependencies",
     parameters: [{ name: "name", type: "string", required: true }],
     example: "get_component name=\"stroke-cards\""
   },
@@ -37,13 +37,13 @@ const BASIC_TOOLS = [
   },
   {
     name: "get_install_command",
-    description: "Get the installation command for adding a component to a project",
+    description: "Get the installation command and dependencies for adding a component to a project",
     parameters: [{ name: "name", type: "string", required: true }],
     example: "get_install_command name=\"stroke-cards\""
   },
   {
     name: "get_components_by_tag",
-    description: "Get all components filtered by a specific tag",
+    description: "Get all components filtered by a specific tag (Interactive, GSAP, Scroll, Motion, Animation)",
     parameters: [{ name: "tag", type: "string", required: true }],
     example: "get_components_by_tag tag=\"Interactive\""
   },
@@ -52,133 +52,28 @@ const BASIC_TOOLS = [
     description: "Get all available component tags/categories",
     parameters: [],
     example: "get_all_tags"
+  },
+  {
+    name: "create_landing_page",
+    description: "Generate a complete landing page using ProdigyUI components (saas, portfolio, startup, product, agency)",
+    parameters: [
+      { name: "type", type: "string", required: true },
+      { name: "title", type: "string", required: true },
+      { name: "description", type: "string", required: false },
+      { name: "accentColor", type: "string", required: false }
+    ],
+    example: "create_landing_page type=\"saas\" title=\"MyApp\" accentColor=\"#C8FF00\""
   }
 ];
 
-const ADVANCED_TOOLS = [
-  {
-    name: "analyze_component_usage",
-    description: "Analyze how a component is typically used, including common patterns and best practices",
-    parameters: [{ name: "name", type: "string", required: true }],
-    example: "analyze_component_usage name=\"stroke-cards\"",
-    category: "Analysis"
-  },
-  {
-    name: "suggest_similar_components",
-    description: "Find components similar to the specified one based on functionality or visual style",
-    parameters: [
-      { name: "name", type: "string", required: true },
-      { name: "criteria", type: "string", required: false }
-    ],
-    example: "suggest_similar_components name=\"stroke-cards\" criteria=\"functionality\"",
-    category: "Discovery"
-  },
-  {
-    name: "generate_component_variant",
-    description: "Generate a custom variant of a component with specific modifications",
-    parameters: [
-      { name: "name", type: "string", required: true },
-      { name: "variantType", type: "string", required: true },
-      { name: "customProps", type: "object", required: false }
-    ],
-    example: "generate_component_variant name=\"stroke-cards\" variantType=\"minimal\"",
-    category: "Generation"
-  },
-  {
-    name: "create_page_layout",
-    description: "Generate a complete page layout using multiple components",
-    parameters: [
-      { name: "description", type: "string", required: true },
-      { name: "components", type: "array", required: false },
-      { name: "layout", type: "string", required: false }
-    ],
-    example: "create_page_layout description=\"Modern landing page with hero and features\"",
-    category: "Generation"
-  },
-  {
-    name: "compare_components",
-    description: "Compare two components side-by-side including features and performance",
-    parameters: [
-      { name: "component1", type: "string", required: true },
-      { name: "component2", type: "string", required: true },
-      { name: "aspects", type: "array", required: false }
-    ],
-    example: "compare_components component1=\"stroke-cards\" component2=\"team-section\"",
-    category: "Analysis"
-  },
-  {
-    name: "generate_integration_code",
-    description: "Generate integration code for specific frameworks",
-    parameters: [
-      { name: "component", type: "string", required: true },
-      { name: "framework", type: "string", required: true },
-      { name: "features", type: "array", required: false }
-    ],
-    example: "generate_integration_code component=\"stroke-cards\" framework=\"nextjs\"",
-    category: "Integration"
-  },
-  {
-    name: "validate_component_compatibility",
-    description: "Check if a component is compatible with specific frameworks or versions",
-    parameters: [
-      { name: "component", type: "string", required: true },
-      { name: "target", type: "string", required: true }
-    ],
-    example: "validate_component_compatibility component=\"stroke-cards\" target=\"React 18\"",
-    category: "Validation"
-  },
-  {
-    name: "suggest_component_improvements",
-    description: "Analyze a component and suggest improvements for performance or accessibility",
-    parameters: [
-      { name: "component", type: "string", required: true },
-      { name: "focus", type: "array", required: false }
-    ],
-    example: "suggest_component_improvements component=\"stroke-cards\" focus=[\"performance\",\"accessibility\"]",
-    category: "Analysis"
-  },
-  {
-    name: "generate_component_from_description",
-    description: "Generate a component based on natural language description",
-    parameters: [
-      { name: "description", type: "string", required: true },
-      { name: "baseComponent", type: "string", required: false },
-      { name: "complexity", type: "string", required: false }
-    ],
-    example: "generate_component_from_description description=\"An animated card that flips on hover\"",
-    category: "Generation"
-  },
-  {
-    name: "analyze_project_components",
-    description: "Analyze which ProdigyUI components are used in the current project",
-    parameters: [
-      { name: "projectPath", type: "string", required: false },
-      { name: "includeUsage", type: "boolean", required: false }
-    ],
-    example: "analyze_project_components includeUsage=true",
-    category: "Analysis"
-  }
-];
-
-function ToolCard({ tool, isAdvanced = false }: { tool: typeof BASIC_TOOLS[0] | typeof ADVANCED_TOOLS[0]; isAdvanced?: boolean }) {
+function ToolCard({ tool }: { tool: typeof MCP_TOOLS[0] }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className={`group border rounded-xl p-6 hover:border-white/[0.16] transition-all duration-300 ${isAdvanced ? 'border-[#7B6BFF]/30 bg-[#7B6BFF]/[0.02]' : 'border-white/[0.08] bg-white/[0.02]'
-      }`}>
+    <div className="group border border-white/[0.08] bg-white/[0.02] rounded-xl p-6 hover:border-[#C8FF00]/30 hover:bg-[#C8FF00]/[0.02] transition-all duration-300">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
           <h3 className="font-syne text-lg font-bold text-white">{tool.name}</h3>
-          {isAdvanced && 'category' in tool && (
-            <span className={`px-2 py-1 rounded text-xs font-medium ${tool.category === 'Analysis' ? 'bg-blue-500/20 text-blue-300' :
-                tool.category === 'Generation' ? 'bg-green-500/20 text-green-300' :
-                  tool.category === 'Discovery' ? 'bg-purple-500/20 text-purple-300' :
-                    tool.category === 'Integration' ? 'bg-orange-500/20 text-orange-300' :
-                      'bg-gray-500/20 text-gray-300'
-              }`}>
-              {tool.category}
-            </span>
-          )}
         </div>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
@@ -192,7 +87,7 @@ function ToolCard({ tool, isAdvanced = false }: { tool: typeof BASIC_TOOLS[0] | 
 
       <p className="text-white/60 text-sm leading-relaxed mb-4">{tool.description}</p>
 
-      {tool.parameters.length > 0 && (
+      {tool.parameters.length > 0 && isExpanded && (
         <div className="mb-4">
           <h4 className="text-white/80 text-sm font-semibold mb-2">Parameters:</h4>
           <div className="space-y-2">
@@ -524,28 +419,15 @@ export default function MCPPage() {
         </h2>
 
         <div className="space-y-12">
-          {/* Basic Tools */}
+          {/* MCP Tools */}
           <div>
             <div className="flex items-center gap-4 mb-6">
-              <span className="font-mono-jetbrains text-[10px] text-white/20 tracking-[0.2em] uppercase">Basic Tools</span>
-              <div className="flex-1 h-px bg-white/[0.06] max-w-[60px]" />
+              <span className="font-mono-jetbrains text-[10px] text-[#C8FF00] tracking-[0.2em] uppercase">MCP Tools</span>
+              <div className="flex-1 h-px bg-[#C8FF00]/30 max-w-[60px]" />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {BASIC_TOOLS.map((tool) => (
+              {MCP_TOOLS.map((tool) => (
                 <ToolCard key={tool.name} tool={tool} />
-              ))}
-            </div>
-          </div>
-
-          {/* Advanced Tools */}
-          <div>
-            <div className="flex items-center gap-4 mb-6">
-              <span className="font-mono-jetbrains text-[10px] text-[#7B6BFF] tracking-[0.2em] uppercase">Advanced Tools</span>
-              <div className="flex-1 h-px bg-[#7B6BFF]/30 max-w-[60px]" />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {ADVANCED_TOOLS.map((tool) => (
-                <ToolCard key={tool.name} tool={tool} isAdvanced={true} />
               ))}
             </div>
           </div>

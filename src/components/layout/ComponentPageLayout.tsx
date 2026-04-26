@@ -231,7 +231,7 @@ export default function ComponentPageLayout({
               }}>{description}</p>
             </div>
             {/* Open in v0 button */}
-            {(() => {
+            {/* {(() => {
               const mainFiles: Record<string, string> = {
                 "stroke-cards": "StrokeCards.tsx",
                 "team-section": "TeamSection.tsx",
@@ -266,29 +266,10 @@ export default function ComponentPageLayout({
                     </svg>
                   </div>
                 </a>
-              );
-            })()}
-
-            {/* Variant switcher */}
-            {variants && variants.length > 1 && (
-              <div style={{ display: "flex", gap: "0.375rem" }}>
-                {variants.map((v) => (
-                  <button
-                    key={v.label}
-                    onClick={() => onVariantChange?.(v.label)}
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace", fontSize: "10px",
-                      letterSpacing: "0.1em", textTransform: "uppercase",
-                      color: activeVariant === v.label ? "#000" : "rgba(255,255,255,0.4)",
-                      background: activeVariant === v.label ? tagColor : "rgba(255,255,255,0.05)",
-                      border: `1px solid ${activeVariant === v.label ? tagColor : "rgba(255,255,255,0.08)"}`,
-                      borderRadius: "9999px", padding: "0.35rem 0.875rem",
-                      cursor: "pointer", transition: "all 0.2s",
-                    }}
-                  >{v.label}</button>
-                ))}
-              </div>
-            )}
+);
+            })()} */}
+            {/* </a> */}
+            {/* )} */}
           </div>
         </div>
 
