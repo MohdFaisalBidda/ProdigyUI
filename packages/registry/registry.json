@@ -607,7 +607,7 @@
           "name": "cards",
           "type": "Array<{ id: string; frontImage: string; backTitle: string; backDescription: string }>",
           "default": "default cards",
-          "description": "Array of card objects. Each card has: id (unique identifier), frontImage (URL for front side), backTitle (title shown on back flip), backDescription (description text on back flip)"
+          "description": "Array of exactly 3 card objects. Each card has: id (unique identifier), frontImage (URL for front side - recommended aspect ratio per image is 5/7, total 15/7 for all 3), backTitle (title shown on back flip), backDescription (description text on back flip)"
         },
         {
           "name": "introTitle",
