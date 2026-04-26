@@ -1,0 +1,33 @@
+{
+  "name": "@prodigyui/mcp",
+  "version": "1.0.0",
+  "description": "MCP server for ProdigyUI component library",
+  "main": "./dist/index.js",
+  "type": "module",
+  "bin": {
+    "prodigy-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "prodigy-ui",
+    "ui-components"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -162,6 +162,7 @@ program
   .command("add [components...]")
   .description("Add one or more components to your project")
   .option("-y, --yes", "skip confirmation prompts")
+  .option("--all", "Add all available components")
   .option(
     "--path <path>",
     "destination folder relative to project root (auto-detected if not specified)"
@@ -182,7 +183,10 @@ program
     }
 
     let targets: string[] = components;
-    if (!targets.length) {
+
+    if (opts.all) {
+      targets = registry.components.map((c: any) => c.name);
+    } else if (!targets.length) {
       const { chosen } = await prompts({
         type: "multiselect",
         name: "chosen",
@@ -339,118 +343,7 @@ program
     );
 
     spinner.succeed("prodigy-ui initialized!");
-    console.log(chalk.dim("\n  Run 'prodigy add <component>' to add components.\n"));
-  });
-
-program
-  .command("add-all")
-  .description("Add all components to your project")
-  .option("-y, --yes", "skip confirmation prompts")
-  .option(
-    "--path <path>",
-    "destination folder relative to project root (auto-detected if not specified)"
-  )
-  .action(async (opts) => {
-    const defaultPath = getDefaultComponentsPath();
-    const componentsPath = opts.path || defaultPath;
-    
-    const spinner = ora("Fetching registry…").start();
-
-    let registry: any;
-    try {
-      registry = await fetchJSON(REGISTRY_URL);
-      spinner.succeed("Registry loaded");
-    } catch (e) {
-      spinner.fail("Could not reach registry");
-      process.exit(1);
-    }
-
-    const targets = registry.components.map((c: any) => c.name);
-    const pm = detectPackageManager();
-
-    console.log(chalk.bold(`\n${chalk.cyan("►")} Adding all ${targets.length} components…\n`));
-
-    if (registry.globals) {
-      await appendGlobals(registry.globals.source);
-    }
-
-    for (const name of targets) {
-      const component = registry.components.find((c: any) => c.name === name);
-      if (!component) continue;
-
-      console.log(chalk.dim(`\n  Adding ${component.title}…`));
-
-      for (const file of component.files) {
-        const destPath = path.join(
-          process.cwd(),
-          componentsPath,
-          file.path
-        );
-        await fs.ensureDir(path.dirname(destPath));
-
-        const fileSpinner = ora(`  Downloading ${path.basename(file.path)}`).start();
-        try {
-          const source = await fetchText(file.source);
-          await fs.writeFile(destPath, source, "utf-8");
-          fileSpinner.succeed(`  ${chalk.green("✓")} ${destPath}`);
-        } catch {
-          fileSpinner.fail(`  Failed to download ${file.path}`);
-        }
-      }
-    }
-
-    const allDeps = new Set<string>();
-    const allPeerDeps = new Set<string>();
-    
-    registry.components.forEach((c: any) => {
-      (c.dependencies || []).forEach((d: string) => allDeps.add(d));
-      (c.peerDependencies || []).forEach((d: string) => allPeerDeps.add(d));
-    });
-
-    if (allDeps.size > 0) {
-      console.log(chalk.dim(`\n  Installing dependencies…`));
-      const depSpinner = ora("  Installing dependencies").start();
-      try {
-        const depCmd = installCommand(pm, Array.from(allDeps));
-        console.log(chalk.dim(`  Running: ${depCmd}`));
-        await execShellCommand(depCmd);
-        depSpinner.succeed("  Dependencies installed");
-      } catch (err: any) {
-        depSpinner.fail("  Failed to install dependencies");
-        console.log(chalk.dim(`  Run manually: ${installCommand(pm, Array.from(allDeps))}`));
-      }
-    }
-
-    if (allPeerDeps.size > 0) {
-      console.log(chalk.yellow(`\n  Peer dependencies required:`));
-      console.log(
-        chalk.dim(`  ${installCommand(pm, Array.from(allPeerDeps))}\n`)
-      );
-    }
-
-    console.log(chalk.green.bold("\n✓ All components added!\n"));
-
-    const uniqueSteps = new Map<string, any>();
-    registry.components.forEach((c: any) => {
-      if (c.installSteps) {
-        c.installSteps.forEach((step: any) => {
-          uniqueSteps.set(step.title, step);
-        });
-      }
-    });
-
-    if (uniqueSteps.size > 0) {
-      console.log(chalk.bold(`${chalk.cyan("Important Setup Steps:")}\n`));
-      uniqueSteps.forEach((step, title) => {
-        console.log(`  ${chalk.green("•")} ${chalk.bold(step.title)}`);
-        console.log(chalk.dim(`    ${step.description}`));
-        console.log();
-      });
-    }
-
-    console.log(
-      chalk.dim(`  Import and use the components in your project.\n`)
-    );
+    console.log(chalk.dim("\n  Run 'npx prodigy@latest add <component>' to add components.\n"));
   });
 
 program
@@ -504,5 +397,230 @@ function execShellCommand(cmd: string): Promise<string> {
     child.on("error", reject);
   });
 }
+
+async function detectMCPClient(): Promise<{
+  type: 'vscode' | 'cursor' | 'claude-desktop' | 'windsurf' | 'unknown';
+  configPath?: string;
+  settingsPath?: string;
+}> {
+  const home = process.env.HOME || process.env.USERPROFILE || '';
+  const platform = process.platform;
+
+  // VS Code
+  const vscodePaths = {
+    darwin: path.join(home, 'Library/Application Support/Code/User/settings.json'),
+    win32: path.join(home, 'AppData/Roaming/Code/User/settings.json'),
+    linux: path.join(home, '.config/Code/User/settings.json')
+  };
+
+  // Cursor
+  const cursorPaths = {
+    darwin: path.join(home, 'Library/Application Support/Cursor/User/settings.json'),
+    win32: path.join(home, 'AppData/Roaming/Cursor/User/settings.json'),
+    linux: path.join(home, '.config/Cursor/User/settings.json')
+  };
+
+  // Claude Desktop
+  const claudePaths = {
+    darwin: path.join(home, 'Library/Application Support/Claude/claude_desktop_config.json'),
+    win32: path.join(home, 'AppData/Roaming/Claude/claude_desktop_config.json'),
+    linux: path.join(home, '.config/Claude/claude_desktop_config.json')
+  };
+
+  // Windsurf
+  const windsurfPaths = {
+    darwin: path.join(home, 'Library/Application Support/Windsurf/User/settings.json'),
+    win32: path.join(home, 'AppData/Roaming/Windsurf/User/settings.json'),
+    linux: path.join(home, '.config/Windsurf/User/settings.json')
+  };
+
+  const currentPlatform = platform as keyof typeof vscodePaths;
+
+  // Check in order of preference
+  if (await fs.pathExists(vscodePaths[currentPlatform])) {
+    return { type: 'vscode', settingsPath: vscodePaths[currentPlatform] };
+  }
+
+  if (await fs.pathExists(cursorPaths[currentPlatform])) {
+    return { type: 'cursor', settingsPath: cursorPaths[currentPlatform] };
+  }
+
+  if (await fs.pathExists(claudePaths[currentPlatform])) {
+    return { type: 'claude-desktop', configPath: claudePaths[currentPlatform] };
+  }
+
+  if (await fs.pathExists(windsurfPaths[currentPlatform])) {
+    return { type: 'windsurf', settingsPath: windsurfPaths[currentPlatform] };
+  }
+
+  return { type: 'unknown' };
+}
+
+async function configureMCPClient(client: ReturnType<typeof detectMCPClient> extends Promise<infer T> ? T : never): Promise<boolean> {
+  if (client.type === 'unknown') return false;
+
+  const mcpConfig = {
+    mcpServers: {
+      "prodigy-ui": {
+        command: "npx",
+        args: ["-y", "@prodigyui/mcp"]
+      }
+    }
+  };
+
+  try {
+    let configPath = client.settingsPath || client.configPath;
+    if (!configPath) return false;
+
+    let existingConfig = {};
+    if (await fs.pathExists(configPath)) {
+      try {
+        const content = await fs.readFile(configPath, 'utf-8');
+        existingConfig = JSON.parse(content);
+      } catch {
+        // If parsing fails, we'll overwrite with new config
+      }
+    }
+
+    const mergedConfig = { ...existingConfig, ...mcpConfig };
+    await fs.ensureDir(path.dirname(configPath));
+    await fs.writeFile(configPath, JSON.stringify(mergedConfig, null, 2), 'utf-8');
+
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function installMCPDependencies(): Promise<boolean> {
+  const spinner = ora('Installing MCP dependencies...').start();
+
+  try {
+    const pm = detectPackageManager();
+    const installCmd = installCommand(pm, ['@modelcontextprotocol/sdk'], true);
+    await execShellCommand(installCmd);
+    spinner.succeed('MCP dependencies installed');
+    return true;
+  } catch (err: any) {
+    spinner.fail('Failed to install MCP dependencies');
+    console.log(chalk.dim(`  You can install manually: npm install -D @modelcontextprotocol/sdk`));
+    return false;
+  }
+}
+
+program
+  .command("setup-mcp")
+  .description("One-command MCP setup - installs dependencies and configures your MCP client automatically")
+  .option("-y, --yes", "skip confirmation prompts")
+  .action(async (opts) => {
+    console.log(chalk.cyan.bold('\n🚀 ProdigyUI MCP Setup\n'));
+
+    // Step 1: Detect MCP client
+    const spinner = ora('Detecting your MCP client...').start();
+    const client = await detectMCPClient();
+
+    if (client.type === 'unknown') {
+      spinner.warn('Could not auto-detect MCP client');
+      console.log(chalk.yellow('\nSupported clients: VS Code, Cursor, Claude Desktop, Windsurf'));
+      console.log(chalk.dim('Make sure you have one of these installed and configured.\n'));
+    } else {
+      spinner.succeed(`Detected ${client.type === 'vscode' ? 'VS Code' : client.type === 'cursor' ? 'Cursor' : client.type === 'claude-desktop' ? 'Claude Desktop' : 'Windsurf'}`);
+    }
+
+    // Step 2: Install dependencies
+    const depsInstalled = await installMCPDependencies();
+
+    // Step 3: Configure client automatically
+    if (client.type !== 'unknown') {
+      const configSpinner = ora(`Configuring ${client.type}...`).start();
+      const configured = await configureMCPClient(client);
+
+      if (configured) {
+        configSpinner.succeed(`${client.type} configured successfully!`);
+        console.log(chalk.green('\n✅ Setup complete! Restart your editor to start using MCP.'));
+        console.log(chalk.dim('\nYou can now ask your AI assistant to:'));
+        console.log(chalk.cyan('  • "Show me all ProdigyUI components"'));
+        console.log(chalk.cyan('  • "Get the stroke-cards component"'));
+        console.log(chalk.cyan('  • "Install the infinite-slider component"'));
+        return;
+      } else {
+        configSpinner.fail(`Could not configure ${client.type} automatically`);
+      }
+    }
+
+    // Fallback: Manual configuration
+    console.log(chalk.yellow('\n📋 Manual Configuration Required\n'));
+    console.log(chalk.dim('Add this to your MCP client configuration:\n'));
+    console.log(chalk.cyan(JSON.stringify({
+      mcpServers: {
+        "prodigy-ui": {
+          command: "npx",
+          args: ["-y", "@prodigyui/mcp"]
+        }
+      }
+    }, null, 2)));
+
+    console.log(chalk.dim('\nConfiguration locations:'));
+    console.log(chalk.dim('  • VS Code/Cursor: Settings → Extensions → MCP'));
+    console.log(chalk.dim('  • Claude Desktop: ~/Library/Application Support/Claude/claude_desktop_config.json'));
+    console.log(chalk.dim('  • Windsurf: Settings → AI → MCP Configuration'));
+  });
+
+program
+  .command("mcp")
+  .description("Start the ProdigyUI MCP server for AI-assisted development")
+  .action(async () => {
+    console.log(chalk.cyan("Starting ProdigyUI MCP server..."));
+    console.log(chalk.dim("\nConfigure your AI editor with this JSON:\n"));
+    console.log(
+      JSON.stringify(
+        {
+          mcpServers: {
+            "prodigy-ui": {
+              command: "npx",
+              args: ["-y", "prodigy-ui", "mcp"],
+            },
+          },
+        },
+        null,
+        2
+      )
+    );
+    console.log(chalk.dim("\nMCP server is running. Press Ctrl+C to stop.\n"));
+
+    const localMcpPath = path.join(
+      process.cwd(),
+      "node_modules",
+      "@prodigyui",
+      "mcp",
+      "dist",
+      "index.js"
+    );
+
+    if (fs.existsSync(localMcpPath)) {
+      const { spawn } = await import("child_process");
+      const mcpProcess = spawn("node", [localMcpPath], {
+        stdio: "inherit",
+        env: process.env,
+      });
+      mcpProcess.on("close", (code) => process.exit(code || 0));
+      mcpProcess.on("error", (err) => {
+        console.error(chalk.red(`\nFailed to start MCP server: ${err.message}`));
+        process.exit(1);
+      });
+      return;
+    }
+
+    const { spawn } = await import("child_process");
+    const mcpProcess = spawn("npx", ["-y", "@prodigyui/mcp"], {
+      stdio: "inherit",
+      env: process.env,
+    });
+    mcpProcess.on("close", (code) => process.exit(code || 0));
+    mcpProcess.on("error", (err) => {
+      console.error(chalk.red(`\nFailed to start MCP server: ${err.message}`));
+      process.exit(1);
+    });
+  });
 
 program.parse(process.argv);

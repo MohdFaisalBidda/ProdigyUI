@@ -36,12 +36,14 @@ export const FEATURES = [
 
 export const STACK = [
   { name: "GSAP", color: "#88CE02" },
+  { name: "Motion", color: "#FF3B3B" },
   { name: "Lenis", color: "#C8FF00" },
   { name: "React", color: "#61DAFB" },
+  { name: "Next.js", color: "#0070F3" },
   { name: "TypeScript", color: "#3178C6" },
   { name: "Tailwind", color: "#38BDF8" },
 ];
 
 export const getMarqueeItems = () => componentRegistry.map((c) => c.name);
 
-export const INSTALL_CMD = "npx prodigy-ui list";
+export const INSTALL_CMD = "npx prodigy@latest add -all";

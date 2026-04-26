@@ -1,6 +1,6 @@
 {
   "name": "prodigy-ui",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Add animated components to your project",
   "main": "./dist/index.js",
   "bin": {
@@ -36,6 +36,9 @@
     "@types/prompts": "^2.4.9",
     "tsup": "^8.1.0",
     "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "@prodigyui/mcp": "*"
   },
   "engines": {
     "node": ">=18"

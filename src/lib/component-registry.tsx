@@ -3,6 +3,7 @@ import StrokeCards from "@/components/UIElement/StrokeCards/StrokeCards";
 import TeamSection from "@/components/UIElement/TeamSection/TeamSection";
 import GooeyStatusBar from "@/components/UIElement/GooeyBar/GoeeyBar";
 import PixelImage from "@/components/UIElement/PixelImage/PixelImage";
+import SplitCards from "@/components/UIElement/SplitCards/SplitCards";
 
 export type ComponentData = {
   slug: string;
@@ -78,10 +79,12 @@ const cards = [
       </div>
     ),
     props: [
-      { name: "cards", type: "CardEntry[]", required: true, description: "Array of card objects containing id, imgSrc, title, and color properties" },
+      { name: "cards", type: "Array<{ id: string; imgSrc?: string; imgAlt?: string; title?: string; strokeColor1?: string; strokeColor2?: string; titleColor?: string; borderRadius?: string; className?: string }>", required: true, description: "Array of card objects. Each card has: id (unique identifier), imgSrc (image URL), imgAlt (image alt text), title (hover text), strokeColor1 (primary stroke), strokeColor2 (secondary stroke), titleColor, borderRadius, className" },
       { name: "columns", type: "2 | 3 | 4", default: "2", description: "Number of cards per row in the grid" },
       { name: "gap", type: "string", default: '"1rem"', description: "CSS gap value between cards (e.g., '1rem', '20px')" },
       { name: "padding", type: "string", default: '"0 2rem"', description: "CSS padding around the grid container" },
+      { name: "minCardWidth", type: "string", default: '"280px"', description: "Minimum width of each card" },
+      { name: "maxCardWidth", type: "string", default: '"400px"', description: "Maximum width of each card" },
       { name: "className", type: "string", default: '""', description: "Additional CSS classes for the container" },
     ],
     prevComponent: undefined,
@@ -113,7 +116,7 @@ const members = [
       />
     ),
     props: [
-      { name: "members", type: "TeamMember[]", required: true, description: "Array of team member objects with image and name properties" },
+      { name: "members", type: "Array<{ image: string; name: string; imageClassName?: string; imageStyle?: CSSProperties; nameClassName?: string; nameStyle?: CSSProperties }>", required: true, description: "Array of team members. Each member has: image (profile photo URL), name (display name), and optional styling props" },
       { name: "defaultName", type: "string", default: '"Our Squad"', description: "Text displayed when no member is hovered" },
       { name: "backgroundColor", type: "string", default: '"#0f0f0f"', description: "Background color of the section (CSS color value)" },
       { name: "textColor", type: "string", default: '"#e3e3db"', description: "Default text color for the name display" },
@@ -195,7 +198,7 @@ const projects = [
     previewUrl: "/preview/more-space-scroll",
     previewHeight: 600,
     props: [
-      { name: "projects", type: "Project[]", default: "default projects", description: "Array of project objects with name, img (image URL), and year properties" },
+      { name: "projects", type: "Array<{ name: string; img: string; year: string }>", default: "default projects", description: "Array of project objects. Each project has: name (project title), img (image URL), year (project year)" },
       { name: "projectsPerRow", type: "number", default: "9", description: "Number of projects to display per row" },
       { name: "totalRows", type: "number", default: "10", description: "Total number of rows to render" },
     ],
@@ -223,7 +226,7 @@ const images = ["/avatar1.jpg", "/avatar2.jpg"];
     previewUrl: "/preview/infinite-contact",
     previewHeight: 600,
     props: [
-      { name: "data", type: "ContactItem[]", default: "default contacts", description: "Array of contact objects with label and value properties" },
+      { name: "data", type: "Array<{ label: string; value: string }>", default: "default contacts", description: "Array of contact items. Each item has: label (person name/role), value (position/title)" },
       { name: "images", type: "string[]", default: "default avatars", description: "Array of image URLs for the contact avatars" },
     ],
     prevComponent: { slug: "more-space-scroll", name: "More Space Scroll" },
@@ -291,7 +294,7 @@ const titles = ["First Slide", "Second Slide", "Third Slide"];
       </div>
     ),
     props: [
-      { name: "items", type: "StatusItem[]", default: "defaultStatusItems", description: "Array of status items with id, icon, label/value properties" },
+      { name: "items", type: "Array<{ id: string; icon: 'music' | 'cube' | 'cloud' | 'wifi' | 'battery' | 'clock' | 'custom'; label?: string; value?: string; customIcon?: ReactNode }>", default: "defaultStatusItems", description: "Array of status items. Each item has: id (unique identifier), icon (icon type), label/value (display text), customIcon (for 'custom' type)" },
       { name: "renderContent", type: "(item: StatusItem) => ReactNode", default: "undefined", description: "Custom renderer for tooltip content" },
       { name: "contentClassName", type: "string", default: '""', description: "CSS classes for the tooltip text" },
       { name: "barColor", type: "string", default: '"#C8FF00"', description: "Background color of the bar and gooey blob" },
@@ -351,8 +354,46 @@ function Page() {
       { name: "loopDelay", type: "number", default: "3", description: "Delay between loop iterations" },
     ],
     prevComponent: { slug: "gooey-bar", name: "Gooey Bar" },
-    nextComponent: undefined,
+    nextComponent: { slug: "split-cards", name: "Split Cards" },
     peerDependencies: ["gsap"],
+  },
+  {
+    slug: "split-cards",
+    index: "10",
+    name: "Split Cards",
+    tag: "Scroll",
+    tagColor: "#7B6BFF",
+    description: "Scroll-triggered 3D card flip animation with gap and width transitions. Cards flip to reveal content on scroll.",
+    snippet: `import SplitCards from "@/components/ui/split-cards/SplitCards";
+
+const cards = [
+  {
+    id: "card-1",
+    frontImage: "/image1.jpg",
+    backTitle: "Global Reach",
+    backDescription: "Connect users across borders seamlessly.",
+  },
+  // ... more cards
+];
+
+<SplitCards
+  cards={cards}
+  introTitle="Building the Future"
+  headerTitle="Three Key Areas"
+  outroTitle="Start Now"
+/>`,
+    previewUrl: "/preview/split-cards",
+    previewHeight: 600,
+    props: [
+      { name: "cards", type: "Array<{ id: string; frontImage: string; backTitle: string; backDescription: string }>", default: "default cards", description: "Array of exactly 3 card objects. Each card has: id (unique identifier), frontImage (URL for front side - recommended aspect ratio per image is 5/7, total 15/7 for all 3), backTitle (title shown on back flip), backDescription (description text on back flip)" },
+      { name: "introTitle", type: "string", default: '"Building the Future..."', description: "Title text for the intro section" },
+      { name: "headerTitle", type: "string", default: '"Three Forces..."', description: "Title text for the sticky header section" },
+      { name: "outroTitle", type: "string", default: '"Start Connecting..."', description: "Title text for the outro section" },
+      { name: "containerClassName", type: "string", default: '""', description: "Additional CSS classes for the outer container" },
+    ],
+    prevComponent: { slug: "pixel-image", name: "Pixel Image" },
+    nextComponent: undefined,
+    peerDependencies: ["gsap", "lenis"],
   },
 ];
 

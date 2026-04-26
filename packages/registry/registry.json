@@ -23,6 +23,50 @@
           "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/StrokeCards/StrokeCards.tsx"
         }
       ],
+      "props": [
+        {
+          "name": "cards",
+          "type": "Array<{ id: string; imgSrc?: string; imgAlt?: string; title?: string; strokeColor1?: string; strokeColor2?: string; titleColor?: string; borderRadius?: string; className?: string }>",
+          "required": true,
+          "description": "Array of card objects. Each card has: id (unique identifier), imgSrc (image URL), imgAlt (image alt text), title (hover text), strokeColor1 (primary stroke), strokeColor2 (secondary stroke), titleColor, borderRadius, className"
+        },
+        {
+          "name": "columns",
+          "type": "2 | 3 | 4",
+          "default": "2",
+          "description": "Number of cards per row in the grid"
+        },
+        {
+          "name": "gap",
+          "type": "string",
+          "default": "\"1rem\"",
+          "description": "CSS gap value between cards (e.g., '1rem', '20px')"
+        },
+        {
+          "name": "padding",
+          "type": "string",
+          "default": "\"0 2rem\"",
+          "description": "CSS padding around the grid container"
+        },
+        {
+          "name": "minCardWidth",
+          "type": "string",
+          "default": "\"280px\"",
+          "description": "Minimum width of each card"
+        },
+        {
+          "name": "maxCardWidth",
+          "type": "string",
+          "default": "\"400px\"",
+          "description": "Maximum width of each card"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "default": "\"\"",
+          "description": "Additional CSS classes for the container"
+        }
+      ],
       "dependencies": ["clsx", "tailwind-merge"],
       "peerDependencies": ["gsap"],
       "installSteps": [
@@ -47,6 +91,62 @@
         {
           "path": "team-section/TeamSection.tsx",
           "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/TeamSection/TeamSection.tsx"
+        }
+      ],
+      "props": [
+        {
+          "name": "members",
+          "type": "Array<{ image: string; name: string; imageClassName?: string; imageStyle?: CSSProperties; nameClassName?: string; nameStyle?: CSSProperties }>",
+          "required": true,
+          "description": "Array of team members. Each member has: image (profile photo URL), name (display name), and optional styling props"
+        },
+        {
+          "name": "defaultName",
+          "type": "string",
+          "default": "\"Our Squad\"",
+          "description": "Text displayed when no member is hovered"
+        },
+        {
+          "name": "backgroundColor",
+          "type": "string",
+          "default": "\"#0f0f0f\"",
+          "description": "Background color of the section (CSS color value)"
+        },
+        {
+          "name": "textColor",
+          "type": "string",
+          "default": "\"#e3e3db\"",
+          "description": "Default text color for the name display"
+        },
+        {
+          "name": "accentColor",
+          "type": "string",
+          "default": "\"#f93535\"",
+          "description": "Color of the hovered member's name"
+        },
+        {
+          "name": "containerClassName",
+          "type": "string",
+          "default": "\"\"",
+          "description": "Additional CSS classes for the main container"
+        },
+        {
+          "name": "hoverScaleFactor",
+          "type": "number",
+          "default": "2",
+          "description": "Scale multiplier when a profile image is hovered"
+        },
+        {
+          "name": "animDuration",
+          "type": "number",
+          "default": "0.75",
+          "description": "Animation duration in seconds"
+        },
+        {
+          "name": "charStagger",
+          "type": "number",
+          "default": "0.025",
+          "description": "Stagger delay between each character animation"
         }
       ],
       "dependencies": ["clsx", "tailwind-merge"],
@@ -75,6 +175,68 @@
           "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/GooeyBar/GoeeyBar.tsx"
         }
       ],
+      "props": [
+        {
+          "name": "items",
+          "type": "Array<{ id: string; icon: 'music' | 'cube' | 'cloud' | 'wifi' | 'battery' | 'clock' | 'custom'; label?: string; value?: string; customIcon?: ReactNode }>",
+          "default": "defaultStatusItems",
+          "description": "Array of status items. Each item has: id (unique identifier), icon (icon type), label/value (display text), customIcon (for 'custom' type)"
+        },
+        {
+          "name": "renderContent",
+          "type": "(item: StatusItem) => ReactNode",
+          "default": "undefined",
+          "description": "Custom renderer for tooltip content"
+        },
+        {
+          "name": "contentClassName",
+          "type": "string",
+          "default": "\"\"",
+          "description": "CSS classes for the tooltip text"
+        },
+        {
+          "name": "barColor",
+          "type": "string",
+          "default": "\"#C8FF00\"",
+          "description": "Background color of the bar and gooey blob"
+        },
+        {
+          "name": "iconColor",
+          "type": "string",
+          "default": "\"#000000\"",
+          "description": "Color of the icons"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "default": "\"\"",
+          "description": "Additional CSS classes for the outer wrapper"
+        },
+        {
+          "name": "iconSize",
+          "type": "string",
+          "default": "\"w-5 h-5\"",
+          "description": "Tailwind size class for icons"
+        },
+        {
+          "name": "buttonSize",
+          "type": "string",
+          "default": "\"w-10 h-10\"",
+          "description": "Tailwind size class for buttons"
+        },
+        {
+          "name": "gap",
+          "type": "string",
+          "default": "\"gap-1\"",
+          "description": "Tailwind gap class between buttons"
+        },
+        {
+          "name": "padding",
+          "type": "string",
+          "default": "\"px-3\"",
+          "description": "CSS padding for the main bar"
+        }
+      ],
       "dependencies": ["clsx", "tailwind-merge"],
       "peerDependencies": ["motion"],
       "installSteps": [
@@ -100,6 +262,74 @@
           "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/SpringBackCard/page.tsx"
         }
       ],
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "default": "undefined",
+          "description": "Custom content to render inside the card"
+        },
+        {
+          "name": "imgSrc",
+          "type": "string",
+          "default": "undefined",
+          "description": "Image source URL for the card background"
+        },
+        {
+          "name": "imgAlt",
+          "type": "string",
+          "default": "\"Card image\"",
+          "description": "Alt text for the card image"
+        },
+        {
+          "name": "widthClass",
+          "type": "string",
+          "default": "\"w-28 sm:w-32 md:w-40 lg:w-56\"",
+          "description": "Tailwind width class for card size"
+        },
+        {
+          "name": "heightClass",
+          "type": "string",
+          "default": "\"h-36 sm:h-40 md:h-52 lg:h-72\"",
+          "description": "Tailwind height class for card size"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "default": "\"\"",
+          "description": "Additional CSS classes for positioning"
+        },
+        {
+          "name": "initialRotation",
+          "type": "number",
+          "default": "0",
+          "description": "Initial rotation angle in degrees (positive = clockwise)"
+        },
+        {
+          "name": "interactive",
+          "type": "boolean",
+          "default": "true",
+          "description": "Enable/disable cursor tracking interaction"
+        },
+        {
+          "name": "maxRotation",
+          "type": "number",
+          "default": "18",
+          "description": "Maximum rotation angle when following cursor"
+        },
+        {
+          "name": "lerpSpeed",
+          "type": "number",
+          "default": "0.1",
+          "description": "Speed of the spring interpolation (lower = smoother but slower)"
+        },
+        {
+          "name": "mobileVisible",
+          "type": "boolean",
+          "default": "true",
+          "description": "Whether the card is visible on mobile screens (< 640px)"
+        }
+      ],
       "dependencies": ["clsx", "tailwind-merge"],
       "peerDependencies": [],
       "installSteps": []
@@ -117,6 +347,26 @@
         {
           "path": "more-space-scroll/MoreSpaceScroll.tsx",
           "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/MoreSpaceScroll/page.tsx"
+        }
+      ],
+      "props": [
+        {
+          "name": "projects",
+          "type": "Array<{ name: string; img: string; year: string }>",
+          "default": "default projects",
+          "description": "Array of project objects. Each project has: name (project title), img (image URL), year (project year)"
+        },
+        {
+          "name": "projectsPerRow",
+          "type": "number",
+          "default": "9",
+          "description": "Number of projects to display per row"
+        },
+        {
+          "name": "totalRows",
+          "type": "number",
+          "default": "10",
+          "description": "Total number of rows to render"
         }
       ],
       "dependencies": ["clsx", "tailwind-merge"],
@@ -150,6 +400,20 @@
           "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/InfiniteContact/page.tsx"
         }
       ],
+      "props": [
+        {
+          "name": "data",
+          "type": "Array<{ label: string; value: string }>",
+          "default": "default contacts",
+          "description": "Array of contact items. Each item has: label (person name/role), value (position/title)"
+        },
+        {
+          "name": "images",
+          "type": "string[]",
+          "default": "default avatars",
+          "description": "Array of image URLs for the contact avatars"
+        }
+      ],
       "dependencies": ["clsx", "tailwind-merge"],
       "peerDependencies": ["gsap", "lenis"],
       "installSteps": [
@@ -181,6 +445,26 @@
           "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/InfiniteSlider/page.tsx"
         }
       ],
+      "props": [
+        {
+          "name": "images",
+          "type": "string[]",
+          "default": "picsum images",
+          "description": "Array of image URLs for the slides"
+        },
+        {
+          "name": "titles",
+          "type": "string[]",
+          "default": "default titles",
+          "description": "Array of title strings displayed below the slider"
+        },
+        {
+          "name": "slideCount",
+          "type": "number",
+          "default": "6",
+          "description": "Number of slide duplicates for infinite scrolling effect"
+        }
+      ],
       "dependencies": ["clsx", "tailwind-merge"],
       "peerDependencies": ["gsap"],
       "installSteps": [
@@ -200,6 +484,62 @@
         {
           "path": "pixel-image/PixelImage.tsx",
           "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/PixelImage/PixelImage.tsx"
+        }
+      ],
+      "props": [
+        {
+          "name": "src",
+          "type": "string",
+          "default": "https://picsum.photos/800/600",
+          "description": "Image source URL"
+        },
+        {
+          "name": "pxSteps",
+          "type": "number[]",
+          "default": "[40, 20, 10, 6, 4, 2, 1]",
+          "description": "Pixelation steps array"
+        },
+        {
+          "name": "triggerStart",
+          "type": "string",
+          "default": "\"top+=20% bottom\"",
+          "description": "Scroll trigger start position"
+        },
+        {
+          "name": "speed",
+          "type": "number",
+          "default": "1.5",
+          "description": "Animation duration in seconds"
+        },
+        {
+          "name": "intialDelay",
+          "type": "number",
+          "default": "0.5",
+          "description": "Initial delay before animation"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "default": "\"\"",
+          "description": "Additional CSS classes"
+        },
+        {
+          "name": "loop",
+          "type": "boolean",
+          "default": "true",
+          "description": "Whether animation repeats"
+        },
+        {
+          "name": "loopTimes",
+          "type": "number",
+          "default": "Infinity",
+          "description": "Number of loop iterations"
+        },
+        {
+          "name": "loopDelay",
+          "type": "number",
+          "default": "3",
+          "description": "Delay between loop iterations"
         }
       ],
       "dependencies": ["clsx", "tailwind-merge"],
@@ -228,6 +568,14 @@
           "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/GlowingLight/page.tsx"
         }
       ],
+      "props": [
+        {
+          "name": "lottiePath",
+          "type": "string",
+          "default": "\"/fire.json\"",
+          "description": "Path to the Lottie JSON animation file"
+        }
+      ],
       "dependencies": ["clsx", "tailwind-merge"],
       "peerDependencies": ["lenis", "lottie-web"],
       "installSteps": [
@@ -235,6 +583,69 @@
           "title": "Install Dependencies",
           "description": "Install lenis and lottie-web packages",
           "code": "npm install lenis lottie-web"
+        },
+        {
+          "title": "Setup Lenis",
+          "description": "Wrap your app with ReactLenis for smooth scrolling",
+          "code": "// In your layout\nimport { ReactLenis } from 'lenis/react'\n\nexport default function RootLayout({ children }) {\n  return (\n    <html lang=\"en\">\n      <body>\n        <ReactLenis root>\n          {children}\n        </ReactLenis>\n      </body>\n    </html>\n  )\n}"
+        }
+      ]
+    },
+    {
+      "name": "split-cards",
+      "title": "Split Cards",
+      "description": "Scroll-triggered 3D card flip animation with gap and width transitions. Cards flip to reveal content on scroll.",
+      "tag": "Scroll",
+      "files": [
+        {
+          "path": "split-cards/SplitCards.tsx",
+          "source": "https://raw.githubusercontent.com/MohdFaisalBidda/ProdigyUI/main/src/components/UIElement/SplitCards/SplitCards.tsx"
+        }
+      ],
+      "props": [
+        {
+          "name": "cards",
+          "type": "Array<{ id: string; frontImage: string; backTitle: string; backDescription: string }>",
+          "default": "default cards",
+          "description": "Array of exactly 3 card objects. Each card has: id (unique identifier), frontImage (URL for front side - recommended aspect ratio per image is 5/7, total 15/7 for all 3), backTitle (title shown on back flip), backDescription (description text on back flip)"
+        },
+        {
+          "name": "introTitle",
+          "type": "string",
+          "default": "\"Building the Future...\"",
+          "description": "Title text for the intro section"
+        },
+        {
+          "name": "headerTitle",
+          "type": "string",
+          "default": "\"Three Forces...\"",
+          "description": "Title text for the sticky header section"
+        },
+        {
+          "name": "outroTitle",
+          "type": "string",
+          "default": "\"Start Connecting...\"",
+          "description": "Title text for the outro section"
+        },
+        {
+          "name": "containerClassName",
+          "type": "string",
+          "default": "\"\"",
+          "description": "Additional CSS classes for the outer container"
+        }
+      ],
+      "dependencies": ["clsx", "tailwind-merge"],
+      "peerDependencies": ["gsap", "lenis"],
+      "installSteps": [
+        {
+          "title": "Install Dependencies",
+          "description": "Install gsap and lenis packages for animations and smooth scrolling",
+          "code": "npm install gsap lenis"
+        },
+        {
+          "title": "Register GSAP Plugin",
+          "description": "Add GSAP ScrollTrigger registration",
+          "code": "// In your component\nimport { ScrollTrigger } from 'gsap/ScrollTrigger'\ngsap.registerPlugin(ScrollTrigger)"
         },
         {
           "title": "Setup Lenis",
